@@ -1,23 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amlan — Exploring the Whys?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #faf9f6;
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 900px;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdf8f3;
+      --bg-alt: #f5ede4;
       --surface: #ffffff;
-      --border: #e8e6e1;
-      --text: #1a1a1e;
-      --muted: #6b6b73;
-      --accent: #2d6a4f;
-      --accent-light: #2d6a4f12;
-      --accent-hover: #1b4332;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --sans: 'Outfit', system-ui, sans-serif;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --amber-soft: #e4a03015;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
+      --nav-bg: rgba(253, 248, 243, 0.9);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --amber-soft: #f0bd5a14;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
+      --nav-bg: rgba(18, 16, 16, 0.9);
+      --dot-color: #332e2c80;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,516 +69,538 @@
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.65;
       overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
     }
+
+    ::selection { background: var(--coral-soft); color: var(--coral); }
 
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 0;
+      transition: background-image var(--transition);
     }
 
-    /* ───── Navigation ───── */
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
     nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 1.25rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: fixed; top: 0; width: 100%;
+      padding: 0 2.5rem; height: 68px;
+      display: flex; justify-content: space-between; align-items: center;
       z-index: 100;
-      backdrop-filter: blur(14px);
-      background: #faf9f6dd;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
       border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
     }
 
     .logo {
-      font-family: var(--serif);
-      font-size: 1.35rem;
-      color: var(--accent);
-      letter-spacing: -0.02em;
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em;
+      transition: color var(--transition);
+      display: flex; align-items: center; gap: 0.35rem;
     }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; }
 
     .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      transition: color 0.3s;
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
     }
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover { background: var(--coral-soft); color: var(--coral); }
 
-    /* ───── Hero ───── */
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55), background var(--transition);
+      box-shadow: 0 2px 6px rgba(228, 160, 48, 0.3);
+    }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(20px); background: var(--violet);
+      box-shadow: 0 2px 6px rgba(123, 97, 255, 0.3);
+    }
+
+    .toggle-label {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.72rem; line-height: 1; pointer-events: none;
+    }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Blobs ── */
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; z-index: 0;
+    }
+    .blob-coral { width: 350px; height: 350px; background: var(--coral); opacity: 0.08; top: 5%; right: -5%; animation: blobFloat 12s ease-in-out infinite; }
+    .blob-teal { width: 280px; height: 280px; background: var(--teal); opacity: 0.06; top: 40%; left: -10%; animation: blobFloat 15s ease-in-out infinite reverse; }
+    .blob-violet { width: 250px; height: 250px; background: var(--violet); opacity: 0.05; bottom: 10%; right: 10%; animation: blobFloat 10s ease-in-out infinite 2s; }
+
+    /* ── Hero ── */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 2rem 4rem;
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 2.5rem 6rem; max-width: var(--max-w); margin: 0 auto; position: relative;
     }
 
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.45rem 1rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 24px;
+      font-size: 0.78rem; font-weight: 500; color: var(--text-secondary);
+      width: fit-content; margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+      transition: background var(--transition), border-color var(--transition), color var(--transition);
     }
-    .hero-tag::before {
-      content: '';
-      width: 24px;
-      height: 2px;
-      background: var(--accent);
-    }
+
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: pulse 2.5s infinite; }
 
     .hero h1 {
       font-family: var(--serif);
-      font-size: clamp(2.8rem, 7vw, 5rem);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-    .hero h1 .highlight {
-      color: var(--accent);
+      font-size: clamp(3rem, 8.5vw, 5.8rem);
+      font-weight: 500; line-height: 1.05; letter-spacing: -0.04em;
+      margin-bottom: 1.75rem;
+      opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
     }
 
-    .hero p {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.7;
-      font-weight: 300;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
+    .hero h1 .word-coral { color: var(--coral); transition: color var(--transition); }
+    .hero h1 .word-violet { color: var(--violet); font-style: italic; transition: color var(--transition); }
+
+    .hero-subtitle {
+      font-size: 1.12rem; color: var(--text-secondary);
+      max-width: 500px; line-height: 1.8; font-weight: 300;
+      opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+      transition: color var(--transition);
     }
 
     .hero-cta {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
+      display: flex; gap: 0.75rem; margin-top: 2.5rem;
+      opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.8rem;
-      border-radius: 6px;
-      font-family: var(--sans);
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.3s;
-      cursor: pointer;
-      border: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.5rem; border-radius: 10px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px #2d6a4f20;
-    }
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .btn-coral { background: var(--coral); color: #fff; }
+    .btn-coral:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 28px rgba(232, 99, 74, 0.25); }
+    .btn-teal { background: var(--teal-soft); color: var(--teal); border: 1px solid transparent; }
+    .btn-teal:hover { border-color: var(--teal); transform: translateY(-3px); }
 
-    .glow {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #2d6a4f0a 0%, transparent 70%);
-      top: 10%;
-      right: -15%;
-      pointer-events: none;
-      animation: float 8s ease-in-out infinite;
-    }
+    .wave { display: inline-block; animation: wave 2.5s ease-in-out infinite; transform-origin: 70% 70%; }
 
-    /* ───── Sections ───── */
-    section {
-      padding: 6rem 2rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    /* ── Sections ── */
+    section { padding: 6rem 2.5rem; max-width: var(--max-w); margin: 0 auto; }
+    .section-header { margin-bottom: 3.5rem; }
 
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+    .section-chip {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.25rem;
     }
+    .chip-coral { background: var(--coral-soft); color: var(--coral); }
+    .chip-teal { background: var(--teal-soft); color: var(--teal); }
+    .chip-violet { background: var(--violet-soft); color: var(--violet); }
 
     .section-title {
       font-family: var(--serif);
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 500; letter-spacing: -0.03em; line-height: 1.15;
     }
 
-    .section-desc {
-      color: var(--muted);
-      font-weight: 300;
-      max-width: 520px;
-      margin-bottom: 3rem;
-    }
+    .section-desc { color: var(--text-secondary); font-weight: 300; margin-top: 0.75rem; max-width: 480px; transition: color var(--transition); }
 
-    /* ───── Projects ───── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
+    /* ── Projects ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
 
     .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      transition: all 0.35s;
-      position: relative;
-      overflow: hidden;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative; overflow: hidden; cursor: default;
     }
-    .project-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px; border-radius: var(--radius) var(--radius) 0 0;
+      opacity: 0; transition: opacity 0.4s;
     }
-    .project-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--accent);
-      opacity: 0;
-      transition: opacity 0.35s;
-    }
-    .project-card:hover::after { opacity: 1; }
+    .project-card:nth-child(1)::before { background: var(--coral); }
+    .project-card:nth-child(2)::before { background: var(--teal); }
+    .project-card:nth-child(3)::before { background: var(--violet); }
 
-    .project-card .icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: var(--accent-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 1.25rem;
-    }
+    .project-card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: var(--shadow-lg); }
+    .project-card:hover::before { opacity: 1; }
 
-    .project-card h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+    .project-emoji {
+      font-size: 2rem; margin-bottom: 1rem; display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
+    .project-card:hover .project-emoji { transform: scale(1.25) rotate(10deg); }
 
-    .project-card p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 300;
-      line-height: 1.6;
-    }
+    .project-card h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .project-card p { color: var(--text-secondary); font-size: 0.88rem; font-weight: 300; line-height: 1.65; transition: color var(--transition); }
 
-    .project-card .tags {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1.25rem;
-      flex-wrap: wrap;
-    }
+    .project-tags { display: flex; gap: 0.4rem; margin-top: 1.25rem; flex-wrap: wrap; }
+    .tag { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.6rem; border-radius: 6px; letter-spacing: 0.03em; transition: all var(--transition); }
+    .tag-coral { background: var(--coral-soft); color: var(--coral); }
+    .tag-teal { background: var(--teal-soft); color: var(--teal); }
+    .tag-violet { background: var(--violet-soft); color: var(--violet); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber); }
 
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 500;
-      padding: 0.3rem 0.7rem;
-      border-radius: 20px;
-      background: var(--accent-light);
-      color: var(--accent);
-      letter-spacing: 0.03em;
-    }
+    /* ── Blog ── */
+    .blog-list { display: flex; flex-direction: column; gap: 1rem; }
 
-    /* ───── About ───── */
-    .about-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
+    .blog-card {
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      padding: 1.5rem; background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      text-decoration: none; color: inherit;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .blog-card:hover { transform: translateX(8px); border-color: var(--coral); box-shadow: var(--shadow-md); }
 
-    .about-text {
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.8;
-    }
-    .about-text strong { color: var(--text); font-weight: 500; }
+    .blog-number { font-family: var(--serif); font-size: 2.2rem; font-weight: 500; line-height: 1; min-width: 50px; transition: color 0.4s; }
+    .blog-card:nth-child(1) .blog-number { color: var(--coral); }
+    .blog-card:nth-child(2) .blog-number { color: var(--teal); }
+    .blog-card:nth-child(3) .blog-number { color: var(--violet); }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
+    .blog-content { flex: 1; }
+    .blog-date { font-size: 0.72rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.3rem; transition: color var(--transition); }
+    .blog-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; margin-bottom: 0.4rem; transition: color 0.3s; }
+    .blog-card:hover .blog-title { color: var(--coral); }
+    .blog-excerpt { font-size: 0.84rem; color: var(--muted); font-weight: 300; line-height: 1.6; transition: color var(--transition); }
+    .blog-arrow { font-size: 1.2rem; color: var(--muted); margin-top: 0.2rem; transition: all 0.4s; flex-shrink: 0; }
+    .blog-card:hover .blog-arrow { color: var(--coral); transform: translateX(6px); }
 
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-    }
+    /* ── About ── */
+    .about-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3.5rem; align-items: start; }
+    .about-text { color: var(--text-secondary); font-weight: 300; line-height: 1.85; font-size: 1.02rem; transition: color var(--transition); }
+    .about-text strong { color: var(--text); font-weight: 500; transition: color var(--transition); }
+    .about-text .inline-coral { color: var(--coral); font-weight: 500; }
+    .about-text .inline-teal { color: var(--teal); font-weight: 500; }
+    .about-text p + p { margin-top: 1.25rem; }
 
-    .stat-card .number {
-      font-family: var(--serif);
-      font-size: 2rem;
-      color: var(--accent);
-      line-height: 1;
-    }
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-    .stat-card .label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .value-card {
+      padding: 1.25rem; background: var(--surface);
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
     }
+    .value-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-md); }
+    .value-card:nth-child(1):hover { border-color: var(--coral); }
+    .value-card:nth-child(2):hover { border-color: var(--teal); }
+    .value-card:nth-child(3):hover { border-color: var(--violet); }
+    .value-card:nth-child(4):hover { border-color: var(--amber); }
 
-    /* ───── Contact ───── */
-    .contact-links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
+    .value-emoji { font-size: 1.6rem; display: block; margin-bottom: 0.6rem; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+    .value-card:hover .value-emoji { transform: scale(1.2) rotate(-8deg); }
+    .value-label { font-family: var(--serif); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .value-desc { font-size: 0.75rem; color: var(--muted); font-weight: 300; line-height: 1.45; transition: color var(--transition); }
+
+    /* ── Contact ── */
+    .contact-section { text-align: center; }
+
+    .contact-box {
+      max-width: 520px; margin: 0 auto; padding: 3rem;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 20px; box-shadow: var(--shadow-sm);
+      transition: all var(--transition);
     }
+    .contact-box:hover { box-shadow: var(--shadow-md); }
+    .contact-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: inline-block; animation: bounce 3s ease-in-out infinite; }
+    .contact-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; margin-bottom: 0.75rem; }
+    .contact-desc { color: var(--text-secondary); font-weight: 300; margin-bottom: 2rem; font-size: 0.95rem; transition: color var(--transition); }
 
     .contact-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.9rem 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 400;
-      transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 1.8rem; background: var(--teal); color: #fff;
+      border-radius: 10px; text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      transition: all 0.35s;
     }
-    .contact-link:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-2px);
-    }
+    .contact-link:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 28px rgba(42, 157, 143, 0.25); }
+    .contact-link svg { width: 18px; height: 18px; }
 
-    /* ───── Footer ───── */
+    /* ── Footer ── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.8rem;
+      border-top: 1px solid var(--border); padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--max-w); margin: 0 auto;
+      color: var(--muted); font-size: 0.78rem;
+      transition: all var(--transition);
     }
 
-    .divider {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    .divider hr {
-      border: none;
-      border-top: 1px solid var(--border);
-    }
+    .footer-dots { display: flex; gap: 6px; }
+    .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
+    .footer-dots span:nth-child(1) { background: var(--coral); }
+    .footer-dots span:nth-child(2) { background: var(--teal); }
+    .footer-dots span:nth-child(3) { background: var(--violet); }
+    .footer-dots span:nth-child(4) { background: var(--amber); }
 
-    /* ───── Animations ───── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-20px, 20px); }
-    }
+    /* ── Animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes wave { 0%,100%{transform:rotate(0)} 15%{transform:rotate(14deg)} 30%{transform:rotate(-8deg)} 40%{transform:rotate(10deg)} 50%{transform:rotate(-4deg)} 60%{transform:rotate(6deg)} 70%,100%{transform:rotate(0)} }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+    @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.95)} }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
     .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s, transform 0.7s;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger:nth-child(1) { transition-delay: 0.05s; }
+    .stagger:nth-child(2) { transition-delay: 0.15s; }
+    .stagger:nth-child(3) { transition-delay: 0.25s; }
 
-    /* ───── Responsive ───── */
+    /* ── Responsive ── */
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.25rem; }
-      .nav-links { gap: 1.25rem; }
-      .nav-links a { font-size: 0.75rem; }
-      .hero { padding: 7rem 1.5rem 3rem; }
-      section { padding: 4rem 1.5rem; }
-      .about-content { grid-template-columns: 1fr; gap: 2rem; }
-      .hero-cta { flex-direction: column; }
+      nav { padding: 0 1.5rem; }
+      .nav-links a { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+      .hero { padding: 7rem 1.5rem 5rem; }
+      section { padding: 4.5rem 1.5rem; }
+      .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-cta { flex-direction: column; align-items: flex-start; }
+      .blog-card { flex-direction: column; gap: 0.75rem; }
+      .blog-number { font-size: 1.5rem; }
+      .blog-arrow { display: none; }
+      .contact-box { padding: 2rem 1.5rem; }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 500px) {
       .nav-links { display: none; }
       .projects-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
   </style>
 </head>
 <body>
 
+  <div class="blob blob-coral"></div>
+  <div class="blob blob-teal"></div>
+  <div class="blob blob-violet"></div>
+
   <nav>
-    <div class="logo">amlan.</div>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="logo">amlan<span class="logo-dot"></span></div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#writing">Writing</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+    </div>
   </nav>
 
   <section class="hero">
-    <div class="glow"></div>
-    <div class="hero-tag">Welcome to my corner</div>
-    <h1>Exploring<br>the <span class="highlight">Whys?</span></h1>
-    <p>Curious mind A space where Whys lead to projects, projects lead to learning, and learning never stops.</p>
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Currently exploring & building
+    </div>
+    <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span></h1>
+    <p class="hero-subtitle">Curious mind, open notebook. A space where questions become projects, projects become understanding, and <strong>every "why" matters</strong>. <span class="wave">👋</span></p>
     <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">See my work ↓</a>
-      <a href="#contact" class="btn btn-outline">Get in touch</a>
+      <a href="#writing" class="btn btn-coral">Read my writing ✦</a>
+      <a href="#projects" class="btn btn-teal">View projects</a>
     </div>
   </section>
-
-  <div class="divider"><hr></div>
 
   <section id="projects">
-    <div class="reveal">
-      <div class="section-label">What I'm building</div>
-      <h2 class="section-title">Projects</h2>
-      <p class="section-desc">Small experiments today, big things tomorrow. Here's what I'm working on.</p>
+    <div class="section-header reveal">
+      <div class="section-chip chip-coral">🧩 Projects</div>
+      <h2 class="section-title">Things I'm building</h2>
+      <p class="section-desc">Small experiments today, meaningful things tomorrow. Each one started with a question.</p>
     </div>
     <div class="projects-grid">
-      <div class="project-card reveal">
-        <div class="icon">🧩</div>
-        <h3>Project Space</h3>
-        <p>A minimal tool that solves a real problem. Clean, fast, and focused on doing one thing well.</p>
-        <div class="tags">
-          <span class="tag">HTML / CSS</span>
-          <span class="tag">Open Source</span>
+      <div class="project-card reveal stagger">
+        <div class="project-emoji">🧩</div>
+        <h3>Project Alpha</h3>
+        <p>A minimal tool solving a real problem. Clean, fast, and focused on doing one thing exceptionally well.</p>
+        <div class="project-tags">
+          <span class="tag tag-coral">HTML / CSS</span>
+          <span class="tag tag-amber">Open Source</span>
         </div>
       </div>
-      <div class="project-card reveal">
-        <div class="icon">⚡</div>
+      <div class="project-card reveal stagger">
+        <div class="project-emoji">⚡</div>
         <h3>Side Project Beta</h3>
-        <p>An experiment in making something delightful. Still in progress, but the foundation is solid.</p>
-        <div class="tags">
-          <span class="tag">JavaScript</span>
-          <span class="tag">API</span>
+        <p>An experiment in making something delightful. Still evolving, but the foundation is solid.</p>
+        <div class="project-tags">
+          <span class="tag tag-teal">JavaScript</span>
+          <span class="tag tag-violet">API</span>
         </div>
       </div>
-      <div class="project-card reveal">
-        <div class="icon">🌱</div>
+      <div class="project-card reveal stagger">
+        <div class="project-emoji">🌱</div>
         <h3>Learning in Public</h3>
-        <p>Documenting what I learn as I build. Notes, insights, and the occasional breakthrough.</p>
-        <div class="tags">
-          <span class="tag">Writing</span>
-          <span class="tag">Growth</span>
+        <p>Documenting what I discover as I build. Notes, insights, and the occasional breakthrough.</p>
+        <div class="project-tags">
+          <span class="tag tag-violet">Writing</span>
+          <span class="tag tag-teal">Growth</span>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="divider"><hr></div>
+  <section id="writing">
+    <div class="section-header reveal">
+      <div class="section-chip chip-teal">✍️ Writing</div>
+      <h2 class="section-title">Thinking out loud</h2>
+      <p class="section-desc">Notes from the journey of asking why — and sometimes finding out.</p>
+    </div>
+    <div class="blog-list">
+      <a href="#" class="blog-card reveal stagger">
+        <div class="blog-number">01</div>
+        <div class="blog-content">
+          <div class="blog-date">Mar 2026</div>
+          <div class="blog-title">Why I'm building in public</div>
+          <div class="blog-excerpt">The case for sharing your work before it's ready — and what happens when you do.</div>
+        </div>
+        <div class="blog-arrow">→</div>
+      </a>
+      <a href="#" class="blog-card reveal stagger">
+        <div class="blog-number">02</div>
+        <div class="blog-content">
+          <div class="blog-date">Feb 2026</div>
+          <div class="blog-title">Starting from zero (literally)</div>
+          <div class="blog-excerpt">No budget, no framework, no plan. Just HTML and a willingness to figure it out.</div>
+        </div>
+        <div class="blog-arrow">→</div>
+      </a>
+      <a href="#" class="blog-card reveal stagger">
+        <div class="blog-number">03</div>
+        <div class="blog-content">
+          <div class="blog-date">Jan 2026</div>
+          <div class="blog-title">The art of asking better questions</div>
+          <div class="blog-excerpt">How reframing a question can change everything — in code and in life.</div>
+        </div>
+        <div class="blog-arrow">→</div>
+      </a>
+    </div>
+  </section>
 
   <section id="about">
-    <div class="reveal">
-      <div class="section-label">Who I am</div>
-      <h2 class="section-title">About</h2>
+    <div class="section-header reveal">
+      <div class="section-chip chip-violet">✨ About</div>
+      <h2 class="section-title">Who's behind this?</h2>
     </div>
-    <div class="about-content reveal">
-      <div class="about-text">
-        <p>Hi, I'm <strong>Amlan</strong> — someone who believes the best way to understand the world is to keep asking <strong>why</strong>. I explore ideas by building things, writing about the process, and following curiosity wherever it leads.</p>
-        <br>
-        <p>This space grows with me. Every project here started as a question, and every question led somewhere unexpected. Lets explore the unexpected.</p>
+    <div class="about-layout">
+      <div class="about-text reveal">
+        <p>Hey! I'm <strong>Amlan</strong> — someone who believes the best way to understand the world is to keep asking <span class="inline-coral">why</span>.</p>
+        <p>I explore ideas by building things, writing about the process, and following <span class="inline-teal">curiosity</span> wherever it leads. This space grows with me — every project started as a question, and every question led somewhere unexpected.</p>
+        <p>No VC funding, no fancy tools. Just <strong>curiosity</strong> and <strong>persistence</strong>.</p>
       </div>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="number">3</div>
-          <div class="label">Projects</div>
+      <div class="values-grid reveal">
+        <div class="value-card">
+          <span class="value-emoji">🔍</span>
+          <div class="value-label">Curiosity</div>
+          <div class="value-desc">Chase questions worth asking</div>
         </div>
-        <div class="stat-card">
-          <div class="number">∞</div>
-          <div class="label">Curiosity</div>
+        <div class="value-card">
+          <span class="value-emoji">🛠️</span>
+          <div class="value-label">Build to learn</div>
+          <div class="value-desc">Make things with your hands</div>
         </div>
-        <div class="stat-card">
-          <div class="number">0</div>
-          <div class="label">$ Spent</div>
+        <div class="value-card">
+          <span class="value-emoji">🚀</span>
+          <div class="value-label">Ship it</div>
+          <div class="value-desc">Done beats perfect, always</div>
         </div>
-        <div class="stat-card">
-          <div class="number">1</div>
-          <div class="label">Mission</div>
+        <div class="value-card">
+          <span class="value-emoji">🌿</span>
+          <div class="value-label">Stay lean</div>
+          <div class="value-desc">Big thinking, small budgets</div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="divider"><hr></div>
-
-  <section id="contact">
-    <div class="reveal">
-      <div class="section-label">Let's connect</div>
-      <h2 class="section-title">Contact</h2>
-      <p class="section-desc">Have a question, an idea, or just want to say hi? Let's talk.</p>
-    </div>
-    <div class="contact-links reveal">
-      <a href="https://linkedin.com/in/pradhanamlan" class="contact-link" target="_blank">💼 LinkedIn</a>
+  <section id="contact" class="contact-section">
+    <div class="contact-box reveal">
+      <div class="contact-emoji">💬</div>
+      <h2 class="contact-title">Let's connect!</h2>
+      <p class="contact-desc">Have a question, an idea, or just want to say hi? I'd love to hear from you.</p>
+      <a href="https://linkedin.com/in/pradhanamlan" class="contact-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        Connect on LinkedIn
+      </a>
     </div>
   </section>
 
   <footer>
-    <p>Built with curiosity. Hosted for free. © 2026 Amlan.</p>
+    <span>© 2026 Amlan. Built with curiosity & zero budget ✌️</span>
+    <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
   </footer>
 
   <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 });
-
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
 
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          const hero = document.querySelector('.hero');
+          if (scrolled < window.innerHeight) {
+            hero.style.transform = `translateY(${scrolled * 0.12}px)`;
+            hero.style.opacity = 1 - (scrolled / (window.innerHeight * 0.85));
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  </script>
 </body>
 </html>
