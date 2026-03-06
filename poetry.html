@@ -246,6 +246,34 @@
     }
     .poem-card:hover .poem-number { opacity: 0.12; }
 
+    /* ── Hand-drawn doodles ── */
+    .poem-doodle {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.13;
+      transition: opacity 0.5s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .poem-card:hover .poem-doodle {
+      opacity: 0.25;
+    }
+
+    .doodle-tl { top: 1rem; left: 1rem; }
+    .doodle-tr { top: 1rem; right: 4.5rem; }
+    .doodle-br { bottom: 1rem; right: 1.5rem; }
+    .doodle-bl { bottom: 1rem; left: 1.5rem; }
+    .doodle-mr { top: 50%; right: 1rem; transform: translateY(-50%); }
+
+    .poem-card:hover .doodle-tl { transform: rotate(-8deg) scale(1.1); }
+    .poem-card:hover .doodle-tr { transform: rotate(6deg) scale(1.1); }
+    .poem-card:hover .doodle-br { transform: rotate(5deg) scale(1.15); }
+    .poem-card:hover .doodle-bl { transform: rotate(-5deg) scale(1.1); }
+    .poem-card:hover .doodle-mr { transform: translateY(-50%) rotate(8deg) scale(1.1); }
+
+    .poem-doodle svg {
+      width: 100%;
+      height: 100%;
+    }
+
     .poem-header {
       margin-bottom: 1.75rem;
     }
@@ -442,6 +470,13 @@
     <!-- Poem 1 -->
     <div class="poem-card reveal">
       <div class="poem-number">01</div>
+      <!-- Doodles: flame & water drop -->
+      <div class="poem-doodle doodle-tr" style="width:44px;height:44px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M25 4c0 0-14 16-14 28a14 14 0 0 0 28 0C39 20 25 4 25 4z" opacity="0.7"/><path d="M25 22c0 0-5 6-5 11a5 5 0 0 0 10 0c0-5-5-11-5-11z"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:32px;height:32px">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M20 4c-4 8-10 14-10 22a10 10 0 0 0 20 0c0-8-6-14-10-22z"/><path d="M16 28c1 2 3 3 5 3s3-1 4-3"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">Never Fade</h2>
@@ -478,6 +513,13 @@
     <!-- Poem 2 -->
     <div class="poem-card reveal">
       <div class="poem-number">02</div>
+      <!-- Doodles: star & eye -->
+      <div class="poem-doodle doodle-tr" style="width:38px;height:38px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M25 3l5 15h16l-13 9 5 16-13-10-13 10 5-16L4 18h16z"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:42px;height:28px">
+        <svg viewBox="0 0 60 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><ellipse cx="30" cy="18" rx="26" ry="14"/><circle cx="30" cy="18" r="6"/><circle cx="30" cy="18" r="2.5"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">The Mirror</h2>
@@ -522,6 +564,13 @@
     <!-- Poem 3 -->
     <div class="poem-card reveal">
       <div class="poem-number">03</div>
+      <!-- Doodles: moon & daisy -->
+      <div class="poem-doodle doodle-tr" style="width:36px;height:36px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M36 10a18 18 0 1 0 0 30 14 14 0 0 1 0-30z"/><circle cx="14" cy="14" r="1.2"/><circle cx="20" cy="8" r="0.8"/><circle cx="10" cy="22" r="1"/></svg>
+      </div>
+      <div class="poem-doodle doodle-br" style="width:40px;height:40px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="25" cy="25" r="4"/><path d="M25 8v6M25 36v6M8 25h6M36 25h6M13 13l4 4M33 33l4 4M13 37l4-4M33 17l4-4"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">Far-Flung</h2>
@@ -563,6 +612,13 @@
     <!-- Poem 4 -->
     <div class="poem-card reveal">
       <div class="poem-number">04</div>
+      <!-- Doodles: butterfly & flower -->
+      <div class="poem-doodle doodle-tr" style="width:48px;height:36px">
+        <svg viewBox="0 0 60 44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M30 22c-6-10-20-16-20-6s10 14 20 6z"/><path d="M30 22c6-10 20-16 20-6s-10 14-20 6z"/><path d="M30 22c-4 6-14 16-10 18s12-6 10-18z"/><path d="M30 22c4 6 14 16 10 18s-12-6-10-18z"/><line x1="30" y1="18" x2="26" y2="8"/><line x1="30" y1="18" x2="34" y2="8"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:32px;height:32px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="25" cy="22" r="4"/><path d="M25 18c-1-5-6-8-4-10s6 3 4 10z"/><path d="M29 20c5-2 10-1 10 2s-6 2-10-2z"/><path d="M27 26c2 5 1 10-2 10s-1-6 2-10z"/><path d="M21 20c-5-2-10-1-10 2s6 2 10-2z"/><path d="M25 40v-14"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">At the Butterflies</h2>
@@ -607,6 +663,13 @@
     <!-- Poem 5 -->
     <div class="poem-card reveal">
       <div class="poem-number">05</div>
+      <!-- Doodles: tulip & leaves -->
+      <div class="poem-doodle doodle-tr" style="width:36px;height:44px">
+        <svg viewBox="0 0 40 52" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 18c-3-8-12-14-12-8s6 12 12 8z"/><path d="M20 18c3-8 12-14 12-8s-6 12-12 8z"/><path d="M20 18c-5-4-14-4-12 0s10 8 12 0z"/><path d="M20 18v28"/><path d="M20 30c-6-2-10 2-8 4"/><path d="M20 36c5-1 8 3 7 5"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:34px;height:28px">
+        <svg viewBox="0 0 50 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M6 30c4-10 12-18 20-20"/><path d="M6 30c10 0 20-4 26-12"/><path d="M16 22c-2 0-4 2-3 4s4 1 3-4z"/><path d="M28 16c-2-1-4 1-3 3s4 0 3-3z"/><path d="M38 12c-1-2-4-1-4 1s3 2 4-1z"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">Pink Flower Stories</h2>
@@ -638,6 +701,13 @@
     <!-- Poem 6 -->
     <div class="poem-card reveal">
       <div class="poem-number">06</div>
+      <!-- Doodles: wave & seagull -->
+      <div class="poem-doodle doodle-tr" style="width:48px;height:28px">
+        <svg viewBox="0 0 60 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 20c6-8 12-4 16 0s10 8 16 0 12-4 18 0"/><path d="M8 28c5-6 10-3 14 0s8 6 14 0"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:40px;height:24px">
+        <svg viewBox="0 0 60 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c8-12 14-6 16-2"/><path d="M20 18c2-4 10-14 18-4"/><path d="M42 24c6-10 10-8 14-2"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">At the Cliff</h2>
@@ -673,6 +743,13 @@
     <!-- Poem 7 -->
     <div class="poem-card reveal">
       <div class="poem-number">07</div>
+      <!-- Doodles: cracked heart & thorns -->
+      <div class="poem-doodle doodle-tr" style="width:38px;height:38px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M25 44l-18-18c-4-5-5-14 2-18s12 0 16 6c4-6 9-10 16-6s6 13 2 18z"/><path d="M25 16l-3 8 6 0-4 10"/></svg>
+      </div>
+      <div class="poem-doodle doodle-bl" style="width:32px;height:32px">
+        <svg viewBox="0 0 50 50" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M28 6l-8 18h10l-8 20"/><line x1="10" y1="14" x2="16" y2="14"/><line x1="34" y1="30" x2="40" y2="30"/></svg>
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">Scars</h2>
