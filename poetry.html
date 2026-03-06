@@ -258,13 +258,13 @@
     }
 
     .doodle-tl { top: 1rem; left: 1rem; }
-    .doodle-tr { top: 1rem; right: 4.5rem; }
-    .doodle-br { bottom: 1rem; right: 1.5rem; }
-    .doodle-bl { bottom: 1rem; left: 1.5rem; }
+    .doodle-tr { top: 50%; right: 1rem; transform: translateY(-50%); }
+    .doodle-br { bottom: 1.25rem; right: 1.5rem; }
+    .doodle-bl { bottom: 1.25rem; left: 1.5rem; }
     .doodle-mr { top: 50%; right: 1rem; transform: translateY(-50%); }
 
     .poem-card:hover .doodle-tl { transform: rotate(-8deg) scale(1.1); }
-    .poem-card:hover .doodle-tr { transform: rotate(6deg) scale(1.1); }
+    .poem-card:hover .doodle-tr { transform: translateY(-50%) rotate(6deg) scale(1.1); }
     .poem-card:hover .doodle-br { transform: rotate(5deg) scale(1.15); }
     .poem-card:hover .doodle-bl { transform: rotate(-5deg) scale(1.1); }
     .poem-card:hover .doodle-mr { transform: translateY(-50%) rotate(8deg) scale(1.1); }
@@ -427,6 +427,7 @@
       .poems-container { padding: 2rem 1.5rem 4rem; }
       .poem-card { padding: 2rem 1.75rem 1.75rem; }
       .poem-number { font-size: 2.5rem; right: 1.25rem; }
+      .poem-doodle { display: none; }
     }
 
     @media (max-width: 500px) {
