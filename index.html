@@ -37,6 +37,8 @@
       --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
       --nav-bg: rgba(253, 248, 243, 0.9);
       --dot-color: #e8dfd440;
+      --chat-user: #e8634a18;
+      --chat-bot: #f5ede4;
     }
 
     [data-theme="dark"] {
@@ -60,6 +62,8 @@
       --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
       --nav-bg: rgba(18, 16, 16, 0.9);
       --dot-color: #332e2c80;
+      --chat-user: #f0887220;
+      --chat-bot: #2a2725;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -156,10 +160,7 @@
     .moon-label { right: 6px; }
 
     /* ── Blobs ── */
-    .blob {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); pointer-events: none; z-index: 0;
-    }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
     .blob-coral { width: 350px; height: 350px; background: var(--coral); opacity: 0.08; top: 5%; right: -5%; animation: blobFloat 12s ease-in-out infinite; }
     .blob-teal { width: 280px; height: 280px; background: var(--teal); opacity: 0.06; top: 40%; left: -10%; animation: blobFloat 15s ease-in-out infinite reverse; }
     .blob-violet { width: 250px; height: 250px; background: var(--violet); opacity: 0.05; bottom: 10%; right: 10%; animation: blobFloat 10s ease-in-out infinite 2s; }
@@ -190,7 +191,6 @@
       margin-bottom: 1.75rem;
       opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
     }
-
     .hero h1 .word-coral { color: var(--coral); transition: color var(--transition); }
     .hero h1 .word-violet { color: var(--violet); font-style: italic; transition: color var(--transition); }
 
@@ -259,7 +259,6 @@
     .project-card:nth-child(1)::before { background: var(--coral); }
     .project-card:nth-child(2)::before { background: var(--teal); }
     .project-card:nth-child(3)::before { background: var(--violet); }
-
     .project-card:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: var(--shadow-lg); }
     .project-card:hover::before { opacity: 1; }
 
@@ -268,10 +267,8 @@
       transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     }
     .project-card:hover .project-emoji { transform: scale(1.25) rotate(10deg); }
-
     .project-card h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
     .project-card p { color: var(--text-secondary); font-size: 0.88rem; font-weight: 300; line-height: 1.65; transition: color var(--transition); }
-
     .project-tags { display: flex; gap: 0.4rem; margin-top: 1.25rem; flex-wrap: wrap; }
     .tag { font-size: 0.68rem; font-weight: 500; padding: 0.25rem 0.6rem; border-radius: 6px; letter-spacing: 0.03em; transition: all var(--transition); }
     .tag-coral { background: var(--coral-soft); color: var(--coral); }
@@ -290,12 +287,10 @@
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .blog-card:hover { transform: translateX(8px); border-color: var(--coral); box-shadow: var(--shadow-md); }
-
     .blog-number { font-family: var(--serif); font-size: 2.2rem; font-weight: 500; line-height: 1; min-width: 50px; transition: color 0.4s; }
     .blog-card:nth-child(1) .blog-number { color: var(--coral); }
     .blog-card:nth-child(2) .blog-number { color: var(--teal); }
     .blog-card:nth-child(3) .blog-number { color: var(--violet); }
-
     .blog-content { flex: 1; }
     .blog-date { font-size: 0.72rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.3rem; transition: color var(--transition); }
     .blog-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; margin-bottom: 0.4rem; transition: color 0.3s; }
@@ -313,7 +308,6 @@
     .about-text p + p { margin-top: 1.25rem; }
 
     .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
     .value-card {
       padding: 1.25rem; background: var(--surface);
       border: 1.5px solid var(--border); border-radius: var(--radius-sm);
@@ -324,7 +318,6 @@
     .value-card:nth-child(2):hover { border-color: var(--teal); }
     .value-card:nth-child(3):hover { border-color: var(--violet); }
     .value-card:nth-child(4):hover { border-color: var(--amber); }
-
     .value-emoji { font-size: 1.6rem; display: block; margin-bottom: 0.6rem; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
     .value-card:hover .value-emoji { transform: scale(1.2) rotate(-8deg); }
     .value-label { font-family: var(--serif); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
@@ -332,7 +325,6 @@
 
     /* ── Contact ── */
     .contact-section { text-align: center; }
-
     .contact-box {
       max-width: 520px; margin: 0 auto; padding: 3rem;
       background: var(--surface); border: 1.5px solid var(--border);
@@ -343,7 +335,6 @@
     .contact-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: inline-block; animation: bounce 3s ease-in-out infinite; }
     .contact-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; margin-bottom: 0.75rem; }
     .contact-desc { color: var(--text-secondary); font-weight: 300; margin-bottom: 2rem; font-size: 0.95rem; transition: color var(--transition); }
-
     .contact-link {
       display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 0.85rem 1.8rem; background: var(--teal); color: #fff;
@@ -361,7 +352,6 @@
       color: var(--muted); font-size: 0.78rem;
       transition: all var(--transition);
     }
-
     .footer-dots { display: flex; gap: 6px; }
     .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
     .footer-dots span:nth-child(1) { background: var(--coral); }
@@ -369,12 +359,250 @@
     .footer-dots span:nth-child(3) { background: var(--violet); }
     .footer-dots span:nth-child(4) { background: var(--amber); }
 
+    /* ═══════════════════════════════════════════
+       CHATBOT WIDGET
+    ═══════════════════════════════════════════ */
+    .chat-fab {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--coral), var(--violet));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 6px 24px rgba(232, 99, 74, 0.35);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .chat-fab:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 10px 36px rgba(232, 99, 74, 0.45);
+    }
+    .chat-fab.open { transform: scale(0.9) rotate(90deg); }
+
+    .chat-fab-ping {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid var(--coral);
+      animation: fabPing 2s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 6rem;
+      right: 1.5rem;
+      width: 370px;
+      max-height: 520px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      z-index: 199;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background var(--transition), border-color var(--transition);
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .chat-window.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .chat-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: border-color var(--transition);
+    }
+
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--coral), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .chat-header-info h3 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .chat-header-info span {
+      font-size: 0.7rem;
+      color: var(--teal);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .chat-header-info span::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s infinite;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 340px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 0.7rem 1rem;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      font-weight: 400;
+      animation: msgPop 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .chat-msg.bot {
+      background: var(--chat-bot);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .chat-msg.user {
+      background: var(--chat-user);
+      color: var(--text);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .chat-msg a {
+      color: var(--coral);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 0.7rem 1rem;
+      align-self: flex-start;
+    }
+    .typing-indicator span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: typingDot 1.4s ease-in-out infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    .chat-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0 1.25rem 0.75rem;
+    }
+
+    .chat-suggestion {
+      padding: 0.35rem 0.75rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: var(--sans);
+    }
+    .chat-suggestion:hover {
+      background: var(--coral-soft);
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    .chat-input-area {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      transition: border-color var(--transition);
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.6rem 0.9rem;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 0.84rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .chat-input::placeholder { color: var(--muted); }
+    .chat-input:focus { border-color: var(--coral); }
+
+    .chat-send {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .chat-send:hover { transform: scale(1.08); background: var(--violet); }
+
     /* ── Animations ── */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes wave { 0%,100%{transform:rotate(0)} 15%{transform:rotate(14deg)} 30%{transform:rotate(-8deg)} 40%{transform:rotate(10deg)} 50%{transform:rotate(-4deg)} 60%{transform:rotate(6deg)} 70%,100%{transform:rotate(0)} }
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
     @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.95)} }
     @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes fabPing { 0%{transform:scale(1);opacity:0.6} 100%{transform:scale(1.6);opacity:0} }
+    @keyframes msgPop { from{opacity:0;transform:translateY(8px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes typingDot { 0%,100%{transform:translateY(0);opacity:0.4} 50%{transform:translateY(-5px);opacity:1} }
 
     .reveal {
       opacity: 0; transform: translateY(40px);
@@ -397,6 +625,7 @@
       .blog-number { font-size: 1.5rem; }
       .blog-arrow { display: none; }
       .contact-box { padding: 2rem 1.5rem; }
+      .chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
     }
 
     @media (max-width: 500px) {
@@ -452,28 +681,19 @@
         <div class="project-emoji">🧩</div>
         <h3>Project Alpha</h3>
         <p>A minimal tool solving a real problem. Clean, fast, and focused on doing one thing exceptionally well.</p>
-        <div class="project-tags">
-          <span class="tag tag-coral">HTML / CSS</span>
-          <span class="tag tag-amber">Open Source</span>
-        </div>
+        <div class="project-tags"><span class="tag tag-coral">HTML / CSS</span><span class="tag tag-amber">Open Source</span></div>
       </div>
       <div class="project-card reveal stagger">
         <div class="project-emoji">⚡</div>
         <h3>Side Project Beta</h3>
         <p>An experiment in making something delightful. Still evolving, but the foundation is solid.</p>
-        <div class="project-tags">
-          <span class="tag tag-teal">JavaScript</span>
-          <span class="tag tag-violet">API</span>
-        </div>
+        <div class="project-tags"><span class="tag tag-teal">JavaScript</span><span class="tag tag-violet">API</span></div>
       </div>
       <div class="project-card reveal stagger">
         <div class="project-emoji">🌱</div>
         <h3>Learning in Public</h3>
         <p>Documenting what I discover as I build. Notes, insights, and the occasional breakthrough.</p>
-        <div class="project-tags">
-          <span class="tag tag-violet">Writing</span>
-          <span class="tag tag-teal">Growth</span>
-        </div>
+        <div class="project-tags"><span class="tag tag-violet">Writing</span><span class="tag tag-teal">Growth</span></div>
       </div>
     </div>
   </section>
@@ -499,7 +719,7 @@
         <div class="blog-content">
           <div class="blog-date">Feb 2026</div>
           <div class="blog-title">Starting from zero (literally)</div>
-          <div class="blog-excerpt">No budget, no framework. Just HTML and a willingness to figure it out.</div>
+          <div class="blog-excerpt">No budget, no framework, no plan. Just HTML and a willingness to figure it out.</div>
         </div>
         <div class="blog-arrow">→</div>
       </a>
@@ -527,26 +747,10 @@
         <p>No VC funding, no fancy tools. Just <strong>curiosity</strong> and <strong>persistence</strong>.</p>
       </div>
       <div class="values-grid reveal">
-        <div class="value-card">
-          <span class="value-emoji">🔍</span>
-          <div class="value-label">Curiosity</div>
-          <div class="value-desc">Chase questions worth asking</div>
-        </div>
-        <div class="value-card">
-          <span class="value-emoji">🛠️</span>
-          <div class="value-label">Build to learn</div>
-          <div class="value-desc">Make things with your hands</div>
-        </div>
-        <div class="value-card">
-          <span class="value-emoji">🚀</span>
-          <div class="value-label">Ship it</div>
-          <div class="value-desc">Done beats perfect, always</div>
-        </div>
-        <div class="value-card">
-          <span class="value-emoji">🌿</span>
-          <div class="value-label">Stay lean</div>
-          <div class="value-desc">Big thinking, small budgets</div>
-        </div>
+        <div class="value-card"><span class="value-emoji">🔍</span><div class="value-label">Curiosity</div><div class="value-desc">Chase questions worth asking</div></div>
+        <div class="value-card"><span class="value-emoji">🛠️</span><div class="value-label">Build to learn</div><div class="value-desc">Make things with your hands</div></div>
+        <div class="value-card"><span class="value-emoji">🚀</span><div class="value-label">Ship it</div><div class="value-desc">Done beats perfect, always</div></div>
+        <div class="value-card"><span class="value-emoji">🌿</span><div class="value-label">Stay lean</div><div class="value-desc">Big thinking, small budgets</div></div>
       </div>
     </div>
   </section>
@@ -568,7 +772,41 @@
     <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
   </footer>
 
+  <!-- ═══════════════════════════════════════════
+       CHATBOT WIDGET
+  ═══════════════════════════════════════════ -->
+  <button class="chat-fab" id="chatFab" aria-label="Open chat">
+    💬
+    <div class="chat-fab-ping"></div>
+  </button>
+
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-header-info">
+        <h3>Amlan's AI Assistant</h3>
+        <span>Online — ask me anything!</span>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot">Hey there! 👋 I'm Amlan's AI assistant. Ask me anything about him — skills, projects, interests, or how to get in touch!</div>
+    </div>
+    <div class="chat-suggestions" id="chatSuggestions">
+      <button class="chat-suggestion" data-q="Who is Amlan?">Who is Amlan?</button>
+      <button class="chat-suggestion" data-q="What projects has he built?">Projects</button>
+      <button class="chat-suggestion" data-q="What skills does he have?">Skills</button>
+      <button class="chat-suggestion" data-q="How can I contact him?">Contact</button>
+      <button class="chat-suggestion" data-q="What is he working on?">Current work</button>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Ask me about Amlan..." autocomplete="off">
+      <button class="chat-send" id="chatSend">↑</button>
+    </div>
+  </div>
+
+  <!-- ─── SCRIPTS ─── -->
   <script>
+    // ── Theme toggle ──
     const toggle = document.getElementById('themeToggle');
     const html = document.documentElement;
     const saved = localStorage.getItem('theme');
@@ -581,11 +819,13 @@
       localStorage.setItem('theme', next);
     });
 
+    // ── Scroll reveal ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+    // ── Parallax ──
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -601,6 +841,176 @@
         ticking = true;
       }
     }, { passive: true });
+
+    // ═══════════════════════════════════════════
+    //  CHATBOT ENGINE
+    // ═══════════════════════════════════════════
+    const chatFab = document.getElementById('chatFab');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatSuggestions = document.getElementById('chatSuggestions');
+
+    // Toggle chat
+    chatFab.addEventListener('click', () => {
+      chatFab.classList.toggle('open');
+      chatWindow.classList.toggle('open');
+      if (chatWindow.classList.contains('open')) chatInput.focus();
+    });
+
+    // Knowledge base — edit this to update what the bot knows!
+    const knowledge = {
+      about: {
+        keywords: ['who', 'about', 'amlan', 'tell me', 'yourself', 'introduce', 'background', 'bio'],
+        responses: [
+          "Amlan is a curious builder who loves exploring the <strong>\"whys\"</strong> behind everything. He believes the best way to learn is by building things and sharing the journey publicly. 🔍",
+          "Amlan is someone who asks <strong>why</strong> before <strong>how</strong>. He's passionate about building things from scratch, learning in public, and growing one project at a time. No fancy tools — just curiosity! 🌱"
+        ]
+      },
+      projects: {
+        keywords: ['project', 'build', 'built', 'work', 'portfolio', 'making', 'created'],
+        responses: [
+          "Amlan is currently working on a few projects:<br><br>🧩 <strong>Project Alpha</strong> — A minimal tool focused on doing one thing well (HTML/CSS)<br>⚡ <strong>Side Project Beta</strong> — An experiment with JavaScript and APIs<br>🌱 <strong>Learning in Public</strong> — Documenting his journey through writing<br><br>Each project started as a simple question!",
+        ]
+      },
+      skills: {
+        keywords: ['skill', 'tech', 'technology', 'language', 'know', 'learn', 'code', 'programming', 'stack'],
+        responses: [
+          "Amlan is growing his skills step by step! Currently he's working with:<br><br>🌐 <strong>HTML, CSS, JavaScript</strong> — for web projects<br>🐍 <strong>Python</strong> — for data & analytics experiments<br>📊 <strong>Data analysis</strong> — exploring tools like pandas & matplotlib<br><br>He's a big believer in learning by doing! 🛠️"
+        ]
+      },
+      contact: {
+        keywords: ['contact', 'reach', 'connect', 'linkedin', 'email', 'hire', 'message', 'talk'],
+        responses: [
+          "The best way to reach Amlan is through <a href='https://linkedin.com/in/pradhanamlan' target='_blank'>LinkedIn</a>! 💼 He's always open to connecting with curious people, potential collaborators, or anyone who just wants to say hi.",
+        ]
+      },
+      current: {
+        keywords: ['current', 'now', 'working on', 'doing', 'focus', 'lately', 'these days'],
+        responses: [
+          "Right now, Amlan is focused on:<br><br>🌐 Growing this website (built with zero budget!)<br>🐍 Learning Python through hands-on data projects<br>✍️ Writing about his learning journey<br>🧪 Experimenting with building in public<br><br>Slowly, then all at once! 🚀"
+        ]
+      },
+      philosophy: {
+        keywords: ['why', 'philosophy', 'believe', 'mission', 'values', 'motto', 'approach'],
+        responses: [
+          "Amlan's core philosophy is built on four pillars:<br><br>🔍 <strong>Curiosity first</strong> — chase questions worth asking<br>🛠️ <strong>Build to learn</strong> — make things with your hands<br>🚀 <strong>Ship it</strong> — done beats perfect<br>🌿 <strong>Stay lean</strong> — big thinking, small budgets<br><br>He believes every great project starts with a <strong>why</strong>."
+        ]
+      },
+      website: {
+        keywords: ['website', 'site', 'page', 'how', 'made', 'host', 'github'],
+        responses: [
+          "This website is built with pure <strong>HTML, CSS & JavaScript</strong> — no frameworks, no build tools! It's hosted for free on <strong>GitHub Pages</strong>. Total cost: $0. 🎉<br><br>Proof that you don't need fancy tools to make something beautiful!"
+        ]
+      },
+      fun: {
+        keywords: ['fun', 'hobby', 'interest', 'free time', 'enjoy', 'like', 'favorite'],
+        responses: [
+          "Besides coding, Amlan enjoys exploring new ideas, reading about how things work, and asking questions that most people skip over. He's the kind of person who reads the Wikipedia rabbit hole at 2am! 🐇✨"
+        ]
+      },
+      greeting: {
+        keywords: ['hello', 'hi', 'hey', 'morning', 'evening', 'sup', 'yo', 'howdy'],
+        responses: [
+          "Hey there! 👋 Great to meet you! I'm here to tell you all about Amlan. What would you like to know?",
+          "Hello! 😊 Welcome to Amlan's corner of the internet. Ask me anything — skills, projects, how to connect, you name it!"
+        ]
+      },
+      thanks: {
+        keywords: ['thank', 'thanks', 'appreciate', 'helpful', 'great', 'awesome', 'cool'],
+        responses: [
+          "You're welcome! 😊 If you want to connect with Amlan directly, hit him up on <a href='https://linkedin.com/in/pradhanamlan' target='_blank'>LinkedIn</a>. He'd love to chat!",
+          "Happy to help! ✨ Feel free to ask more questions or explore the site. And don't forget — you can always connect with Amlan on <a href='https://linkedin.com/in/pradhanamlan' target='_blank'>LinkedIn</a>!"
+        ]
+      }
+    };
+
+    const fallbacks = [
+      "Hmm, I'm not sure about that one! Try asking about Amlan's <strong>projects</strong>, <strong>skills</strong>, <strong>philosophy</strong>, or how to <strong>contact</strong> him. 🤔",
+      "That's a great question, but it's outside what I know! I can tell you about Amlan's <strong>work</strong>, <strong>background</strong>, or <strong>values</strong>. What sounds interesting?",
+      "I'm a simple bot, so I might have missed that! Try asking about <strong>who Amlan is</strong>, what he's <strong>building</strong>, or his <strong>skills</strong>. 🧩"
+    ];
+
+    function getBotResponse(input) {
+      const lower = input.toLowerCase().trim();
+
+      // Score each topic
+      let bestMatch = null;
+      let bestScore = 0;
+
+      for (const [topic, data] of Object.entries(knowledge)) {
+        let score = 0;
+        for (const kw of data.keywords) {
+          if (lower.includes(kw)) score += kw.length; // longer matches = higher confidence
+        }
+        if (score > bestScore) {
+          bestScore = score;
+          bestMatch = data;
+        }
+      }
+
+      if (bestMatch && bestScore > 0) {
+        return bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
+      }
+
+      return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    }
+
+    function addMessage(text, type) {
+      const msg = document.createElement('div');
+      msg.className = `chat-msg ${type}`;
+      msg.innerHTML = text;
+      chatMessages.appendChild(msg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTyping() {
+      const typing = document.createElement('div');
+      typing.className = 'typing-indicator';
+      typing.id = 'typingIndicator';
+      typing.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeTyping() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) typing.remove();
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      chatInput.value = '';
+
+      // Hide suggestions after first message
+      chatSuggestions.style.display = 'none';
+
+      // Show typing, then respond
+      showTyping();
+      const delay = 400 + Math.random() * 800;
+      setTimeout(() => {
+        removeTyping();
+        addMessage(getBotResponse(text), 'bot');
+      }, delay);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+
+    // Suggestion buttons
+    chatSuggestions.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chat-suggestion');
+      if (!btn) return;
+      chatInput.value = btn.dataset.q;
+      handleSend();
+    });
   </script>
+
 </body>
 </html>
