@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poetry — Amlan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 720px;
+      --radius: 14px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdf8f3;
+      --bg-alt: #f5ede4;
+      --surface: #ffffff;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --amber-soft: #e4a03015;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
+      --nav-bg: rgba(253, 248, 243, 0.9);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --amber-soft: #f0bd5a14;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
+      --nav-bg: rgba(18, 16, 16, 0.9);
+      --dot-color: #332e2c80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    ::selection { background: var(--violet-soft); color: var(--violet); }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 0 2.5rem; height: 68px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em;
+      transition: color var(--transition);
+      display: flex; align-items: center; gap: 0.35rem;
+      text-decoration: none;
+    }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--violet-soft); color: var(--violet);
+    }
+
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55), background var(--transition);
+      box-shadow: 0 2px 6px rgba(228, 160, 48, 0.3);
+    }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(20px); background: var(--violet);
+      box-shadow: 0 2px 6px rgba(123, 97, 255, 0.3);
+    }
+    .toggle-label {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.72rem; line-height: 1; pointer-events: none;
+    }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Blobs ── */
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+    .blob-violet { width: 350px; height: 350px; background: var(--violet); opacity: 0.06; top: 5%; right: -5%; animation: blobFloat 12s ease-in-out infinite; }
+    .blob-coral { width: 280px; height: 280px; background: var(--coral); opacity: 0.05; top: 50%; left: -10%; animation: blobFloat 15s ease-in-out infinite reverse; }
+
+    /* ── Page Hero ── */
+    .page-hero {
+      padding: 10rem 2.5rem 4rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .page-hero-chip {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      background: var(--violet-soft); color: var(--violet);
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .page-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--violet); }
+
+    .page-hero p {
+      font-size: 1.05rem; color: var(--text-secondary);
+      max-width: 460px; margin: 0 auto; font-weight: 300; line-height: 1.75;
+      opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+      transition: color var(--transition);
+    }
+
+    /* ── Poems ── */
+    .poems-container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2rem 2.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .poem-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 2.5rem 2.5rem 2rem;
+      transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poem-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.45s;
+    }
+    .poem-card:nth-child(4n+1)::before { background: var(--violet); }
+    .poem-card:nth-child(4n+2)::before { background: var(--coral); }
+    .poem-card:nth-child(4n+3)::before { background: var(--teal); }
+    .poem-card:nth-child(4n+4)::before { background: var(--amber); }
+
+    .poem-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--muted);
+    }
+    .poem-card:hover::before { opacity: 1; }
+
+    .poem-number {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 500;
+      line-height: 1;
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      opacity: 0.06;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .poem-card:hover .poem-number { opacity: 0.12; }
+
+    .poem-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .poem-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .poem-subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color var(--transition);
+    }
+
+    .poem-body {
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      font-weight: 400;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+    }
+
+    .poem-body .stanza {
+      margin-bottom: 1.5rem;
+    }
+    .poem-body .stanza:last-child { margin-bottom: 0; }
+
+    .poem-body .line {
+      display: block;
+    }
+
+    .poem-body .line-indent {
+      display: block;
+      padding-left: 2rem;
+    }
+
+    .poem-body .line-emphasis {
+      color: var(--text);
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .poem-footer {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color var(--transition);
+    }
+
+    .poem-author {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+      font-style: italic;
+      transition: color var(--transition);
+    }
+
+    .poem-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+    .ptag-violet { background: var(--violet-soft); color: var(--violet); }
+    .ptag-coral { background: var(--coral-soft); color: var(--coral); }
+    .ptag-teal { background: var(--teal-soft); color: var(--teal); }
+    .ptag-amber { background: var(--amber-soft); color: var(--amber); }
+
+    /* ── Decorative quote marks ── */
+    .poem-quote-mark {
+      font-family: var(--serif);
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--violet);
+      opacity: 0.15;
+      margin-bottom: -1rem;
+      display: block;
+      transition: color var(--transition);
+    }
+
+    /* ── Back link ── */
+    .back-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2.5rem 4rem;
+    }
+
+    .back-home a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.3rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.35s;
+    }
+    .back-home a:hover {
+      border-color: var(--violet);
+      color: var(--violet);
+      transform: translateX(-4px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--max-w); margin: 0 auto;
+      color: var(--muted); font-size: 0.78rem;
+      transition: all var(--transition);
+    }
+    .footer-dots { display: flex; gap: 6px; }
+    .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
+    .footer-dots span:nth-child(1) { background: var(--coral); }
+    .footer-dots span:nth-child(2) { background: var(--teal); }
+    .footer-dots span:nth-child(3) { background: var(--violet); }
+    .footer-dots span:nth-child(4) { background: var(--amber); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.95)} }
+
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links a { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+      .page-hero { padding: 8rem 1.5rem 3rem; }
+      .poems-container { padding: 2rem 1.5rem 4rem; }
+      .poem-card { padding: 2rem 1.75rem 1.75rem; }
+      .poem-number { font-size: 2.5rem; right: 1.25rem; }
+    }
+
+    @media (max-width: 500px) {
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-violet"></div>
+  <div class="blob blob-coral"></div>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#writing">Writing</a></li>
+        <li><a href="poetry.html" class="active">Poetry</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="page-hero-chip">🪶 Poetry</div>
+    <h1>Words that <em>linger</em></h1>
+    <p>Feelings I couldn't hold in — so I let them spill into words. Raw, honest, and from somewhere deep.</p>
+  </div>
+
+  <!-- Poems -->
+  <div class="poems-container">
+
+    <!-- Poem 1 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">01</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">Never Fade</h2>
+        <span class="poem-subtitle">On feelings that outlast everything</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">There is indeed no reason to be a fire</span>
+          <span class="line">You can be water and softer.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Remember everything fades away.</span>
+          <span class="line line-emphasis">Everything.</span>
+          <span class="line">The mountain, the river and anger…</span>
+          <span class="line">The fire.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">But the feelings never fades</span>
+          <span class="line">The feelings when our eyes meet,</span>
+          <span class="line">Which our clumsy heart can't understand.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">That feelings is what we live for,</span>
+          <span class="line">Forever</span>
+          <span class="line">And we never fade….</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-violet">Feelings</span>
+      </div>
+    </div>
+
+    <!-- Poem 2 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">02</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">The Mirror</h2>
+        <span class="poem-subtitle">On masks and innocence</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">We confront ourselves every morning,</span>
+          <span class="line">right in front of the mirror,</span>
+          <span class="line">don't we?</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Don't we wear that mask?</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Mask of an innocent person who has been</span>
+          <span class="line">judged by everyone.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Victim card. Don't we play the victim card</span>
+          <span class="line">everyday?</span>
+        </div>
+        <div class="stanza">
+          <span class="line line-emphasis">Okay.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">I heard it. I heard it clear.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Because,</span>
+        </div>
+        <div class="stanza">
+          <span class="line line-emphasis">because I am also that innocent person.</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-coral">Identity</span>
+      </div>
+    </div>
+
+    <!-- Poem 3 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">03</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">Far-Flung</h2>
+        <span class="poem-subtitle">On distance and what we had</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">While struggling between</span>
+          <span class="line-indent">staying & letting go,</span>
+        </div>
+        <div class="stanza">
+          <span class="line">I realised I love so easily</span>
+          <span class="line-indent">& break so easily</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Far away from here</span>
+          <span class="line-indent">when I was in your arms</span>
+          <span class="line">I was not so fragile;</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Do we really have to be this</span>
+          <span class="line-indent">far-flung,</span>
+          <span class="line">When we used to sit in quiet</span>
+        </div>
+        <div class="stanza">
+          <span class="line-indent">and listen to the secrets of Rain</span>
+          <span class="line-indent">and look at the stars</span>
+          <span class="line">Wildflowers used to bloom.</span>
+          <span class="line">We used to pluck Tahoka Daisy,</span>
+          <span class="line">And got lost in horizon….</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-teal">Longing</span>
+      </div>
+    </div>
+
+    <!-- Poem 4 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">04</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">At the Butterflies</h2>
+        <span class="poem-subtitle">On love, freedom, and letting go</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">Dew drops on your lips, your silky eyelashes, your lustful eyes,</span>
+          <span class="line">Sunbeam on your forehead, when I hug you the aroma of your body,</span>
+          <span class="line">Your touch so blue, your love so white</span>
+          <span class="line">Lemon, paprika, sea salt.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">I always wanted to be indulged in you</span>
+          <span class="line">and longed to earn a marble bust</span>
+          <span class="line">in your personal Walhalla</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Sorry but I have become a nomad.</span>
+          <span class="line">A bee</span>
+          <span class="line">A kite</span>
+          <span class="line">A traveller of time, where horizon is infinity</span>
+          <span class="line">They are so limitless, so contagious</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Don't wait for me at the windows,</span>
+          <span class="line">don't wait at the corner of the fence of that garden,</span>
+          <span class="line">don't wear that blue dress,</span>
+          <span class="line">don't read those old poems,</span>
+          <span class="line">don't lean on those walls.</span>
+        </div>
+        <div class="stanza">
+          <span class="line line-emphasis">We will meet at the butterflies.</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-amber">Freedom</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Back home -->
+  <div class="back-home">
+    <a href="index.html">← Back to home</a>
+  </div>
+
+  <footer>
+    <span>© 2026 Amlan. Words from the heart.</span>
+    <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
