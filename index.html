@@ -626,7 +626,15 @@
       .blog-arrow { display: none; }
       .contact-box { padding: 2rem 1.5rem; }
       .chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
-      .reveal { opacity: 1; transform: none; }
+      /* Force everything visible on mobile */
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .hero-badge, .hero h1, .hero-subtitle, .hero-cta,
+      .hero-badge, .section-header, .project-card, .blog-card,
+      .about-text, .values-grid, .contact-box {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
     }
 
     @media (max-width: 500px) {
@@ -828,22 +836,29 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ── Parallax ──
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrolled = window.scrollY;
-          const hero = document.querySelector('.hero');
-          if (scrolled < window.innerHeight) {
-            hero.style.transform = `translateY(${scrolled * 0.12}px)`;
-            hero.style.opacity = 1 - (scrolled / (window.innerHeight * 0.85));
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
+    // Fallback: force show everything after 1.5s
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }, 1500);
+
+    // ── Parallax (desktop only) ──
+    if (window.innerWidth > 768) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrolled = window.scrollY;
+            const hero = document.querySelector('.hero');
+            if (scrolled < window.innerHeight) {
+              hero.style.transform = `translateY(${scrolled * 0.12}px)`;
+              hero.style.opacity = 1 - (scrolled / (window.innerHeight * 0.85));
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
 
     // ═══════════════════════════════════════════
     //  CHATBOT ENGINE
