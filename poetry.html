@@ -428,6 +428,7 @@
       .poem-card { padding: 2rem 1.75rem 1.75rem; }
       .poem-number { font-size: 2.5rem; right: 1.25rem; }
       .poem-doodle { display: none; }
+      .reveal { opacity: 1; transform: none; }
     }
 
     @media (max-width: 500px) {
@@ -448,6 +449,7 @@
         <li><a href="index.html#projects">Projects</a></li>
         <li><a href="index.html#writing">Writing</a></li>
         <li><a href="poetry.html" class="active">Poetry</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="index.html#about">About</a></li>
         <li><a href="index.html#contact">Contact</a></li>
       </ul>
@@ -751,10 +753,19 @@
     });
 
     // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const revealEls = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+      }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+      revealEls.forEach(el => observer.observe(el));
+    }
+
+    // Fallback: if anything is still hidden after 2s, force show
+    setTimeout(() => {
+      revealEls.forEach(el => el.classList.add('visible'));
+    }, 2000);
   </script>
 
 </body>
