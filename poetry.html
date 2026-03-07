@@ -428,7 +428,12 @@
       .poem-card { padding: 2rem 1.75rem 1.75rem; }
       .poem-number { font-size: 2.5rem; right: 1.25rem; }
       .poem-doodle { display: none; }
-      .reveal { opacity: 1; transform: none; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .page-hero-chip, .page-hero h1, .page-hero p, .poem-card {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
     }
 
     @media (max-width: 500px) {
