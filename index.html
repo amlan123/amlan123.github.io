@@ -645,37 +645,6 @@
       .projects-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
-    /* === Custom Cursor === */
-    @media (pointer: fine) {
-      body { cursor: none; }
-      a, button, [role="button"], .btn, .nav-links a, .theme-toggle,
-      .project-card, .blog-card, .value-card, .chat-fab, .chat-suggestion,
-      .chat-send, .back-to-top { cursor: none; }
-    }
-
-    .custom-cursor {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 10px; height: 10px;
-      background: var(--coral);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: width 0.25s ease, height 0.25s ease,
-                  opacity 0.3s ease, background 0.25s ease;
-      will-change: left, top;
-      mix-blend-mode: difference;
-    }
-    @media (pointer: fine) { .custom-cursor { display: block; } }
-
-    .custom-cursor.hovering {
-      width: 30px;
-      height: 30px;
-      opacity: 0.55;
-    }
-
     /* === Typing Animation === */
     .typing-wrapper {
       display: inline-flex;
@@ -733,9 +702,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Custom Cursor -->
-  <div class="custom-cursor" id="customCursor"></div>
 
   <div class="blob blob-coral"></div>
   <div class="blob blob-teal"></div>
@@ -921,8 +887,7 @@
         "Currently exploring & building",
         "Asking better questions every day",
         "Curious mind, open notebook",
-        "Documenting the journey \uD83D\uDCD3",
-        "Based in Brussels \uD83C\uDDE7\uD83C\uDDEA"
+        "Documenting the journey \uD83D\uDCD3"
       ];
       const el = document.getElementById("typing-text");
       if (!el) return;
@@ -946,31 +911,6 @@
     })();
 
     // ═══════════════════════════════════════════
-    //  CUSTOM CURSOR
-    // ═══════════════════════════════════════════
-    (function () {
-      const cursor = document.getElementById("customCursor");
-      if (!cursor || !window.matchMedia("(pointer: fine)").matches) return;
-      let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
-      const LAG = 0.12;
-      document.addEventListener("mousemove", e => { mouseX = e.clientX; mouseY = e.clientY; });
-      (function animate() {
-        curX += (mouseX - curX) * LAG;
-        curY += (mouseY - curY) * LAG;
-        cursor.style.left = curX + "px";
-        cursor.style.top  = curY + "px";
-        requestAnimationFrame(animate);
-      })();
-      const hoverEls = document.querySelectorAll(
-        "a, button, [role='button'], .project-card, .value-card, .blog-card, .back-to-top"
-      );
-      hoverEls.forEach(el => {
-        el.addEventListener("mouseenter", () => cursor.classList.add("hovering"));
-        el.addEventListener("mouseleave", () => cursor.classList.remove("hovering"));
-      });
-    })();
-
-    // ═══════════════════════════════════════════
     //  BACK TO TOP
     // ═══════════════════════════════════════════
     (function () {
@@ -983,12 +923,6 @@
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
-      // Hook into cursor hover
-      const cursor = document.getElementById("customCursor");
-      if (cursor) {
-        btn.addEventListener("mouseenter", () => cursor.classList.add("hovering"));
-        btn.addEventListener("mouseleave", () => cursor.classList.remove("hovering"));
-      }
     })();
   </script>
 
