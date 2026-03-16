@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amlan — Exploring the Whys?</title>
+  <!-- GoatCounter Analytics -->
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -642,9 +645,97 @@
       .projects-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
+    /* === Custom Cursor === */
+    @media (pointer: fine) {
+      body { cursor: none; }
+      a, button, [role="button"], .btn, .nav-links a, .theme-toggle,
+      .project-card, .blog-card, .value-card, .chat-fab, .chat-suggestion,
+      .chat-send, .back-to-top { cursor: none; }
+    }
+
+    .custom-cursor {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 10px; height: 10px;
+      background: var(--coral);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s ease, height 0.25s ease,
+                  opacity 0.3s ease, background 0.25s ease;
+      will-change: left, top;
+      mix-blend-mode: difference;
+    }
+    @media (pointer: fine) { .custom-cursor { display: block; } }
+
+    .custom-cursor.hovering {
+      width: 30px;
+      height: 30px;
+      opacity: 0.55;
+    }
+
+    /* === Typing Animation === */
+    .typing-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    #typing-text { min-width: 1ch; }
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 0.85em;
+      background: var(--coral);
+      border-radius: 1px;
+      vertical-align: middle;
+      animation: cursorBlink 0.85s step-end infinite;
+      transition: background var(--transition);
+    }
+    @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* === Back to Top === */
+    .back-to-top {
+      position: fixed;
+      bottom: 7rem;
+      right: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--coral);
+      color: var(--coral);
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(16px) scale(0.85);
+      transition: opacity 0.4s ease, transform 0.4s ease,
+                  background 0.3s ease, color 0.3s ease,
+                  border-color var(--transition), background var(--transition);
+      z-index: 150;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .back-to-top:hover {
+      background: var(--coral);
+      color: #fff;
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 10px 28px rgba(232, 99, 74, 0.3);
+    }
+    @media (max-width: 768px) {
+      .back-to-top { bottom: 5.5rem; right: 1rem; width: 40px; height: 40px; font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="customCursor"></div>
 
   <div class="blob blob-coral"></div>
   <div class="blob blob-teal"></div>
@@ -671,7 +762,9 @@
   <section class="hero">
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      Currently exploring & building
+      <span class="typing-wrapper">
+        <span id="typing-text">Currently exploring &amp; building</span><span class="typing-cursor"></span>
+      </span>
     </div>
     <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span></h1>
     <p class="hero-subtitle">Curious mind, open notebook. A space where questions become projects, projects become understanding, and <strong>every "why" matters</strong>. <span class="wave">👋</span></p>
@@ -783,6 +876,9 @@
     <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
   </footer>
 
+  <!-- Back to Top -->
+  <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
+
   <!-- ═══════════════════════════════════════════
        CHATBOT WIDGET
   ═══════════════════════════════════════════ -->
@@ -814,6 +910,87 @@
       <button class="chat-send" id="chatSend">↑</button>
     </div>
   </div>
+
+  <!-- ─── FEATURE SCRIPTS ─── -->
+  <script>
+    // ═══════════════════════════════════════════
+    //  TYPING ANIMATION
+    // ═══════════════════════════════════════════
+    (function () {
+      const phrases = [
+        "Currently exploring & building",
+        "Asking better questions every day",
+        "Curious mind, open notebook",
+        "Documenting the journey \uD83D\uDCD3",
+        "Based in Brussels \uD83C\uDDE7\uD83C\uDDEA"
+      ];
+      const el = document.getElementById("typing-text");
+      if (!el) return;
+      let phraseIndex = 0, charIndex = 0, isDeleting = false;
+      const SPEED_TYPE = 72, SPEED_DEL = 40, PAUSE_FULL = 2200, PAUSE_EMPTY = 380;
+      function tick() {
+        const current = phrases[phraseIndex];
+        if (!isDeleting) {
+          el.textContent = current.slice(0, charIndex + 1);
+          charIndex++;
+          if (charIndex === current.length) { isDeleting = true; setTimeout(tick, PAUSE_FULL); return; }
+          setTimeout(tick, SPEED_TYPE);
+        } else {
+          el.textContent = current.slice(0, charIndex - 1);
+          charIndex--;
+          if (charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(tick, PAUSE_EMPTY); return; }
+          setTimeout(tick, SPEED_DEL);
+        }
+      }
+      setTimeout(tick, 1200);
+    })();
+
+    // ═══════════════════════════════════════════
+    //  CUSTOM CURSOR
+    // ═══════════════════════════════════════════
+    (function () {
+      const cursor = document.getElementById("customCursor");
+      if (!cursor || !window.matchMedia("(pointer: fine)").matches) return;
+      let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+      const LAG = 0.12;
+      document.addEventListener("mousemove", e => { mouseX = e.clientX; mouseY = e.clientY; });
+      (function animate() {
+        curX += (mouseX - curX) * LAG;
+        curY += (mouseY - curY) * LAG;
+        cursor.style.left = curX + "px";
+        cursor.style.top  = curY + "px";
+        requestAnimationFrame(animate);
+      })();
+      const hoverEls = document.querySelectorAll(
+        "a, button, [role='button'], .project-card, .value-card, .blog-card, .back-to-top"
+      );
+      hoverEls.forEach(el => {
+        el.addEventListener("mouseenter", () => cursor.classList.add("hovering"));
+        el.addEventListener("mouseleave", () => cursor.classList.remove("hovering"));
+      });
+    })();
+
+    // ═══════════════════════════════════════════
+    //  BACK TO TOP
+    // ═══════════════════════════════════════════
+    (function () {
+      const btn = document.getElementById("backToTop");
+      if (!btn) return;
+      window.addEventListener("scroll", () => {
+        btn.classList.toggle("visible", window.scrollY > 420);
+      }, { passive: true });
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      // Hook into cursor hover
+      const cursor = document.getElementById("customCursor");
+      if (cursor) {
+        btn.addEventListener("mouseenter", () => cursor.classList.add("hovering"));
+        btn.addEventListener("mouseleave", () => cursor.classList.remove("hovering"));
+      }
+    })();
+  </script>
 
   <!-- ─── SCRIPTS ─── -->
   <script>
