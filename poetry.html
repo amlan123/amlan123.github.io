@@ -366,6 +366,24 @@
       transition: color var(--transition);
     }
 
+    /* ── Poem Photo ── */
+    .poem-photo {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      max-height: 340px;
+    }
+    .poem-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 10px;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .poem-card:hover .poem-photo img { transform: scale(1.02); }
+
     /* ── Back link ── */
     .back-home {
       display: flex;
@@ -674,6 +692,9 @@
     <!-- Poem 6 -->
     <div class="poem-card reveal">
       <div class="poem-number">06</div>
+      <div class="poem-photo">
+        <img src="photos/etretat-cliff.jpg" alt="Coastal cliffs at Étretat" loading="lazy">
+      </div>
       <div class="poem-header">
         <div class="poem-quote-mark">"</div>
         <h2 class="poem-title">At the Cliff</h2>
@@ -731,6 +752,109 @@
       </div>
     </div>
 
+    <!-- Poem 8 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">08</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">Soft Breath</h2>
+        <span class="poem-subtitle">On quiet moments and looking at stars</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">Your telling and re-telling</span>
+          <span class="line">The sounds of the words</span>
+          <span class="line">Soft breath</span>
+          <span class="line">My fixing of eyes on you for indefinitely</span>
+          <span class="line">On the lawn with autumn leaves scattered</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Long nights</span>
+          <span class="line">With gin and tonic</span>
+          <span class="line">Mild fragrance of Calla Lily</span>
+          <span class="line line-emphasis">We look at the stars until they went off</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-amber">Intimacy</span>
+      </div>
+    </div>
+
+    <!-- Poem 9 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">09</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">Oblivion</h2>
+        <span class="poem-subtitle">On losing yourself and finding grace</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">Oblivion is good.</span>
+          <span class="line">You spin away and you don't know what for?</span>
+          <span class="line">You don't know the difference between</span>
+          <span class="line-indent">darkness and your soul.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">You don't even know if you are awake or asleep.</span>
+        </div>
+        <div class="stanza">
+          <span class="line line-emphasis">That's cool.</span>
+          <span class="line line-emphasis">That's a Grace.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Sometimes it's better we stumble and fall.</span>
+          <span class="line">Fall and fall.</span>
+        </div>
+        <div class="stanza">
+          <span class="line">And that's where we see everything,</span>
+          <span class="line line-emphasis">Everything which we are looking for.</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-teal">Grace</span>
+      </div>
+    </div>
+
+    <!-- Poem 10 -->
+    <div class="poem-card reveal">
+      <div class="poem-number">10</div>
+      <div class="poem-header">
+        <div class="poem-quote-mark">"</div>
+        <h2 class="poem-title">Sail in the Cloud</h2>
+        <span class="poem-subtitle">On choosing freedom over longing</span>
+      </div>
+      <div class="poem-body">
+        <div class="stanza">
+          <span class="line">Somewhere in the middle of the sky</span>
+          <span class="line">I fall freely into my existence</span>
+          <span class="line">Where I have a few or almost nothing to loose</span>
+        </div>
+        <div class="stanza">
+          <span class="line">But there I find your letters with half written sentences</span>
+          <span class="line">with half emotions</span>
+          <span class="line">with half tears with very much with your smell</span>
+        </div>
+        <div class="stanza">
+          <span class="line">Then I decide not to have such journeys</span>
+          <span class="line">Where we don't have hands in hands</span>
+          <span class="line">Where we don't get indulged</span>
+          <span class="line">Where we don't walk in the rains together</span>
+          <span class="line-indent">with a small umbrella</span>
+          <span class="line">And we don't stop for a ginger tea and a sour soup,</span>
+        </div>
+        <div class="stanza">
+          <span class="line line-emphasis">I would rather sail in the cloud always….</span>
+        </div>
+      </div>
+      <div class="poem-footer">
+        <span class="poem-author">~Amlan</span>
+        <span class="poem-tag ptag-violet">Freedom</span>
+      </div>
+    </div>
+
   </div>
 
   <!-- Back home -->
@@ -763,14 +887,14 @@
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-      }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+      }, { threshold: 0.01, rootMargin: '0px 0px 60px 0px' });
       revealEls.forEach(el => observer.observe(el));
     }
 
-    // Fallback: if anything is still hidden after 2s, force show
+    // Force-show everything after 600ms (mobile safety net)
     setTimeout(() => {
       revealEls.forEach(el => el.classList.add('visible'));
-    }, 2000);
+    }, 600);
   </script>
 
 </body>
