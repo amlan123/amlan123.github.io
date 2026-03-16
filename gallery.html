@@ -629,9 +629,53 @@
       </div>
     </div>
 
+    <!-- 11: Magnolia in full bloom -->
+    <div class="gallery-item reveal" data-filter="parks"
+         data-caption="Magnolia in full bloom"
+         data-location="Brussels">
+      <img src="photos/park-magnolia.jpg" alt="Pink magnolia tree in full bloom against blue sky" loading="lazy">
+      <div class="gallery-overlay">
+        <div class="gallery-caption">Magnolia in full bloom</div>
+        <div class="gallery-location">📍 Brussels</div>
+      </div>
+    </div>
+
+    <!-- 12: Evening light through the trees -->
+    <div class="gallery-item reveal" data-filter="parks"
+         data-caption="Evening light through the trees"
+         data-location="Brussels">
+      <img src="photos/park-evening-light.jpg" alt="Sunlight peeking through silhouetted trees at dusk" loading="lazy">
+      <div class="gallery-overlay">
+        <div class="gallery-caption">Evening light through the trees</div>
+        <div class="gallery-location">📍 Brussels</div>
+      </div>
+    </div>
+
+    <!-- 13: Le Botanique & skyline — wide feature -->
+    <div class="gallery-item wide reveal" data-filter="architecture"
+         data-caption="Le Botanique at dusk"
+         data-location="Le Botanique, Brussels">
+      <img src="photos/botanique-skyline.jpg" alt="Le Botanique greenhouse with Brussels skyline at dusk" loading="lazy">
+      <div class="gallery-overlay">
+        <div class="gallery-caption">Le Botanique at dusk</div>
+        <div class="gallery-location">📍 Le Botanique</div>
+      </div>
+    </div>
+
+    <!-- 14: Cathedral of St. Michael at golden hour -->
+    <div class="gallery-item tall reveal" data-filter="architecture"
+         data-caption="Cathedral at golden hour"
+         data-location="Cathedral of St. Michael, Brussels">
+      <img src="photos/cathedral-golden-hour.jpg" alt="Cathedral of St. Michael and St. Gudula lit by golden evening light" loading="lazy">
+      <div class="gallery-overlay">
+        <div class="gallery-caption">Cathedral at golden hour</div>
+        <div class="gallery-location">📍 Cathedral of St. Michael</div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="photo-count" id="photoCount">10 photos</div>
+  <div class="photo-count" id="photoCount">14 photos</div>
 
   <div class="back-home">
     <a href="index.html">← Back to home</a>
@@ -671,8 +715,13 @@
     // ── Scroll reveal ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+    }, { threshold: 0.01, rootMargin: '0px 0px 60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Force-show everything after 600ms (mobile safety net)
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }, 600);
 
     // ── Filter ──
     const chips = document.querySelectorAll('.filter-chip');
@@ -693,8 +742,7 @@
             item.style.display = 'none';
           }
         });
-        countEl.textContent = `${count} photo${count !== 1 ? 's' : ''}`;
-      });
+        countEl.textContent = `${count} photo${count !== 1 ? 's' : ''}`;      });
     });
 
     // ── Lightbox ──
