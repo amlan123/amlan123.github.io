@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why Journal — Amlan</title>
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 900px;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdf8f3;
+      --bg-alt: #f5ede4;
+      --surface: #ffffff;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --amber-soft: #e4a03015;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
+      --nav-bg: rgba(253, 248, 243, 0.9);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --amber-soft: #f0bd5a14;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
+      --nav-bg: rgba(18, 16, 16, 0.9);
+      --dot-color: #332e2c80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    ::selection { background: var(--coral-soft); color: var(--coral); }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+      transition: background-image var(--transition);
+    }
+
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 0 2.5rem; height: 68px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em;
+      transition: color var(--transition);
+      display: flex; align-items: center; gap: 0.35rem;
+      text-decoration: none;
+    }
+
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover { background: var(--coral-soft); color: var(--coral); }
+
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55), background var(--transition);
+      box-shadow: 0 2px 6px rgba(228, 160, 48, 0.3);
+    }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(20px); background: var(--violet);
+      box-shadow: 0 2px 6px rgba(123, 97, 255, 0.3);
+    }
+
+    .toggle-label {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.72rem; line-height: 1; pointer-events: none;
+    }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Blobs ── */
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+    .blob-coral { width: 350px; height: 350px; background: var(--coral); opacity: 0.08; top: 5%; right: -5%; animation: blobFloat 12s ease-in-out infinite; }
+    .blob-teal { width: 280px; height: 280px; background: var(--teal); opacity: 0.06; top: 40%; left: -10%; animation: blobFloat 15s ease-in-out infinite reverse; }
+
+    /* ── Page Header ── */
+    .page-header {
+      padding: 8rem 2.5rem 3rem;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+
+    .page-header .section-chip {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.25rem;
+      background: var(--coral-soft); color: var(--coral);
+    }
+
+    .page-header h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 500; line-height: 1.1; letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .page-header h1 .word-coral { color: var(--coral); }
+
+    .page-header p {
+      color: var(--text-secondary); font-weight: 300;
+      max-width: 520px; line-height: 1.8; font-size: 1.05rem;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    /* ── Stats Bar ── */
+    .stats-bar {
+      display: flex; gap: 2rem; margin-top: 2rem;
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .stat {
+      display: flex; align-items: baseline; gap: 0.4rem;
+    }
+    .stat-num {
+      font-family: var(--serif); font-size: 1.8rem; font-weight: 600;
+      color: var(--coral);
+    }
+    .stat-label {
+      font-size: 0.78rem; color: var(--muted); font-weight: 500;
+    }
+
+    /* ── Main Content ── */
+    .journal-main {
+      padding: 2rem 2.5rem 4rem;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+
+    /* ── Add Question ── */
+    .add-section {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2.5rem;
+      transition: all var(--transition);
+    }
+    .add-section:focus-within {
+      border-color: var(--coral);
+      box-shadow: var(--shadow-md);
+    }
+
+    .add-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .input-row { display: flex; gap: 0.75rem; }
+
+    .input-field {
+      flex: 1; padding: 0.75rem 1rem;
+      font-family: var(--sans); font-size: 0.92rem;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text);
+      transition: all 0.3s; font-weight: 400;
+    }
+    .input-field::placeholder { color: var(--muted); font-weight: 300; }
+    .input-field:focus {
+      outline: none; border-color: var(--coral);
+      box-shadow: 0 0 0 3px var(--coral-soft);
+    }
+
+    textarea.input-field {
+      resize: vertical; min-height: 60px; line-height: 1.6;
+    }
+
+    .tag-select {
+      padding: 0.75rem 1rem;
+      font-family: var(--sans); font-size: 0.85rem;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text);
+      cursor: pointer; transition: all 0.3s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a918a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.25rem;
+    }
+    .tag-select:focus {
+      outline: none; border-color: var(--coral);
+      box-shadow: 0 0 0 3px var(--coral-soft);
+    }
+
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+      background: var(--coral); color: #fff;
+      border: none; cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      align-self: flex-start;
+    }
+    .btn-add:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(232, 99, 74, 0.25);
+    }
+    .btn-add:active { transform: translateY(0) scale(0.98); }
+
+    /* ── Filters ── */
+    .filters {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .filter-btn {
+      padding: 0.4rem 0.85rem; border-radius: 20px;
+      font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+      background: var(--surface); border: 1.5px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover { border-color: var(--coral); color: var(--coral); }
+    .filter-btn.active { background: var(--coral); color: #fff; border-color: var(--coral); }
+
+    .search-input {
+      margin-left: auto; padding: 0.45rem 0.85rem;
+      font-family: var(--sans); font-size: 0.82rem;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 20px; color: var(--text);
+      transition: all 0.3s; width: 180px;
+    }
+    .search-input::placeholder { color: var(--muted); font-weight: 300; }
+    .search-input:focus {
+      outline: none; border-color: var(--coral);
+      box-shadow: 0 0 0 3px var(--coral-soft); width: 220px;
+    }
+
+    /* ── Question Cards ── */
+    .questions-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .question-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative; overflow: hidden;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .question-card::before {
+      content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+      width: 4px; border-radius: var(--radius) 0 0 var(--radius);
+      transition: opacity 0.4s;
+    }
+    .question-card[data-category="life"]::before { background: var(--coral); }
+    .question-card[data-category="tech"]::before { background: var(--teal); }
+    .question-card[data-category="philosophy"]::before { background: var(--violet); }
+    .question-card[data-category="curiosity"]::before { background: var(--amber); }
+
+    .question-card:hover {
+      transform: translateX(6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .question-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: 0.6rem;
+    }
+
+    .question-text {
+      font-family: var(--serif); font-size: 1.12rem; font-weight: 500;
+      line-height: 1.4; flex: 1;
+    }
+
+    .question-meta {
+      display: flex; align-items: center; gap: 0.75rem;
+      flex-wrap: wrap; margin-bottom: 0.6rem;
+    }
+
+    .question-date {
+      font-size: 0.72rem; color: var(--muted); font-weight: 500;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+
+    .question-tag {
+      font-size: 0.68rem; font-weight: 500;
+      padding: 0.2rem 0.55rem; border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+    .tag-life { background: var(--coral-soft); color: var(--coral); }
+    .tag-tech { background: var(--teal-soft); color: var(--teal); }
+    .tag-philosophy { background: var(--violet-soft); color: var(--violet); }
+    .tag-curiosity { background: var(--amber-soft); color: var(--amber); }
+
+    .question-context {
+      font-size: 0.88rem; color: var(--text-secondary);
+      font-weight: 300; line-height: 1.7;
+      margin-top: 0.4rem;
+    }
+
+    .question-actions {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 1rem; padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .action-btn {
+      padding: 0.35rem 0.7rem; border-radius: 6px;
+      font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
+      background: transparent; border: 1.5px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .action-btn:hover { border-color: var(--coral); color: var(--coral); background: var(--coral-soft); }
+    .action-btn.resolved { background: var(--teal-soft); color: var(--teal); border-color: var(--teal); }
+
+    .linked-project {
+      margin-left: auto;
+      font-size: 0.72rem; color: var(--teal); font-weight: 500;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      text-decoration: none;
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+      text-align: center; padding: 4rem 2rem;
+      color: var(--muted);
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state p { font-size: 0.95rem; font-weight: 300; }
+
+    /* ── Footer ── */
+    footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2.5rem; max-width: var(--max-w); margin: 0 auto;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--muted); font-weight: 300;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    footer a { color: var(--coral); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.95)} }
+
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1), transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links a { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+      .page-header { padding: 7rem 1.5rem 2.5rem; }
+      .journal-main { padding: 1.5rem; }
+      .input-row { flex-direction: column; }
+      .stats-bar { gap: 1.25rem; }
+      .filters { gap: 0.5rem; }
+      .search-input { width: 100%; margin-left: 0; order: -1; }
+      .search-input:focus { width: 100%; }
+      .page-header h1, .page-header p, .stats-bar,
+      .reveal, .question-card {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .nav-links { display: none; }
+      .stats-bar { flex-direction: column; gap: 0.5rem; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-coral"></div>
+  <div class="blob blob-teal"></div>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#writing">Writing</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="poetry.html">Poetry</a></li>
+      </ul>
+      <div class="theme-toggle" id="themeToggle" role="button" aria-label="Toggle dark mode">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="section-chip">? Why Journal</div>
+    <h1>Every big idea started<br>as a <span class="word-coral">question</span></h1>
+    <p>A living log of the questions that keep me up at night, spark new projects, and slowly shape how I see the world.</p>
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-num" id="totalCount">0</span>
+        <span class="stat-label">questions logged</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="resolvedCount" style="color: var(--teal);">0</span>
+        <span class="stat-label">explored</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="openCount" style="color: var(--violet);">0</span>
+        <span class="stat-label">still wondering</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="journal-main">
+    <!-- Add Question -->
+    <div class="add-section reveal">
+      <form class="add-form" id="addForm">
+        <input type="text" class="input-field" id="questionInput" placeholder="What's keeping you curious?" required>
+        <div class="input-row">
+          <textarea class="input-field" id="contextInput" placeholder="Context or why this question matters (optional)" rows="2"></textarea>
+          <select class="tag-select" id="categorySelect">
+            <option value="curiosity">Curiosity</option>
+            <option value="tech">Tech</option>
+            <option value="life">Life</option>
+            <option value="philosophy">Philosophy</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-add">+ Log this question</button>
+      </form>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="curiosity">Curiosity</button>
+      <button class="filter-btn" data-filter="tech">Tech</button>
+      <button class="filter-btn" data-filter="life">Life</button>
+      <button class="filter-btn" data-filter="philosophy">Philosophy</button>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search questions...">
+    </div>
+
+    <!-- Questions List -->
+    <div class="questions-list" id="questionsList"></div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 Amlan. Still asking why.</span>
+    <a href="index.html">Back to home</a>
+  </footer>
+
+  <script>
+    // ── Theme Toggle ──
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    }
+
+    toggle.addEventListener('click', () => {
+      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) setTheme(savedTheme);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+
+    // ── Reveal on Scroll ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Journal Data ──
+    const STORAGE_KEY = 'whyjournal_questions';
+
+    function getQuestions() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (data) return JSON.parse(data);
+      // Seed with starter questions
+      const seed = [
+        {
+          id: 1, text: "Why do we build things nobody asked for?",
+          context: "Most of the best tools started as solutions to problems their creators had. Is scratching your own itch the purest form of innovation?",
+          category: "philosophy", date: "2026-03-15", resolved: false, linkedProject: null
+        },
+        {
+          id: 2, text: "Can a website feel like a conversation?",
+          context: "Most portfolios are static brochures. What if a website could respond, adapt, and feel alive without heavy frameworks?",
+          category: "tech", date: "2026-03-10", resolved: true, linkedProject: "This website"
+        },
+        {
+          id: 3, text: "What makes a question worth pursuing?",
+          context: "Not every 'why' leads somewhere useful. How do you tell the difference between productive curiosity and procrastination?",
+          category: "curiosity", date: "2026-03-05", resolved: false, linkedProject: null
+        },
+        {
+          id: 4, text: "Why does 'starting from zero' feel so freeing?",
+          context: "No legacy code, no expectations. There's something powerful about a blank editor and a clear head.",
+          category: "life", date: "2026-02-28", resolved: false, linkedProject: null
+        },
+        {
+          id: 5, text: "How do you measure learning if there's no test?",
+          context: "Building in public is my way of testing understanding. But is building proof of knowing, or just proof of doing?",
+          category: "philosophy", date: "2026-02-20", resolved: false, linkedProject: null
+        },
+        {
+          id: 6, text: "What's the simplest way to turn data into a story?",
+          context: "Exploring pandas and matplotlib — but the hardest part isn't the code, it's knowing what story the data wants to tell.",
+          category: "tech", date: "2026-02-14", resolved: false, linkedProject: null
+        }
+      ];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+      return seed;
+    }
+
+    function saveQuestions(questions) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
+    }
+
+    let questions = getQuestions();
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    // ── Render ──
+    function updateStats() {
+      const total = questions.length;
+      const resolved = questions.filter(q => q.resolved).length;
+      document.getElementById('totalCount').textContent = total;
+      document.getElementById('resolvedCount').textContent = resolved;
+      document.getElementById('openCount').textContent = total - resolved;
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function renderQuestions() {
+      const list = document.getElementById('questionsList');
+      let filtered = questions;
+
+      if (activeFilter !== 'all') {
+        filtered = filtered.filter(q => q.category === activeFilter);
+      }
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(item =>
+          item.text.toLowerCase().includes(q) || (item.context && item.context.toLowerCase().includes(q))
+        );
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">?</div>
+            <p>No questions here yet. Start by asking one above!</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(q => `
+        <div class="question-card" data-category="${q.category}" data-id="${q.id}">
+          <div class="question-top">
+            <div class="question-text">${escapeHtml(q.text)}</div>
+          </div>
+          <div class="question-meta">
+            <span class="question-date">${formatDate(q.date)}</span>
+            <span class="question-tag tag-${q.category}">${q.category}</span>
+          </div>
+          ${q.context ? `<div class="question-context">${escapeHtml(q.context)}</div>` : ''}
+          <div class="question-actions">
+            <button class="action-btn ${q.resolved ? 'resolved' : ''}" onclick="toggleResolved(${q.id})">
+              ${q.resolved ? '&#10003; Explored' : '&#9675; Mark explored'}
+            </button>
+            <button class="action-btn" onclick="deleteQuestion(${q.id})">&#10005; Remove</button>
+            ${q.linkedProject ? `<span class="linked-project">&#8594; ${escapeHtml(q.linkedProject)}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ── Actions ──
+    function toggleResolved(id) {
+      const q = questions.find(q => q.id === id);
+      if (q) { q.resolved = !q.resolved; saveQuestions(questions); updateStats(); renderQuestions(); }
+    }
+
+    function deleteQuestion(id) {
+      questions = questions.filter(q => q.id !== id);
+      saveQuestions(questions);
+      updateStats();
+      renderQuestions();
+    }
+
+    // ── Add Form ──
+    document.getElementById('addForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = document.getElementById('questionInput').value.trim();
+      const context = document.getElementById('contextInput').value.trim();
+      const category = document.getElementById('categorySelect').value;
+
+      if (!text) return;
+
+      const newQ = {
+        id: Date.now(),
+        text: text,
+        context: context || null,
+        category: category,
+        date: new Date().toISOString().split('T')[0],
+        resolved: false,
+        linkedProject: null
+      };
+
+      questions.unshift(newQ);
+      saveQuestions(questions);
+      updateStats();
+      renderQuestions();
+
+      document.getElementById('questionInput').value = '';
+      document.getElementById('contextInput').value = '';
+      document.getElementById('categorySelect').value = 'curiosity';
+    });
+
+    // ── Filters ──
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderQuestions();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderQuestions();
+    });
+
+    // ── Init ──
+    updateStats();
+    renderQuestions();
+  </script>
+</body>
+</html>
