@@ -760,13 +760,17 @@
         <p>Every photo from my walks, pinned to where it was taken. An interactive map of moments across the city.</p>
         <div class="project-tags"><span class="tag tag-teal">Nature</span><span class="tag tag-violet">Health</span></div>
       </a>
-      <div class="project-card reveal stagger">
-        <div class="project-emoji">🌱</div>
-        <h3>Learning in Public</h3>
-        <p>Documenting what I discover as I build. Notes, insights & the occasional breakthrough.</p>
-        <div class="project-tags"><span class="tag tag-violet">Writing</span><span class="tag tag-teal">Growth</span></div>
-      </div>
-    </div>
+     <!-- AI Industry Updates Card -->
+<div class="project-card reveal" id="ai-updates-card">
+  <div class="project-emoji">🤖</div>
+  <h3>AI Industry — Latest Updates</h3>
+  <ul id="ai-news-list" style="list-style:none; padding:0; margin: 1rem 0;">
+    <li style="color: var(--text-muted); font-size: 0.9rem;">Loading latest updates...</li>
+  </ul>
+  <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+    via TechCrunch AI · updates automatically
+  </p>
+</div>
   </section>
 
   <section id="writing">
@@ -1142,6 +1146,34 @@
       handleSend();
     });
   </script>
+<script>
+  async function loadAINews() {
+    const rssUrl = "https://techcrunch.com/category/artificial-intelligence/feed/";
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=5`;
+    const list = document.getElementById("ai-news-list");
 
+    try {
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+      if (data.status !== "ok") throw new Error("Feed error");
+
+      list.innerHTML = data.items.map(item => {
+        const date = new Date(item.pubDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+        return `
+          <li style="margin-bottom: 0.75rem; border-left: 3px solid var(--accent-teal); padding-left: 0.75rem;">
+            <a href="${item.link}" target="_blank" rel="noopener"
+               style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary); text-decoration: none; line-height: 1.4; display: block;">
+              ${item.title}
+            </a>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">${date}</span>
+          </li>`;
+      }).join("");
+    } catch (e) {
+      list.innerHTML = `<li style="color: var(--text-muted); font-size: 0.88rem;">Could not load updates right now.</li>`;
+    }
+  }
+
+  loadAINews();
+</script>
 </body>
 </html>
