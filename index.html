@@ -1160,13 +1160,13 @@
       list.innerHTML = data.items.map(item => {
         const date = new Date(item.pubDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
         return `
-          <li style="margin-bottom: 0.75rem; border-left: 3px solid var(--accent-teal); padding-left: 0.75rem;">
-            <a href="${item.link}" target="_blank" rel="noopener"
-               style="font-size: 0.88rem; font-weight: 600; color: var(--text-primary); text-decoration: none; line-height: 1.4; display: block;">
-              ${item.title}
-            </a>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">${date}</span>
-          </li>`;
+          <li style="margin-bottom: 0.75rem; border-left: 3px solid var(--teal); padding-left: 0.75rem;">
+  <a href="${item.link}" target="_blank" rel="noopener"
+     style="font-size: 0.88rem; font-weight: 600; color: var(--teal); text-decoration: none; line-height: 1.4; display: block;">
+    ${item.title}
+  </a>
+  <span style="font-size: 0.75rem; color: var(--muted);">${date}</span>
+</li>`;
       }).join("");
     } catch (e) {
       list.innerHTML = `<li style="color: var(--text-muted); font-size: 0.88rem;">Could not load updates right now.</li>`;
