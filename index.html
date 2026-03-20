@@ -1037,15 +1037,7 @@ footer {
         <p>A Python-based tool for analysing market trends and data — exploring patterns, signals, and insights from financial datasets.</p>
         <div class="project-tags"><span class="tag tag-teal">Python</span><span class="tag tag-violet">Data Analysis</span><span class="tag tag-amber">Finance</span></div>
       </a>
-      <!-- AI Industry Updates Card -->
-      <div class="project-card reveal" id="ai-updates-card">
-        <div class="project-emoji">🤖</div>
-        <h3>AI Industry — Latest</h3>
-        <div id="ai-news-list" style="margin-top:0.85rem;">
-          <span style="color:var(--muted);font-size:0.8rem;">Loading…</span>
-        </div>
-        <p style="font-size:0.68rem;color:var(--muted);margin-top:0.85rem;">via Hacker News · refreshes on load</p>
-      </div>
+
   </section>
 
   <section id="writing">
@@ -1328,7 +1320,7 @@ footer {
       projects: {
         keywords: ['project', 'build', 'built', 'work', 'portfolio', 'making', 'created', 'market', 'analyser', 'analyzer', 'ai updates', 'news'],
         responses: [
-          "Amlan is currently working on a few projects:<br><br>🧩 <strong><a href='whyjournal.html'>Why Journal</a></strong> — A living log of curiosity-driven questions that spark projects<br>📍 <strong><a href='photomap.html'>Brussels Photo Map</a></strong> — An interactive map pinning every photo to where it was taken<br>📈 <strong><a href='https://github.com/amlan123/market-analyser' target='_blank'>Market Analyser</a></strong> — A Python tool for analysing market trends and financial data<br>🤖 <strong>AI Industry Updates</strong> — A live feed of the 5 latest AI headlines on the homepage<br><br>Each project started as a simple question!",
+          "Amlan is currently working on a few projects:<br><br>🧩 <strong><a href='whyjournal.html'>Why Journal</a></strong> — A living log of curiosity-driven questions that spark projects<br>📍 <strong><a href='photomap.html'>Brussels Photo Map</a></strong> — An interactive map pinning every photo to where it was taken<br>📈 <strong><a href='https://github.com/amlan123/market-analyser' target='_blank'>Market Analyser</a></strong> — A Python tool for analysing market trends and financial data<br>Each project started as a simple question!",
         ]
       },
       skills: {
@@ -1470,41 +1462,7 @@ footer {
     });
   </script>
 
-<script>
-  async function loadAINews() {
-    const list = document.getElementById("ai-news-list");
 
-    try {
-      const res = await fetch(
-        "https://hn.algolia.com/api/v1/search?query=artificial+intelligence+AI&tags=story&hitsPerPage=6&numericFilters=num_comments>5"
-      );
-      const data = await res.json();
-      if (!data.hits || data.hits.length === 0) throw new Error("No results");
-
-      list.style.cssText = "display:flex;flex-wrap:wrap;gap:0.4rem;";
-      list.innerHTML = data.hits.map(item => {
-        const url = item.url || `https://news.ycombinator.com/item?id=${item.objectID}`;
-        // Truncate title to ~40 chars for pill
-        const label = item.title.length > 42 ? item.title.slice(0, 40) + '…' : item.title;
-        return `<a href="${url}" target="_blank" rel="noopener"
-          title="${item.title}"
-          style="display:inline-block;font-size:0.7rem;font-weight:500;padding:0.28rem 0.65rem;
-                 border-radius:20px;background:var(--teal-soft);color:var(--teal);
-                 text-decoration:none;border:1px solid transparent;line-height:1.4;
-                 transition:all 0.2s;"
-          onmouseover="this.style.background='var(--teal)';this.style.color='#fff';"
-          onmouseout="this.style.background='var(--teal-soft)';this.style.color='var(--teal)';">
-          ${label}
-        </a>`;
-      }).join("");
-
-    } catch (e) {
-      list.innerHTML = `<span style="color:var(--muted);font-size:0.8rem;">Could not load — try refreshing.</span>`;
-    }
-  }
-
-  loadAINews();
-</script>
 
 <script>
   // ── Cartoon Wall Frame ──
