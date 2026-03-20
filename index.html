@@ -650,12 +650,15 @@ footer {
   .reveal,
   .hero-badge, .hero h1, .hero-subtitle, .hero-cta,
   .section-header, .project-card, .blog-card,
-  .about-text, .values-grid, .contact-box, .value-card {
+  .about-text, .values-grid, .contact-box, .value-card,
+  .sentiment-box, .sentiment-item, .sentiment-results,
+  .blog-list, .blog-card, .blog-content, .blog-number {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
     transition-delay: 0s !important;
   }
+  .blog-card { display: flex !important; }
 }
 
 @media (max-width: 500px) {
@@ -1442,7 +1445,14 @@ footer {
      <path d="M62 93 Q80 108 98 93" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
      <circle cx="64" cy="92" r="4" fill="#FF8A80" opacity="0.6"/>
      <circle cx="96" cy="92" r="4" fill="#FF8A80" opacity="0.6"/>
-     ${[0,45,90,135,180,225,270,315].map(a=>{const r=a*Math.PI/180,x1=80+48*Math.cos(r),y1=80+48*Math.sin(r),x2=80+58*Math.cos(r),y2=80+58*Math.sin(r);return \`<line x1="\${x1}" y1="\${y1}" x2="\${x2}" y2="\${y2}" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>\`}).join('')}`,
+     <line x1="80" y1="32" x2="80" y2="22" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="114" y1="46" x2="121" y2="39" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="128" y1="80" x2="138" y2="80" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="114" y1="114" x2="121" y2="121" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="80" y1="128" x2="80" y2="138" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="46" y1="114" x2="39" y2="121" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="32" y1="80" x2="22" y2="80" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
+     <line x1="46" y1="46" x2="39" y2="39" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>`,
 
     // 2: Smiling Cat
     `<rect width="160" height="160" fill="#FFF0FB"/>
