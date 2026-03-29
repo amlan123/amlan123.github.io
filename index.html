@@ -947,6 +947,28 @@ footer {
       .nav-links { display: none !important; }
       .hamburger { display: flex; }
     }
+
+    /* ── Welcome Toast ── */
+    .welcome-toast {
+      position: fixed;
+      bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 0.65rem 1.4rem;
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-md);
+      z-index: 300;
+      display: flex; align-items: center; gap: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .welcome-toast.show {
+      opacity: 1; transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -1007,7 +1029,7 @@ footer {
     <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span></h1>
     <p class="hero-subtitle">Curious mind, open notebook. A space where questions become projects, projects become understanding, and <strong>every "why" matters</strong>. <span class="wave">👋</span></p>
     <div class="hero-cta">
-      <a href="#writing" class="btn btn-coral">Read my writing ✦</a>
+      <a href="poetry.html" class="btn btn-coral">Read my writing ✦</a>
       <a href="#projects" class="btn btn-teal">View projects</a>
     </div>
   </section>
@@ -1755,58 +1777,18 @@ footer {
     }
   });
 </script>
-<!-- Toast Welcome Notification -->
-<style>
-  .welcome-toast {
-    position: fixed;
-    bottom: 30px;
-    right: -420px;
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-size: 0.9rem;
-    font-weight: 300;
-    letter-spacing: 0.3px;
-    z-index: 9999;
-    transition: right 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    max-width: 340px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 
-    /* Light theme default */
-    background: rgba(255, 255, 255, 0.85);
-    color: #3a3a4a;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-  }
 
-  /* Dark theme */
-  [data-theme="dark"] .welcome-toast,
-  .dark .welcome-toast {
-    background: rgba(30, 30, 46, 0.85);
-    color: #c8c8d4;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  }
+  <!-- Welcome Toast -->
+  <div class="welcome-toast" id="welcomeToast">
+    👋 Thank you for stopping by!
+  </div>
 
-  .welcome-toast.show { right: 30px; }
-  .welcome-toast .toast-star { opacity: 0.5; margin-right: 6px; }
-</style>
-
-<div class="welcome-toast" id="welcomeToast">
-  <span class="toast-star">✦</span> Thank you for stopping by — enjoy exploring.
-</div>
-
-<script>
-  if (!sessionStorage.getItem('welcomed')) {
-    setTimeout(() => {
-      document.getElementById('welcomeToast').classList.add('show');
-      sessionStorage.setItem('welcomed', 'true');
-    }, 1500);
-    setTimeout(() => {
-      document.getElementById('welcomeToast').classList.remove('show');
-    }, 4000);
-  }
-</script>
-
+  <script>
+    // ── Welcome toast ──
+    const toast = document.getElementById('welcomeToast');
+    setTimeout(() => toast.classList.add('show'), 800);
+    setTimeout(() => toast.classList.remove('show'), 3800);
+  </script>
 </body>
 </html>
