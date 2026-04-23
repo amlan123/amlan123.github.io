@@ -3,26 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>How Does the Lilac Know? | Amlan</title>
-  <meta name="description" content="On plants, patience, and the strange intelligence of things without brains.">
+  <title>Now — What I'm thinking about right now | Amlan</title>
+  <meta name="description" content="What Amlan is reading, walking, writing, and wondering about — right now. Updated roughly once a month.">
 
-  <!-- GoatCounter Analytics -->
   <script data-goatcounter="https://amlan123.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Applause Button -->
-  <script src="https://unpkg.com/applause-button/dist/applause-button.js" defer></script>
-  <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css" />
-
   <style>
     :root {
       --serif: 'Fraunces', Georgia, serif;
       --sans: 'General Sans', system-ui, sans-serif;
       --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-      --max-w-essay: 680px;
+      --max-w: 720px;
       --radius: 14px;
     }
 
@@ -41,6 +36,7 @@
       --violet: #7b61ff;
       --violet-soft: #7b61ff10;
       --amber: #e4a030;
+      --amber-soft: #e4a03015;
       --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
       --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
       --nav-bg: rgba(253, 248, 243, 0.9);
@@ -62,6 +58,7 @@
       --violet: #a18aff;
       --violet-soft: #a18aff14;
       --amber: #f0bd5a;
+      --amber-soft: #f0bd5a14;
       --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
       --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
       --nav-bg: rgba(18, 16, 16, 0.9);
@@ -92,11 +89,10 @@
       z-index: 0;
       transition: background-image var(--transition);
     }
-
     body > * { position: relative; z-index: 1; }
     a { color: inherit; }
 
-    /* ── Nav ── */
+    /* Nav */
     nav {
       position: fixed; top: 0; width: 100%;
       padding: 0 2.5rem; height: 68px;
@@ -106,15 +102,13 @@
       -webkit-backdrop-filter: blur(18px) saturate(1.5);
       background: var(--nav-bg);
       border-bottom: 1px solid var(--border);
-      transition: background var(--transition), border-color var(--transition);
+      transition: background var(--transition);
     }
-
     .logo {
       font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
       color: var(--text); letter-spacing: -0.03em;
       text-decoration: none;
       display: flex; align-items: center; gap: 0.35rem;
-      transition: color var(--transition);
     }
     .logo-dot {
       display: inline-block; width: 10px; height: 10px; border-radius: 50%;
@@ -122,7 +116,6 @@
       transition: transform 0.4s, background var(--transition);
     }
     .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
-
     .nav-right { display: flex; align-items: center; gap: 2rem; }
     .nav-links { display: flex; gap: 0.5rem; list-style: none; }
     .nav-links a {
@@ -137,7 +130,7 @@
       width: 48px; height: 28px; border-radius: 14px;
       background: var(--bg-alt); border: 1.5px solid var(--border);
       cursor: pointer; position: relative;
-      transition: all var(--transition); flex-shrink: 0;
+      transition: all var(--transition);
     }
     .theme-toggle:hover { border-color: var(--amber); }
     .theme-toggle::after {
@@ -158,14 +151,14 @@
     .sun-label { left: 6px; }
     .moon-label { right: 6px; }
 
-    /* ── Essay container ── */
-    .essay {
-      max-width: var(--max-w-essay);
+    /* Page content */
+    .container {
+      max-width: var(--max-w);
       margin: 0 auto;
       padding: 9rem 1.75rem 4rem;
     }
 
-    .essay-back {
+    .back-link {
       display: inline-flex; align-items: center; gap: 0.4rem;
       font-size: 0.82rem; font-weight: 500;
       color: var(--text-secondary);
@@ -173,29 +166,28 @@
       padding: 0.45rem 0.9rem;
       border-radius: 20px;
       transition: all 0.3s;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
-    .essay-back:hover {
-      background: var(--coral-soft);
-      color: var(--coral);
+    .back-link:hover {
+      background: var(--coral-soft); color: var(--coral);
       transform: translateX(-3px);
     }
 
-    .essay-chip {
+    .chip {
       display: inline-flex; align-items: center; gap: 0.4rem;
       padding: 0.35rem 0.85rem;
       font-size: 0.72rem; font-weight: 600;
-      color: var(--teal);
-      background: var(--teal-soft);
+      color: var(--coral);
+      background: var(--coral-soft);
       border-radius: 20px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       margin-bottom: 1.5rem;
     }
 
-    .essay-title {
+    h1 {
       font-family: var(--serif);
-      font-size: clamp(2.4rem, 5.6vw, 3.7rem);
+      font-size: clamp(2.6rem, 6vw, 4rem);
       font-weight: 600;
       line-height: 1.05;
       letter-spacing: -0.035em;
@@ -203,140 +195,109 @@
       margin-bottom: 1rem;
     }
 
-    .essay-subtitle {
+    .intro {
       font-family: var(--serif);
       font-style: italic;
-      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
       font-weight: 400;
-      line-height: 1.4;
+      line-height: 1.55;
       color: var(--text-secondary);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    .essay-meta {
+    .meta {
       display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
       font-size: 0.82rem;
       color: var(--muted);
-      padding-bottom: 2rem;
+      padding-bottom: 1.75rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 2.75rem;
+      margin-bottom: 3rem;
     }
-    .essay-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
 
-    .essay-image {
-      width: 100%;
+    .about-now {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      margin: 0 0 0.75rem;
-      box-shadow: var(--shadow-md);
-      display: block;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
     }
-    .essay-image-caption {
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 2.75rem;
-      font-style: italic;
-    }
+    .about-now strong { color: var(--text); font-weight: 600; }
+    .about-now a { color: var(--coral); text-decoration: none; font-weight: 500; border-bottom: 1px dashed var(--coral-soft); }
+    .about-now a:hover { border-bottom-color: var(--coral); }
 
-    /* ── Essay body typography ── */
-    .essay-body p {
+    /* Sections */
+    .now-section {
+      margin-bottom: 2.75rem;
+    }
+    .now-section-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .now-emoji {
+      font-size: 1.75rem; line-height: 1;
+      flex-shrink: 0;
+    }
+    .now-section h2 {
       font-family: var(--serif);
-      font-size: 1.18rem;
-      font-weight: 400;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin: 0;
+    }
+    .now-section-body {
+      padding-left: 2.5rem;
+    }
+    .now-section-body p {
+      font-family: var(--serif);
+      font-size: 1.1rem;
       line-height: 1.75;
       color: var(--text);
-      margin-bottom: 1.6rem;
+      margin-bottom: 1rem;
     }
-    .essay-body p:first-of-type::first-letter {
-      font-family: var(--serif);
-      font-size: 3.6rem;
-      font-weight: 600;
-      float: left;
-      line-height: 0.9;
-      padding: 0.35rem 0.65rem 0 0;
+    .now-section-body p:last-child { margin-bottom: 0; }
+    .now-section-body em { color: var(--text-secondary); }
+    .now-section-body strong { font-weight: 600; color: var(--text); }
+    .now-section-body a {
       color: var(--coral);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--coral-soft);
+      transition: border-color 0.2s;
     }
-    .essay-body p strong { font-weight: 600; color: var(--text); }
-    .essay-body p em { color: var(--text-secondary); }
-    .essay-body .pivot {
-      font-family: var(--serif);
-      font-size: 1.35rem;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--coral);
-      text-align: center;
-      margin: 2.2rem 0 2.2rem;
-      line-height: 1.4;
+    .now-section-body a:hover { border-bottom-color: var(--coral); }
+
+    .now-section + .now-section {
+      padding-top: 2.75rem;
+      border-top: 1px solid var(--border);
     }
 
-    /* ── Closing flourish ── */
-    .essay-end {
-      text-align: center;
-      margin: 3rem 0 2.5rem;
-      color: var(--muted);
-      font-size: 1.4rem;
-      letter-spacing: 0.6rem;
-    }
-
-    .essay-location {
-      font-family: var(--serif);
-      font-style: italic;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 3.5rem;
-    }
-
-    /* ── Applause button ── */
-    .applause-block {
-      text-align: center;
-      margin: 3rem 0 1.5rem;
-      padding: 2rem 1rem;
-    }
-    .applause-block applause-button {
-      width: 62px;
-      height: 62px;
-      --applause-button-color: var(--coral);
-    }
-    .applause-label {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-top: 0.85rem;
-    }
-    .applause-sublabel {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
-    }
-
-    /* ── Footer card ── */
-    .essay-footer {
+    /* Footer card */
+    .footer-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.75rem;
-      margin-top: 2rem;
+      margin-top: 3rem;
       box-shadow: var(--shadow-sm);
     }
-    .essay-footer-title {
+    .footer-card-title {
       font-family: var(--serif);
       font-size: 1.05rem;
       font-weight: 600;
       margin-bottom: 0.4rem;
-      color: var(--text);
     }
-    .essay-footer-desc {
+    .footer-card-desc {
       font-size: 0.92rem;
       color: var(--text-secondary);
       margin-bottom: 1rem;
       line-height: 1.55;
     }
-    .essay-footer-links {
-      display: flex; flex-wrap: wrap; gap: 0.6rem;
-    }
-    .essay-footer-link {
+    .footer-card-links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .footer-card-link {
       display: inline-flex; align-items: center; gap: 0.35rem;
       padding: 0.5rem 1rem;
       font-size: 0.82rem; font-weight: 500;
@@ -344,24 +305,21 @@
       border-radius: 8px;
       transition: all 0.3s;
     }
-    .essay-footer-link.primary {
-      background: var(--coral); color: #fff;
-    }
-    .essay-footer-link.primary:hover {
+    .footer-card-link.primary { background: var(--coral); color: #fff; }
+    .footer-card-link.primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 18px rgba(232, 99, 74, 0.3);
     }
-    .essay-footer-link.secondary {
+    .footer-card-link.secondary {
       background: var(--bg-alt); color: var(--text-secondary);
       border: 1px solid var(--border);
     }
-    .essay-footer-link.secondary:hover {
+    .footer-card-link.secondary:hover {
       background: var(--teal-soft); color: var(--teal); border-color: var(--teal);
     }
 
-    /* ── Footer ── */
-    footer {
-      max-width: var(--max-w-essay);
+    footer.page-footer {
+      max-width: var(--max-w);
       margin: 0 auto;
       padding: 2.5rem 1.75rem 3rem;
       text-align: center;
@@ -370,7 +328,7 @@
       border-top: 1px solid var(--border);
     }
 
-    /* ── Mobile ── */
+    /* Mobile */
     .hamburger {
       display: none;
       flex-direction: column; gap: 5px;
@@ -391,7 +349,6 @@
       position: fixed; top: 68px; left: 0; right: 0;
       background: var(--nav-bg);
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
       padding: 1rem 1.5rem;
       flex-direction: column; gap: 0.25rem;
@@ -399,15 +356,11 @@
       transform: translateY(-10px); opacity: 0;
       transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
-    .mobile-nav.open {
-      display: flex;
-      transform: translateY(0); opacity: 1;
-    }
+    .mobile-nav.open { display: flex; transform: translateY(0); opacity: 1; }
     .mobile-nav a {
       color: var(--text-secondary); text-decoration: none;
       font-size: 0.9rem; font-weight: 500;
       padding: 0.6rem 0.75rem; border-radius: 10px;
-      transition: all 0.25s;
     }
     .mobile-nav a:hover { background: var(--coral-soft); color: var(--coral); }
 
@@ -415,13 +368,11 @@
       nav { padding: 0 1.25rem; }
       .nav-links { display: none !important; }
       .hamburger { display: flex; }
-      .essay { padding: 7rem 1.25rem 3rem; }
-      .essay-body p { font-size: 1.08rem; line-height: 1.7; }
-      .essay-body p:first-of-type::first-letter { font-size: 3rem; }
-      .essay-body .pivot { font-size: 1.2rem; }
+      .container { padding: 7rem 1.25rem 3rem; }
+      .now-section-body { padding-left: 0; }
+      .now-section-body p { font-size: 1rem; }
     }
 
-    /* ── Back to top ── */
     .back-to-top {
       position: fixed;
       bottom: 2rem; right: 2rem;
@@ -444,7 +395,6 @@
     .back-to-top:hover {
       background: var(--coral); color: #fff;
       transform: translateY(-4px) scale(1.1);
-      box-shadow: 0 10px 28px rgba(232, 99, 74, 0.3);
     }
     @media (max-width: 600px) {
       .back-to-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; }
@@ -481,79 +431,99 @@
     <a href="index.html#about">About</a>
   </div>
 
-  <article class="essay">
-    <a href="index.html#writing" class="essay-back">← Back to Field Notes</a>
+  <main class="container">
+    <a href="index.html" class="back-link">← Back home</a>
 
-    <div class="essay-chip">✍️ Field Note · 02</div>
+    <div class="chip">🌱 Currently</div>
 
-    <h1 class="essay-title">How Does the Lilac Know?</h1>
-    <p class="essay-subtitle">On plants, patience, and the strange intelligence of things without brains.</p>
+    <h1>Now</h1>
+    <p class="intro">A page about what I'm actually thinking about, reading, and noticing — right now. Not a plan, not a promise. Just a window.</p>
 
-    <div class="essay-meta">
-      <span>📅 April 2026</span>
-      <span>📍 Brussels</span>
-      <span>⏱ 4 min read</span>
+    <div class="meta">
+      <span>📅 Last updated: April 2026</span>
+      <span>🔄 Updated roughly once a month</span>
     </div>
 
-    <!--
-      OPTIONAL HEADER IMAGE
-      To add a photo at the top, uncomment the block below and replace src="..."
-      with one of your lilac photos (e.g. "lilac-pink.jpg" after you upload it to the repo).
-      The pink lilac close-up (IMG_2386) is the natural choice for this essay.
-    -->
-    <!--
-    <img src="lilac-pink.jpg" alt="Pink lilac in bloom, Brussels" class="essay-image">
-    <p class="essay-image-caption">Brussels, April 2026.</p>
-    -->
-
-    <div class="essay-body">
-      <p>While in the Park over the weekend, I walked past a lilac and then I stopped. Small pink flowers, hundreds of them, all open on the same branch, at the same time, in the same week they opened last year. I have walked past this bush every April for years. And this April, for the first time, I asked the obvious question.</p>
-
-      <p class="pivot">How does the lilac know it is April?</p>
-
-      <p>It has no eyes. It has no brain. It has no nervous system. It cannot read a calendar. It cannot ask a friend. And yet every spring, without fail, it decides — <em>now, the cold is over, now is the time to open.</em> And it is not only this lilac. The cherry trees in the long park avenue do the same thing, on roughly the same week. The maples do it a little earlier. The chestnuts do it a little later. Each tree keeps its own quiet calendar, and each one keeps it without anything we would normally call a mind.</p>
-
-      <p>When you sit with this for a while, it stops feeling like decoration. It starts feeling like a real question.</p>
-
-      <p>The honest answer is that plants do something we do not have a good word for. They sense how long the day is by chemicals in their leaves. They count cold days, so they know whether winter is really over or only pretending. They measure temperature, light, and even the colour of the light falling on them. They send signals between their roots and their leaves. They sometimes send signals to other plants, through the soil. And increasingly we are finding that they remember things — a plant that survived a drought one year behaves differently when the next drought comes, even though it has no neurons, no memory cells, nothing we would call a brain. This is not mysticism. This is ordinary, published, repeated plant biology. And yet when you describe it in human words, none of the human words fit properly.</p>
-
-      <p>If you call it <em>thinking</em>, every careful plant biologist will push back, because thinking is a word we built for brains. If you call it <em>just chemistry</em>, you have technically described it, but you have also missed what is strange about it — because we are also just chemistry, and nobody is satisfied with that as an explanation of human thought.</p>
-
-      <p class="pivot">So what is the plant doing?</p>
-
-      <p>I think the honest answer is that the plant is doing something that looks remarkably like thinking, without any of the equipment we thought thinking required. And that should unsettle us. Not because the lilac is secretly conscious. But because it means our definition of intelligence was quietly assuming something it should not have assumed. We took it for granted that to know things, you needed a brain. The lilac in Parc Josaphat has not read that rule.</p>
-
-      <p>This matters beyond the curiosity of it. We are living in a moment where we are building machines that learn, decide, and behave intelligently, also without brains — different hardware, different substrate, same outcome. And we keep arguing about whether those machines <em>really</em> think, as if the question has an easy answer. Maybe the lilac is the older version of the same question. Maybe nature has been running experiments in non-brain intelligence for a very long time, and we are only just beginning to notice.</p>
-
-      <p>The next time you walk past a flowering tree this spring, try to remember — it made a decision to open today. It read the season correctly. It timed itself to the bees that have not yet arrived, but soon will. It did all of this with no eyes, no brain, and no help from us. And then ask yourself, honestly: <strong>How does the lilac know?</strong></p>
-
-      <p>I do not have a clean answer. But the question feels bigger than it looked.</p>
-
-      <p><em>Let's ignite our curiosity — not only in this spring, but always.</em></p>
+    <div class="about-now">
+      This is a <strong>Now page</strong>, an idea I borrowed from <a href="https://nownownow.com" target="_blank">Derek Sivers</a>. The rule is simple: if we met for coffee and you asked me <em>"what are you up to these days?"</em>, this is what I would tell you. No performance, no résumé, no strategy — just the honest answer, updated when my answer changes.
     </div>
 
-    <div class="essay-end">✦ ✦ ✦</div>
+    <!-- ═══════════════════════════════════════════
+         EDITING GUIDE FOR AMLAN
 
-    <p class="essay-location">Brussels — April 2026</p>
+         Each section below has an emoji, a heading, and 1–3 short paragraphs.
+         Keep each section short — 2 to 4 sentences is plenty.
+         Replace the starter text with your actual truth.
+         When you update (roughly monthly), change "Last updated" above
+         and rewrite whichever sections have changed. Old versions aren't kept.
+         That's the whole point — a Now page reflects only now.
+    ═══════════════════════════════════════════ -->
 
-    <div class="applause-block">
-      <applause-button color="hsl(11, 79%, 60%)" multiclap="true"></applause-button>
-      <div class="applause-label">If this meant something, press the heart.</div>
-      <div class="applause-sublabel">You can tap more than once — and no sign-in needed.</div>
-    </div>
+    <section class="now-section">
+      <div class="now-section-header">
+        <span class="now-emoji">🚶</span>
+        <h2>Walking</h2>
+      </div>
+      <div class="now-section-body">
+        <p>Most mornings and evenings, to and from the office. Longer walks on weekends in Parc Josaphat, Bois de la Cambre, or the Forêt de Soignes when I have a full afternoon. The walks have become less about exercise and more about <em>looking</em> — at plants, at light, at patterns I have ignored for years.</p>
+        <p>Recently stopped by the lilacs. That became <a href="lilac.html">an essay</a>.</p>
+      </div>
+    </section>
 
-    <div class="essay-footer">
-      <div class="essay-footer-title">Have a thought?</div>
-      <p class="essay-footer-desc">The best conversations on this site happen off-page. If something here resonated, or you disagree, or you want to recommend a book — send a message on LinkedIn. I read everything.</p>
-      <div class="essay-footer-links">
-        <a href="index.html#writing" class="essay-footer-link primary">More Field Notes →</a>
-        <a href="observe.html" class="essay-footer-link secondary">← Previous: Observe</a>
-        <a href="https://linkedin.com/in/pradhanamlan" target="_blank" class="essay-footer-link secondary">Message on LinkedIn</a>
+    <section class="now-section">
+      <div class="now-section-header">
+        <span class="now-emoji">📖</span>
+        <h2>Reading</h2>
+      </div>
+      <div class="now-section-body">
+        <p>Returning slowly to books I half-read years ago, and starting a few new ones. Right now I have open on my desk, or near it:</p>
+        <p><em>[Replace with what you're actually reading. One or two books is fine. Mix of biology, statistics, philosophy, or whatever is genuinely on your nightstand. If you're not reading a book, put an article or a paper. Honesty beats impressive.]</em></p>
+      </div>
+    </section>
+
+    <section class="now-section">
+      <div class="now-section-header">
+        <span class="now-emoji">✍️</span>
+        <h2>Writing</h2>
+      </div>
+      <div class="now-section-body">
+        <p>Publishing a new <a href="index.html#writing">Field Note</a> roughly every two weeks. So far: <a href="observe.html">Observe</a> and <a href="lilac.html">How Does the Lilac Know?</a>. The third one is taking shape in my voice notes, somewhere between symmetry and memory.</p>
+        <p>I write slowly and in short bursts. Most essays start as a voice note on a walk, then get typed up over a quiet evening.</p>
+      </div>
+    </section>
+
+    <section class="now-section">
+      <div class="now-section-header">
+        <span class="now-emoji">💼</span>
+        <h2>Working</h2>
+      </div>
+      <div class="now-section-body">
+        <p>Program management in cloud transformation — currently focused on platform engineering, Kubernetes modernisation, and AI infrastructure readiness. The day job and the writing live side by side, and I am slowly learning that they feed each other rather than compete.</p>
+      </div>
+    </section>
+
+    <section class="now-section">
+      <div class="now-section-header">
+        <span class="now-emoji">🌀</span>
+        <h2>Wondering</h2>
+      </div>
+      <div class="now-section-body">
+        <p>Whether what plants do when they decide to flower counts as a kind of intelligence, even without neurons. Whether the same mathematics of learning shows up in statistics, in ecosystems, and in the AI models we are building. Whether patience is actually the most undervalued scientific instrument.</p>
+        <p>No clean answers. Good company.</p>
+      </div>
+    </section>
+
+    <div class="footer-card">
+      <div class="footer-card-title">Reply by email or LinkedIn</div>
+      <p class="footer-card-desc">If anything here resonates — or if you disagree, or want to recommend a book, or just want to say hi — I would genuinely like to hear from you. The best conversations on this site happen quietly, off-page.</p>
+      <div class="footer-card-links">
+        <a href="https://linkedin.com/in/pradhanamlan" target="_blank" class="footer-card-link primary">Connect on LinkedIn</a>
+        <a href="index.html#writing" class="footer-card-link secondary">Read Field Notes</a>
       </div>
     </div>
-  </article>
+  </main>
 
-  <footer>
+  <footer class="page-footer">
     © 2026 Amlan. Observed slowly, written quietly.
   </footer>
 
@@ -565,7 +535,6 @@
     const saved = localStorage.getItem('theme');
     if (saved) html.setAttribute('data-theme', saved);
     else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
-
     toggle.addEventListener('click', () => {
       const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       html.setAttribute('data-theme', next);
