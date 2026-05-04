@@ -175,7 +175,7 @@
 
     .page-desc {
       color: var(--text-secondary); font-weight: 300;
-      font-size: 1.05rem; max-width: 620px; line-height: 1.75;
+      font-size: 1.05rem; max-width: 660px; line-height: 1.75;
       margin-bottom: 1.5rem;
     }
 
@@ -209,6 +209,41 @@
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* ── Sources strip ── */
+    .sources-strip {
+      max-width: var(--max-w);
+      margin: 0 auto 1.5rem;
+      padding: 0 2.5rem;
+    }
+    .sources-strip-inner {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .sources-strip-label {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .source-pills {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .source-pill {
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--text);
+      padding: 0.3rem 0.75rem;
+      background: var(--bg-alt);
+      border-radius: 16px;
+      border: 1px solid var(--border);
     }
 
     /* ── Content sections ── */
@@ -265,9 +300,11 @@
       border-radius: 10px;
       border-left: 3px solid var(--violet);
     }
+    .pipe-step:nth-child(1) { border-left-color: var(--violet); }
     .pipe-step:nth-child(2) { border-left-color: var(--teal); }
     .pipe-step:nth-child(3) { border-left-color: var(--amber); }
     .pipe-step:nth-child(4) { border-left-color: var(--coral); }
+    .pipe-step:nth-child(5) { border-left-color: var(--violet); }
 
     .pipe-num {
       font-family: var(--serif);
@@ -313,6 +350,11 @@
       font-size: 1.05rem; font-weight: 500;
       color: var(--text);
     }
+    .stack-card-detail {
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
 
     .privacy-note {
       background: var(--amber-soft);
@@ -356,6 +398,8 @@
     @media (max-width: 768px) {
       nav { padding: 0 1.5rem; }
       .page-header { padding: 5.5rem 1.5rem 1.5rem; }
+      .sources-strip { padding: 0 1.5rem; }
+      .sources-strip-inner { padding: 1rem 1.1rem; gap: 0.8rem; }
       .content-wrap { padding: 0 1.5rem 3rem; }
       .section { padding: 1.5rem 1.4rem; }
       .pipe-step { padding: 0.9rem 1rem; }
@@ -379,13 +423,26 @@
   <div class="page-header">
     <div class="page-chip">🤖 Project</div>
     <h1 class="page-title">AI Job Search <span>Agent</span></h1>
-    <p class="page-desc">A live production agent that automates my weekly job market scan. Every Monday it sources fresh roles from across Europe, ranks them with Claude against my profile, and delivers a curated shortlist of the top 60 opportunities.</p>
+    <p class="page-desc">A live production agent that automates my weekly job market scan. Every Monday it aggregates fresh roles from LinkedIn, Indeed, Glassdoor and Adzuna, deduplicates across sources, ranks them with Claude against my profile, and delivers a curated shortlist of the top 60 — each paired with a tailored cover note draft.</p>
     <div class="meta-row">
       <span class="live-badge"><span class="live-dot"></span>Live · Running weekly</span>
       <span class="tag tag-violet">Anthropic API</span>
+      <span class="tag tag-coral">JSearch · RapidAPI</span>
       <span class="tag tag-teal">Adzuna API</span>
       <span class="tag tag-amber">GitHub Actions</span>
-      <span class="tag tag-coral">Python</span>
+    </div>
+  </div>
+
+  <div class="sources-strip">
+    <div class="sources-strip-inner">
+      <span class="sources-strip-label">Aggregating from</span>
+      <div class="source-pills">
+        <span class="source-pill">LinkedIn</span>
+        <span class="source-pill">Indeed</span>
+        <span class="source-pill">Glassdoor</span>
+        <span class="source-pill">ZipRecruiter</span>
+        <span class="source-pill">Adzuna</span>
+      </div>
     </div>
   </div>
 
@@ -394,7 +451,7 @@
     <div class="section">
       <div class="section-eyebrow">Why I built it</div>
       <h2 class="section-h">Solving my own friction</h2>
-      <p>I was running a focused job search across Belgium, the Netherlands, Luxembourg, and the UK — and spending hours every week on generic job boards filtering noise to find the few roles that actually matched my profile.</p>
+      <p>I was running a focused job search across Belgium, the Netherlands, Luxembourg, the UK, and India — and spending hours every week on generic job boards filtering noise to find the few roles that actually matched my profile. Each platform had its own sign-in, its own filters, its own near-duplicates of the same role.</p>
       <p>So I built the agent I needed. One-time setup, weekly value forever. The pattern is the same one I use at work: identify the friction, build the agent, ship it.</p>
       <div class="pull-quote">Same pattern, different scale.</div>
     </div>
@@ -413,22 +470,22 @@
         <div class="pipe-step">
           <div class="pipe-num">02</div>
           <div class="pipe-body">
-            <strong>Source</strong>
-            <span>The Adzuna API pulls fresh job listings across my target geographies and role keywords — Programme Manager, Cloud Transformation, Delivery Lead, AI/ML.</span>
+            <strong>Aggregate across sources</strong>
+            <span>Adzuna covers Belgium, Netherlands, Germany, France, UK and India natively. JSearch via RapidAPI layers in LinkedIn, Indeed, Glassdoor and ZipRecruiter listings via Google for Jobs syndication. Cross-source deduplication catches roles re-listed on multiple platforms.</span>
           </div>
         </div>
         <div class="pipe-step">
           <div class="pipe-num">03</div>
           <div class="pipe-body">
-            <strong>Rank</strong>
-            <span>The Anthropic API (Claude) scores each role against my profile — career trajectory, certifications, geographic preferences, and the work I actually want to do next. Not keyword matching. Real reasoning.</span>
+            <strong>Rank with Claude</strong>
+            <span>The Anthropic API scores each role against my profile — career trajectory, certifications, geographic preferences, and the work I actually want to do next. Not keyword matching. Real reasoning, with explanations attached to every score.</span>
           </div>
         </div>
         <div class="pipe-step">
           <div class="pipe-num">04</div>
           <div class="pipe-body">
-            <strong>Deliver</strong>
-            <span>The top 60 ranked opportunities land in a structured weekly digest, ready for me to review and apply.</span>
+            <strong>Draft &amp; deliver</strong>
+            <span>The top 60 ranked opportunities land in a structured weekly digest, each paired with a tailored cover note draft also written by Claude. Saved as markdown leads plus a CSV log — ready to review and apply.</span>
           </div>
         </div>
       </div>
@@ -440,31 +497,41 @@
       <div class="stack-grid">
         <div class="stack-card">
           <div class="stack-card-label">LLM</div>
-          <div class="stack-card-name">Anthropic API (Claude)</div>
+          <div class="stack-card-name">Anthropic API</div>
+          <div class="stack-card-detail">Claude — for ranking and cover note drafting</div>
         </div>
         <div class="stack-card">
-          <div class="stack-card-label">Job Source</div>
-          <div class="stack-card-name">Adzuna API</div>
+          <div class="stack-card-label">Job Source · EU</div>
+          <div class="stack-card-name">Adzuna</div>
+          <div class="stack-card-detail">BE, NL, DE, FR, GB, IN</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Job Source · Aggregator</div>
+          <div class="stack-card-name">JSearch (RapidAPI)</div>
+          <div class="stack-card-detail">LinkedIn, Indeed, Glassdoor, ZipRecruiter</div>
         </div>
         <div class="stack-card">
           <div class="stack-card-label">Automation</div>
           <div class="stack-card-name">GitHub Actions</div>
+          <div class="stack-card-detail">Scheduled weekly, secret-managed</div>
         </div>
         <div class="stack-card">
           <div class="stack-card-label">Language</div>
           <div class="stack-card-name">Python</div>
+          <div class="stack-card-detail">Modular fetcher / scorer / drafter</div>
         </div>
       </div>
       <div class="privacy-note">
-        <p>🔒 <strong>Repository is private</strong> — the codebase holds API tokens and personal profile data, so it's not publicly browsable. The architecture, design choices, and weekly output are open for discussion in interviews and conversations.</p>
+        <p>🔒 <strong>Repository is private</strong> — the codebase holds API tokens, my profile data, and weekly leads. Architecture, design choices, and sample output are open for discussion in interviews and conversations.</p>
       </div>
     </div>
 
     <div class="section">
       <div class="section-eyebrow">What it demonstrates</div>
       <h2 class="section-h">Why this matters professionally</h2>
-      <p><strong>Production LLM integration.</strong> Claude isn't a wrapper around keyword matching here — it's doing real reasoning over role descriptions, my career history, and contextual fit. This is the same pattern that powers the SteerCo Slide Generator and Risk Analyser Agent I run on my live Proximus programme.</p>
-      <p><strong>Operational discipline.</strong> Scheduled, monitored, secret-managed. The same instincts that drive zero-failed-cutover delivery at enterprise scale apply at this scale too — just with fewer moving parts.</p>
+      <p><strong>Production LLM integration.</strong> Claude isn't a wrapper around keyword matching here — it's doing real reasoning over role descriptions, my career history, and contextual fit, then drafting tailored cover notes for each shortlisted role. The same pattern that powers the SteerCo Slide Generator and Risk Analyser Agent I run on my live Proximus programme.</p>
+      <p><strong>Multi-source aggregation with intelligent dedup.</strong> Different markets need different sources — Adzuna has deep coverage in Belgium and continental Europe; JSearch surfaces LinkedIn, Indeed and Glassdoor coverage in the UK and India where Google for Jobs syndication is rich. A signature-based deduplication step catches the same role re-listed across platforms.</p>
+      <p><strong>Operational discipline.</strong> Scheduled, monitored, secret-managed via GitHub Secrets. The same instincts that drive zero-failed-cutover delivery at enterprise scale apply here too — just with fewer moving parts.</p>
       <p><strong>End-to-end ownership.</strong> Sourced the problem, designed the architecture, built it, deployed it, and now operate it. No team, no project plan — just a working system that quietly solves a weekly problem.</p>
     </div>
 
