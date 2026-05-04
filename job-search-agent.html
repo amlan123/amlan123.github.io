@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Job Search Agent — Amlan</title>
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 900px;
+      --radius: 14px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdf8f3;
+      --bg-alt: #f5ede4;
+      --surface: #ffffff;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --amber-soft: #e4a03014;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
+      --nav-bg: rgba(253, 248, 243, 0.92);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --amber-soft: #f0bd5a18;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
+      --nav-bg: rgba(18, 16, 16, 0.92);
+      --dot-color: #332e2c80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body > * { position: relative; z-index: 1; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 0 2.5rem; height: 68px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.35rem;
+      transition: color var(--transition);
+    }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--violet);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--coral); }
+
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .back-link:hover { background: var(--violet-soft); color: var(--violet); }
+
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55), background var(--transition);
+    }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(20px); background: var(--violet);
+    }
+    .toggle-label {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.72rem; line-height: 1; pointer-events: none;
+    }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Page header ── */
+    .page-header {
+      padding: 6.5rem 2.5rem 2rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .page-chip {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1rem;
+      background: var(--violet-soft); color: var(--violet);
+    }
+
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 500; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title span { color: var(--violet); }
+
+    .page-desc {
+      color: var(--text-secondary); font-weight: 300;
+      font-size: 1.05rem; max-width: 620px; line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-row {
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+    .tag {
+      font-size: 0.68rem; font-weight: 500;
+      padding: 0.25rem 0.65rem; border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+    .tag-teal { background: var(--teal-soft); color: var(--teal); }
+    .tag-violet { background: var(--violet-soft); color: var(--violet); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber); }
+    .tag-coral { background: var(--coral-soft); color: var(--coral); }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 0.3rem 0.7rem; border-radius: 20px;
+      background: var(--teal-soft); color: var(--teal);
+      border: 1px solid var(--teal-soft);
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* ── Content sections ── */
+    .content-wrap {
+      padding: 0 2.5rem 4rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 2.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .section:hover { box-shadow: var(--shadow-md); border-color: var(--violet-soft); }
+
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--violet); margin-bottom: 0.5rem;
+    }
+
+    .section-h {
+      font-family: var(--serif);
+      font-size: 1.5rem; font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text-secondary);
+      font-weight: 300;
+      font-size: 0.96rem;
+      line-height: 1.75;
+      margin-bottom: 0.85rem;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    .section strong { color: var(--text); font-weight: 500; }
+
+    .pipeline {
+      display: flex; flex-direction: column; gap: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .pipe-step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 1.1rem;
+      background: var(--bg-alt);
+      border-radius: 10px;
+      border-left: 3px solid var(--violet);
+    }
+    .pipe-step:nth-child(2) { border-left-color: var(--teal); }
+    .pipe-step:nth-child(3) { border-left-color: var(--amber); }
+    .pipe-step:nth-child(4) { border-left-color: var(--coral); }
+
+    .pipe-num {
+      font-family: var(--serif);
+      font-size: 1.4rem; font-weight: 600;
+      color: var(--muted);
+      min-width: 32px;
+      line-height: 1;
+    }
+    .pipe-body strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .pipe-body span {
+      color: var(--text-secondary);
+      font-weight: 300;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+      margin-top: 0.75rem;
+    }
+
+    .stack-card {
+      padding: 1rem 1.1rem;
+      background: var(--bg-alt);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .stack-card-label {
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.35rem;
+    }
+    .stack-card-name {
+      font-family: var(--serif);
+      font-size: 1.05rem; font-weight: 500;
+      color: var(--text);
+    }
+
+    .privacy-note {
+      background: var(--amber-soft);
+      border: 1px solid var(--amber-soft);
+      border-left: 3px solid var(--amber);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+    }
+    .privacy-note p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+    .privacy-note strong { color: var(--text); }
+
+    .pull-quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text);
+      padding: 0.5rem 0 0 1rem;
+      border-left: 2px solid var(--coral);
+      margin-top: 0.75rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--max-w); margin: 0 auto;
+      color: var(--muted); font-size: 0.78rem;
+    }
+    .footer-dots { display: flex; gap: 6px; }
+    .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
+    .footer-dots span:nth-child(1) { background: var(--coral); }
+    .footer-dots span:nth-child(2) { background: var(--teal); }
+    .footer-dots span:nth-child(3) { background: var(--violet); }
+    .footer-dots span:nth-child(4) { background: var(--amber); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .page-header { padding: 5.5rem 1.5rem 1.5rem; }
+      .content-wrap { padding: 0 1.5rem 3rem; }
+      .section { padding: 1.5rem 1.4rem; }
+      .pipe-step { padding: 0.9rem 1rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <a href="index.html#projects" class="back-link">← Back to projects</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-chip">🤖 Project</div>
+    <h1 class="page-title">AI Job Search <span>Agent</span></h1>
+    <p class="page-desc">A live production agent that automates my weekly job market scan. Every Monday it sources fresh roles from across Europe, ranks them with Claude against my profile, and delivers a curated shortlist of the top 60 opportunities.</p>
+    <div class="meta-row">
+      <span class="live-badge"><span class="live-dot"></span>Live · Running weekly</span>
+      <span class="tag tag-violet">Anthropic API</span>
+      <span class="tag tag-teal">Adzuna API</span>
+      <span class="tag tag-amber">GitHub Actions</span>
+      <span class="tag tag-coral">Python</span>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="section">
+      <div class="section-eyebrow">Why I built it</div>
+      <h2 class="section-h">Solving my own friction</h2>
+      <p>I was running a focused job search across Belgium, the Netherlands, Luxembourg, and the UK — and spending hours every week on generic job boards filtering noise to find the few roles that actually matched my profile.</p>
+      <p>So I built the agent I needed. One-time setup, weekly value forever. The pattern is the same one I use at work: identify the friction, build the agent, ship it.</p>
+      <div class="pull-quote">Same pattern, different scale.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-h">The weekly pipeline</h2>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-num">01</div>
+          <div class="pipe-body">
+            <strong>Schedule</strong>
+            <span>GitHub Actions triggers the agent every Monday morning. No manual intervention, no missed weeks.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">02</div>
+          <div class="pipe-body">
+            <strong>Source</strong>
+            <span>The Adzuna API pulls fresh job listings across my target geographies and role keywords — Programme Manager, Cloud Transformation, Delivery Lead, AI/ML.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">03</div>
+          <div class="pipe-body">
+            <strong>Rank</strong>
+            <span>The Anthropic API (Claude) scores each role against my profile — career trajectory, certifications, geographic preferences, and the work I actually want to do next. Not keyword matching. Real reasoning.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">04</div>
+          <div class="pipe-body">
+            <strong>Deliver</strong>
+            <span>The top 60 ranked opportunities land in a structured weekly digest, ready for me to review and apply.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Stack</div>
+      <h2 class="section-h">Built with</h2>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div class="stack-card-label">LLM</div>
+          <div class="stack-card-name">Anthropic API (Claude)</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Job Source</div>
+          <div class="stack-card-name">Adzuna API</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Automation</div>
+          <div class="stack-card-name">GitHub Actions</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Language</div>
+          <div class="stack-card-name">Python</div>
+        </div>
+      </div>
+      <div class="privacy-note">
+        <p>🔒 <strong>Repository is private</strong> — the codebase holds API tokens and personal profile data, so it's not publicly browsable. The architecture, design choices, and weekly output are open for discussion in interviews and conversations.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What it demonstrates</div>
+      <h2 class="section-h">Why this matters professionally</h2>
+      <p><strong>Production LLM integration.</strong> Claude isn't a wrapper around keyword matching here — it's doing real reasoning over role descriptions, my career history, and contextual fit. This is the same pattern that powers the SteerCo Slide Generator and Risk Analyser Agent I run on my live Proximus programme.</p>
+      <p><strong>Operational discipline.</strong> Scheduled, monitored, secret-managed. The same instincts that drive zero-failed-cutover delivery at enterprise scale apply at this scale too — just with fewer moving parts.</p>
+      <p><strong>End-to-end ownership.</strong> Sourced the problem, designed the architecture, built it, deployed it, and now operate it. No team, no project plan — just a working system that quietly solves a weekly problem.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2026 Amlan. Built with curiosity & zero budget ✌️</span>
+    <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
+</body>
+</html>
