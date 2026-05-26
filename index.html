@@ -169,6 +169,50 @@ nav {
 .blob-teal { width: 280px; height: 280px; background: var(--teal); opacity: 0.06; top: 40%; left: -10%; animation: blobFloat 15s ease-in-out infinite reverse; }
 .blob-violet { width: 250px; height: 250px; background: var(--violet); opacity: 0.05; bottom: 10%; right: 10%; animation: blobFloat 10s ease-in-out infinite 2s; }
 
+/* ── Grain Texture ── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+[data-theme="dark"] body::after { opacity: 0.3; }
+
+/* ── Botanical Line Art (Hero Background) ── */
+.hero-botanical {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+}
+.hero-botanical svg {
+  position: absolute;
+  stroke: var(--teal);
+  fill: none;
+  opacity: 0.12;
+  transition: stroke var(--transition), opacity var(--transition);
+}
+[data-theme="dark"] .hero-botanical svg { opacity: 0.08; }
+.botanical-left {
+  left: -60px; top: 20%; width: 300px; height: 400px;
+  animation: botanicalSway 8s ease-in-out infinite;
+}
+.botanical-right {
+  right: -40px; bottom: 10%; width: 250px; height: 350px;
+  animation: botanicalSway 10s ease-in-out infinite reverse;
+  transform: scaleX(-1);
+}
+@keyframes botanicalSway {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(1.5deg) translateY(-8px); }
+  75% { transform: rotate(-1deg) translateY(5px); }
+}
+.botanical-right { animation-name: botanicalSwayFlip; }
+@keyframes botanicalSwayFlip {
+  0%, 100% { transform: scaleX(-1) rotate(0deg) translateY(0); }
+  25% { transform: scaleX(-1) rotate(1.5deg) translateY(-8px); }
+  75% { transform: scaleX(-1) rotate(-1deg) translateY(5px); }
+}
+
 /* ── Hero ── */
 .hero {
   min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
@@ -180,7 +224,7 @@ nav {
   padding: 0.45rem 1rem; background: var(--surface);
   border: 1px solid var(--border); border-radius: 24px;
   font-size: 0.78rem; font-weight: 500; color: var(--text-secondary);
-  width: fit-content; margin-bottom: 2rem;
+  width: fit-content; margin-bottom: 2.5rem;
   box-shadow: var(--shadow-sm);
   opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
   transition: background var(--transition), border-color var(--transition), color var(--transition);
@@ -190,25 +234,60 @@ nav {
 
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(3rem, 8.5vw, 5.8rem);
-  font-weight: 500; line-height: 1.05; letter-spacing: -0.04em;
-  margin-bottom: 1.75rem;
+  font-size: clamp(3.2rem, 9vw, 6.5rem);
+  font-weight: 500; line-height: 1.0; letter-spacing: -0.045em;
+  margin-bottom: 2rem;
   opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
 }
 .hero h1 .word-coral { color: var(--coral); transition: color var(--transition); }
 .hero h1 .word-violet { color: var(--violet); font-style: italic; transition: color var(--transition); }
+.hero h1 .word-line2 {
+  display: block; font-size: 0.55em; font-weight: 400;
+  letter-spacing: -0.02em; color: var(--text-secondary);
+  margin-top: 0.3rem;
+  font-style: italic;
+  transition: color var(--transition);
+}
 
 .hero-subtitle {
-  font-size: 1.12rem; color: var(--text-secondary);
-  max-width: 500px; line-height: 1.8; font-weight: 300;
+  font-size: 1.15rem; color: var(--text-secondary);
+  max-width: 520px; line-height: 1.85; font-weight: 300;
   opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
   transition: color var(--transition);
 }
 
+/* ── Pull Quote ── */
+.hero-pullquote {
+  margin: 2.5rem 0 0.5rem;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--teal);
+  font-family: var(--serif);
+  font-size: 1.05rem; font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 440px;
+  opacity: 0; animation: fadeUp 0.9s 0.7s forwards;
+  transition: color var(--transition), border-color var(--transition);
+}
+
 .hero-cta {
   display: flex; gap: 0.75rem; margin-top: 2.5rem;
-  opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+  opacity: 0; animation: fadeUp 0.9s 0.85s forwards;
 }
+
+/* ── Section Divider ── */
+.section-divider {
+  display: flex; justify-content: center; padding: 1rem 0;
+  max-width: var(--max-w); margin: 0 auto;
+}
+.section-divider svg {
+  width: 200px; height: 24px;
+  stroke: var(--border); fill: none;
+  transition: stroke var(--transition);
+}
+
+/* hero-subtitle and hero-cta moved above */
 
 .btn {
   display: inline-flex; align-items: center; gap: 0.5rem;
@@ -660,6 +739,9 @@ footer {
   .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
   .profile-pic { width: 130px; height: 130px; }
   .hero-cta { flex-direction: column; align-items: flex-start; }
+  .hero-botanical { display: none; }
+  .hero h1 .word-line2 { font-size: 0.5em; }
+  .hero-pullquote { font-size: 0.95rem; margin-top: 1.5rem; }
   .blog-card { flex-direction: column; gap: 0.75rem; }
   .blog-number { font-size: 1.5rem; }
   .blog-arrow { display: none; }
@@ -667,7 +749,7 @@ footer {
   .chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
   /* Force ALL animated elements visible on mobile */
   .reveal,
-  .hero-badge, .hero h1, .hero-subtitle, .hero-cta,
+  .hero-badge, .hero h1, .hero-subtitle, .hero-cta, .hero-pullquote,
   .section-header, .project-card, .blog-card,
   .about-text, .values-grid, .contact-box, .value-card,
   .sentiment-box, .sentiment-item, .sentiment-results,
@@ -1031,6 +1113,26 @@ footer {
   </div>
 
   <section class="hero">
+    <!-- Botanical Line Art Background -->
+    <div class="hero-botanical">
+      <svg class="botanical-left" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+        <path d="M150 400 C150 300 80 280 40 220 C10 175 30 120 80 100 C50 140 55 180 80 200 C105 220 140 210 150 180" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M150 400 C150 280 200 250 240 200 C270 160 250 100 200 80 C230 120 220 160 200 180 C175 205 155 195 150 170" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M150 350 C130 310 90 300 60 270" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+        <path d="M150 320 C170 290 210 280 230 250" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+        <path d="M150 280 C135 255 105 250 85 230" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+        <circle cx="40" cy="218" r="3" fill="currentColor" opacity="0.15"/>
+        <circle cx="200" cy="78" r="3" fill="currentColor" opacity="0.15"/>
+        <circle cx="85" cy="228" r="2" fill="currentColor" opacity="0.1"/>
+      </svg>
+      <svg class="botanical-right" viewBox="0 0 250 350" xmlns="http://www.w3.org/2000/svg">
+        <path d="M125 350 C125 260 70 240 40 190 C15 150 35 95 80 75 C55 110 60 145 80 165 C100 185 120 175 125 150" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M125 350 C125 240 180 220 210 170 C235 130 215 75 170 55 C195 90 185 125 165 145 C145 165 130 155 125 135" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M125 300 C110 270 80 260 55 235" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+        <path d="M125 270 C140 245 170 235 190 210" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+    </div>
+
     <!-- Cartoon Wall Frame -->
     <div class="cartoon-frame-wrap" id="cartoonWrap" title="Click to change!">
       <div class="cartoon-nail"></div>
@@ -1040,30 +1142,31 @@ footer {
       </div>
       <div class="cartoon-hint">click to change ✦</div>
     </div>
+
     <div class="hero-badge">
       <span class="badge-dot"></span>
       <span class="typing-wrapper">
         <span id="typing-text">Currently exploring &amp; building</span><span class="typing-cursor"></span>
       </span>
     </div>
-    <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span></h1>
-    <!--
-      TAGLINE — pick one that sounds like you when read aloud.
-      Currently using a quiet, identity-light version that lets the work speak.
-      Other options to swap in if you change your mind:
-
-      A) Curious mind, open notebook. A space where questions become projects,
-         projects become understanding, and every "why" matters.
-
-      B) Walking, watching, and writing about the patterns that connect life
-         to everything else. Every "why" matters.
-    -->
-    <p class="hero-subtitle">A notebook on biology, patterns, and the quiet mathematics of living things. Every <strong>"why"</strong> matters. <span class="wave">👋</span></p>
+    <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span>
+      <span class="word-line2">biology, patterns &amp; the mathematics of living things</span>
+    </h1>
+    <p class="hero-subtitle">A notebook where walks become essays, questions become projects, and every <strong>"why"</strong> leads somewhere unexpected. <span class="wave">👋</span></p>
+    <div class="hero-pullquote">The more you observe, the less you will be confused.</div>
     <div class="hero-cta">
       <a href="poetry.html" class="btn btn-coral">Read my writing ✦</a>
       <a href="#projects" class="btn btn-teal">View projects</a>
     </div>
   </section>
+
+  <!-- Hand-drawn divider -->
+  <div class="section-divider">
+    <svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 12 C30 8, 50 16, 80 12 S130 6, 160 12 S185 16, 200 12" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="100" cy="12" r="3" fill="currentColor" stroke="none" opacity="0.3"/>
+    </svg>
+  </div>
 
   <section id="projects">
     <div class="section-header reveal">
@@ -1093,6 +1196,8 @@ footer {
     </div>
   </section>
 
+  <div class="section-divider"><svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 12 C40 6, 60 18, 100 12 S160 6, 200 12" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="100" cy="12" r="2.5" fill="currentColor" stroke="none" opacity="0.25"/></svg></div>
+
   <section id="writing">
     <div class="section-header reveal">
       <div class="section-chip chip-teal">✍️ Field Notes</div>
@@ -1121,6 +1226,8 @@ footer {
     </div>
   </section>
 
+  <div class="section-divider"><svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 12 C25 16, 55 6, 85 12 S140 18, 170 12 S195 8, 200 12" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="100" cy="12" r="2.5" fill="currentColor" stroke="none" opacity="0.25"/></svg></div>
+
   <!-- ══ Sentiment Section ══ -->
 
   <section id="sentiment" class="sentiment-section">
@@ -1144,6 +1251,8 @@ footer {
       </div>
     </div>
   </section>
+
+  <div class="section-divider"><svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 12 C35 4, 65 20, 100 12 S165 4, 200 12" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="100" cy="12" r="2.5" fill="currentColor" stroke="none" opacity="0.25"/></svg></div>
 
   <section id="about">
     <div class="section-header reveal">
