@@ -236,39 +236,44 @@ body::after {
   font-family: var(--serif);
   font-size: clamp(3.2rem, 9vw, 6.5rem);
   font-weight: 500; line-height: 1.0; letter-spacing: -0.045em;
-  margin-bottom: 2rem;
+  margin-bottom: 0.75rem;
+  max-width: 65%;
   opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
 }
 .hero h1 .word-coral { color: var(--coral); transition: color var(--transition); animation: gentleGlow 4s ease-in-out 2s infinite; }
 .hero h1 .word-violet { color: var(--violet); font-style: italic; transition: color var(--transition); animation: subtleShift 3s ease-in-out 2.5s infinite; }
-.hero h1 .word-line2 {
-  display: block; font-size: 0.35em; font-weight: 400;
-  letter-spacing: -0.01em; color: var(--muted);
-  margin-top: 0.5rem;
-  font-style: italic;
+
+.hero-tagline {
+  font-family: var(--serif);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  font-weight: 400; font-style: italic;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  margin-bottom: 2rem;
+  max-width: 55%;
+  opacity: 0; animation: driftIn 1s 0.7s forwards;
   transition: color var(--transition);
-  opacity: 0; animation: fadeUp 1s 0.8s forwards;
 }
 
 .hero-subtitle {
-  font-size: 1.15rem; color: var(--text-secondary);
-  max-width: 520px; line-height: 1.85; font-weight: 300;
-  opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+  font-size: 1.1rem; color: var(--text-secondary);
+  max-width: 480px; line-height: 1.85; font-weight: 300;
+  opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
   transition: color var(--transition);
 }
 
 /* ── Pull Quote ── */
 .hero-pullquote {
-  margin: 2.5rem 0 0.5rem;
+  margin: 2rem 0 0.5rem;
   padding-left: 1.5rem;
   border-left: 3px solid var(--teal);
   font-family: var(--serif);
-  font-size: 1.05rem; font-weight: 400;
+  font-size: 1rem; font-weight: 400;
   font-style: italic;
   color: var(--muted);
   line-height: 1.7;
-  max-width: 440px;
-  opacity: 0; animation: driftIn 1s 0.9s forwards;
+  max-width: 400px;
+  opacity: 0; animation: driftIn 1s 1s forwards;
   transition: color var(--transition), border-color var(--transition);
 }
 .hero-pullquote:hover {
@@ -277,8 +282,8 @@ body::after {
 }
 
 .hero-cta {
-  display: flex; gap: 0.75rem; margin-top: 2.5rem;
-  opacity: 0; animation: fadeUp 0.9s 0.85s forwards;
+  display: flex; gap: 0.75rem; margin-top: 2rem;
+  opacity: 0; animation: fadeUp 0.9s 1.1s forwards;
 }
 
 /* ── Section Divider ── */
@@ -752,10 +757,11 @@ footer {
   section { padding: 4.5rem 1.5rem; }
   .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
   .profile-pic { width: 130px; height: 130px; }
+  .hero h1 { max-width: 100%; }
+  .hero-tagline { max-width: 100%; }
   .hero-cta { flex-direction: column; align-items: flex-start; }
   .hero-botanical { display: none; }
-  .hero h1 .word-line2 { font-size: 0.32em; }
-  .hero-pullquote { font-size: 0.95rem; margin-top: 1.5rem; }
+  .hero-pullquote { font-size: 0.92rem; margin-top: 1.25rem; }
   .blog-card { flex-direction: column; gap: 0.75rem; }
   .blog-number { font-size: 1.5rem; }
   .blog-arrow { display: none; }
@@ -763,7 +769,7 @@ footer {
   .chat-window { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
   /* Force ALL animated elements visible on mobile */
   .reveal,
-  .hero-badge, .hero h1, .hero-subtitle, .hero-cta, .hero-pullquote,
+  .hero-badge, .hero h1, .hero-tagline, .hero-subtitle, .hero-cta, .hero-pullquote,
   .section-header, .project-card, .blog-card,
   .about-text, .values-grid, .contact-box, .value-card,
   .sentiment-box, .sentiment-item, .sentiment-results,
@@ -1163,9 +1169,8 @@ footer {
         <span id="typing-text">Currently exploring &amp; building</span><span class="typing-cursor"></span>
       </span>
     </div>
-    <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span>
-      <span class="word-line2">biology, patterns &amp; the mathematics of living things</span>
-    </h1>
+    <h1>Exploring<br>the <span class="word-coral">Whys</span><span class="word-violet">?</span></h1>
+    <p class="hero-tagline">biology, patterns &amp; the quiet mathematics of living things</p>
     <p class="hero-subtitle">A notebook where walks become essays, questions become projects, and every <strong>"why"</strong> leads somewhere unexpected. <span class="wave">👋</span></p>
     <div class="hero-pullquote">The more you observe, the less you will be confused.</div>
     <div class="hero-cta">
