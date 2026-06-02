@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On the Edge | Amlan</title>
+  <meta name="description" content="Nothing is predefined. Nothing is predicted as real. Everything stays on the edge. And yet the universe is so well orchestrated.">
+
+  <!-- GoatCounter Analytics -->
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Applause Button -->
+  <script src="https://unpkg.com/applause-button/dist/applause-button.js" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css" />
+
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w-essay: 680px;
+      --radius: 14px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f4f0fa;
+      --bg-alt: #ece6f5;
+      --surface: #faf8fd;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --nav-bg: rgba(253, 248, 243, 0.9);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --nav-bg: rgba(18, 16, 16, 0.9);
+      --dot-color: #332e2c80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    ::selection { background: var(--coral-soft); color: var(--coral); }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+      transition: background-image var(--transition);
+    }
+
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      padding: 0 2.5rem; height: 68px;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.35rem;
+      transition: color var(--transition);
+    }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover { background: var(--coral-soft); color: var(--coral); }
+
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55), background var(--transition);
+      box-shadow: 0 2px 6px rgba(228, 160, 48, 0.3);
+    }
+    [data-theme="dark"] .theme-toggle::after {
+      transform: translateX(20px); background: var(--violet);
+      box-shadow: 0 2px 6px rgba(123, 97, 255, 0.3);
+    }
+    .toggle-label {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.72rem; line-height: 1; pointer-events: none;
+    }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Essay container ── */
+    .essay {
+      max-width: var(--max-w-essay);
+      margin: 0 auto;
+      padding: 9rem 1.75rem 4rem;
+    }
+
+    .essay-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      transition: all 0.3s;
+      margin-bottom: 2.5rem;
+    }
+    .essay-back:hover {
+      background: var(--coral-soft);
+      color: var(--coral);
+      transform: translateX(-3px);
+    }
+
+    .essay-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--violet);
+      background: var(--violet-soft);
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .essay-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.6vw, 3.7rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .essay-subtitle {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .essay-meta {
+      display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.75rem;
+    }
+    .essay-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+    .essay-image {
+      width: 100%;
+      border-radius: var(--radius);
+      margin: 0 0 0.75rem;
+      box-shadow: var(--shadow-md);
+      display: block;
+    }
+    .essay-image-caption {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 2.75rem;
+      font-style: italic;
+    }
+
+    /* ── Essay body typography ── */
+    .essay-body p {
+      font-family: var(--serif);
+      font-size: 1.18rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text);
+      margin-bottom: 1.6rem;
+    }
+    .essay-body p:first-of-type::first-letter {
+      font-family: var(--serif);
+      font-size: 3.6rem;
+      font-weight: 600;
+      float: left;
+      line-height: 0.9;
+      padding: 0.35rem 0.65rem 0 0;
+      color: var(--violet);
+    }
+    .essay-body p strong { font-weight: 600; color: var(--text); }
+    .essay-body p em { color: var(--text-secondary); }
+    .essay-body .pivot {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--violet);
+      text-align: center;
+      margin: 2.2rem 0 2.2rem;
+      line-height: 1.4;
+    }
+
+    /* ── Closing flourish ── */
+    .essay-end {
+      text-align: center;
+      margin: 3rem 0 2.5rem;
+      color: var(--muted);
+      font-size: 1.4rem;
+      letter-spacing: 0.6rem;
+    }
+
+    .essay-location {
+      font-family: var(--serif);
+      font-style: italic;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── Applause button ── */
+    .applause-block {
+      text-align: center;
+      margin: 3rem 0 1.5rem;
+      padding: 2rem 1rem;
+    }
+    .applause-block applause-button {
+      width: 62px;
+      height: 62px;
+      --applause-button-color: var(--coral);
+    }
+    .applause-label {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: 0.85rem;
+    }
+    .applause-sublabel {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── Footer card ── */
+    .essay-footer {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-top: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .essay-footer-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+    .essay-footer-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+    .essay-footer-links {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+    }
+    .essay-footer-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.82rem; font-weight: 500;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    .essay-footer-link.primary {
+      background: var(--coral); color: #fff;
+    }
+    .essay-footer-link.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(232, 99, 74, 0.3);
+    }
+    .essay-footer-link.secondary {
+      background: var(--bg-alt); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .essay-footer-link.secondary:hover {
+      background: var(--teal-soft); color: var(--teal); border-color: var(--teal);
+    }
+
+    /* ── Footer ── */
+    footer {
+      max-width: var(--max-w-essay);
+      margin: 0 auto;
+      padding: 2.5rem 1.75rem 3rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Mobile ── */
+    .hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+      background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-nav {
+      display: none;
+      position: fixed; top: 68px; left: 0; right: 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      flex-direction: column; gap: 0.25rem;
+      z-index: 99;
+      transform: translateY(-10px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mobile-nav.open {
+      display: flex;
+      transform: translateY(0); opacity: 1;
+    }
+    .mobile-nav a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      padding: 0.6rem 0.75rem; border-radius: 10px;
+      transition: all 0.25s;
+    }
+    .mobile-nav a:hover { background: var(--coral-soft); color: var(--coral); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none !important; }
+      .hamburger { display: flex; }
+      .essay { padding: 7rem 1.25rem 3rem; }
+      .essay-body p { font-size: 1.08rem; line-height: 1.7; }
+      .essay-body p:first-of-type::first-letter { font-size: 3rem; }
+      .essay-body .pivot { font-size: 1.2rem; }
+    }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px) scale(0.85);
+      transition: opacity 0.4s, transform 0.4s, background 0.3s, color 0.3s;
+      z-index: 150;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+    }
+    .back-to-top.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .back-to-top:hover {
+      background: var(--coral); color: #fff;
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 10px 28px rgba(232, 99, 74, 0.3);
+    }
+    @media (max-width: 600px) {
+      .back-to-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#writing">Field Notes</a></li>
+        <li><a href="poetry.html">Poetry</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="index.html#about">About</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#writing">Field Notes</a>
+    <a href="poetry.html">Poetry</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="index.html#about">About</a>
+  </div>
+
+  <article class="essay">
+    <a href="index.html#writing" class="essay-back">← Back to Field Notes</a>
+
+    <div class="essay-chip">✍️ Field Note · 03</div>
+
+    <h1 class="essay-title">On the Edge</h1>
+    <p class="essay-subtitle">Nothing is predefined. Nothing is predicted as real. Everything stays on the edge. And yet the universe is so well orchestrated.</p>
+
+    <div class="essay-meta">
+      <span>📅 June 2026</span>
+      <span>📍 Brussels</span>
+      <span>⏱ 5 min read</span>
+    </div>
+
+    <img src="photos/on-the-edge-light.jpg" alt="On the edge — light and balance" class="essay-image">
+    <p class="essay-image-caption">Brussels, June 2026.</p>
+
+    <div class="essay-body">
+      <p>I always think that we all live on the edge. And I observe this edge on a daily basis. Nothing is predefined. Nothing is predicted as real. Everything stays on the edge. And yet the universe is so well orchestrated.</p>
+
+      <p>This is the thought I keep returning to.</p>
+
+      <p>When I watch videos of space, I see how Saturn is, and how Jupiter is. I see how the Sun annihilates itself, slowly, over billions of years. They are all so different. But all of them obey one thing. <strong>Gravity.</strong> It pulls everything inward and holds the planets, the stars, the galaxies. It is the weakest of the forces, but it never lets go. It is not strong. It is patient. It wins the long game by waiting.</p>
+
+      <p>But gravity is not the whole story, and that is what unsettles me and pulls me in at the same time. There is dark matter, which we cannot see and know only by its pull. And there is dark energy, which drives the deep space deeper, stretching the emptiness between the galaxies further apart. So much is unknown. I sometimes wonder, just thinking out loud, what if that unknown is also gravity. Gravity from some other system we cannot reach. We know dark matter only as a pull and nothing else. So maybe it already is gravity from somewhere beyond us.</p>
+
+      <p class="pivot">The more I observe, the more I see one pattern everywhere. Balance.</p>
+
+      <p>A star burns, and the burning pushes outward while gravity pulls inward, and for billions of years the two stay equal. When the fuel ends, gravity wins, and the star collapses. A galaxy holds its shape because the stars are moving, and their motion balances the pull. Everywhere, two opposite things lean against each other. Nothing stable is held by one force alone. Gravity is always one hand. Something else is always the other.</p>
+
+      <p>But gravity only decides where things go. It does not decide when. The direction everything moves toward is not gravity. It is <em>entropy</em>. The hot becomes cold. The gathered becomes scattered. Gravity builds the stars, and entropy will one day empty them. We are alive in the brief middle of it. Late enough that the stars exist. Early enough that the cold has not yet arrived.</p>
+
+      <p>For a long time I also believed the total energy of everything must stay the same, that every change is balanced out again. Inside a closed system this is true. But the whole universe does not have to balance. As space stretches, light loses its energy on the way, and that energy goes nowhere. And there is a stranger possibility: that the total energy of the universe might be exactly zero, the energy of all the matter cancelled by the pull of gravity itself. If that is true, then the universe cost nothing to make. <strong>Something came from nothing, because nothing and something quietly add up to the same.</strong></p>
+
+      <p class="pivot">So this is why I keep saying we live on the edge.</p>
+
+      <p>But slowly I have understood that the edge is not the dangerous place. It is the only place where anything happens. Too much order, and nothing moves. Too much chaos, and nothing holds. The stars, the weather, the cell, the thought — they all live in the narrow band in between. We do not survive in spite of the edge. The edge is the very thing that makes us.</p>
+
+      <p>And the strangest part is this. The edge has produced something that can turn around and see the edge. That is me, observing, every day. A small fold of the universe that looked back and noticed the balance it is standing on. Most of the universe is balanced without ever knowing it. I get to know it.</p>
+
+      <p>Nothing is predefined. Nothing is predicted as real. And it is, somehow, beautifully arranged. I do not think I need to resolve the two. I only need to keep observing the edge.</p>
+    </div>
+
+    <div class="essay-end">✦ ✦ ✦</div>
+
+    <p class="essay-location">Brussels — June 2026</p>
+
+    <div class="applause-block">
+      <applause-button color="hsl(11, 79%, 60%)" multiclap="true"></applause-button>
+      <div class="applause-label">If this meant something, press the heart.</div>
+      <div class="applause-sublabel">You can tap more than once — and no sign-in needed.</div>
+    </div>
+
+    <div class="essay-footer">
+      <div class="essay-footer-title">Have a thought?</div>
+      <p class="essay-footer-desc">The best conversations on this site happen off-page. If something here resonated, or you disagree, or you want to recommend a book — send a message on LinkedIn. I read everything.</p>
+      <div class="essay-footer-links">
+        <a href="index.html#writing" class="essay-footer-link primary">More Field Notes →</a>
+        <a href="lilac.html" class="essay-footer-link secondary">← Previous: How Does the Lilac Know?</a>
+        <a href="https://linkedin.com/in/pradhanamlan" target="_blank" class="essay-footer-link secondary">Message on LinkedIn</a>
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    © 2026 Amlan. Observed slowly, written quietly.
+  </footer>
+
+  <a href="#" class="back-to-top" id="backToTop" aria-label="Back to top">↑</a>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      btt.classList.toggle('visible', window.scrollY > 400);
+    });
+  </script>
+</body>
+</html>
