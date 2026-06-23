@@ -188,11 +188,11 @@ body::after {
   position: absolute;
   stroke: var(--teal);
   fill: none;
-  opacity: 0.3;
+  opacity: 0.28;
   stroke-width: 2;
   transition: stroke var(--transition), opacity var(--transition);
 }
-[data-theme="dark"] .hero-botanical svg { opacity: 0.18; }
+[data-theme="dark"] .hero-botanical svg { opacity: 0.15; }
 .botanical-left {
   left: -40px; top: 20%; width: 320px; height: 420px;
   animation: botanicalSway 8s ease-in-out infinite;
@@ -1187,20 +1187,66 @@ footer {
     <!-- Botanical Line Art Background -->
     <div class="hero-botanical">
       <svg class="botanical-left" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
-        <path d="M150 400 C150 300 80 280 40 220 C10 175 30 120 80 100 C50 140 55 180 80 200 C105 220 140 210 150 180" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M150 400 C150 280 200 250 240 200 C270 160 250 100 200 80 C230 120 220 160 200 180 C175 205 155 195 150 170" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M150 350 C130 310 90 300 60 270" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-        <path d="M150 320 C170 290 210 280 230 250" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-        <path d="M150 280 C135 255 105 250 85 230" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-        <circle cx="40" cy="218" r="3" fill="currentColor" opacity="0.15"/>
-        <circle cx="200" cy="78" r="3" fill="currentColor" opacity="0.15"/>
-        <circle cx="85" cy="228" r="2" fill="currentColor" opacity="0.1"/>
+        <defs>
+          <filter id="sk-bot-l" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="4" seed="5" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+        <g filter="url(#sk-bot-l)" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- main left stem -->
+          <path d="M150 400 C148 320 100 295 62 248 C30 210 28 158 68 128 C44 162 46 198 68 218 C90 238 136 228 148 196" stroke-width="2.2"/>
+          <!-- main right stem -->
+          <path d="M150 400 C152 305 196 270 232 222 C262 182 248 122 202 100 C228 136 222 172 200 192 C174 214 154 202 150 174" stroke-width="2.2"/>
+          <!-- side branches left -->
+          <path d="M148 340 C124 318 88 314 58 290" stroke-width="1.4" opacity="0.7"/>
+          <path d="M149 305 C130 284 100 278 78 258" stroke-width="1.2" opacity="0.6"/>
+          <path d="M149 268 C138 250 116 244 96 230" stroke-width="1" opacity="0.5"/>
+          <!-- side branches right -->
+          <path d="M151 325 C172 302 204 296 226 272" stroke-width="1.4" opacity="0.7"/>
+          <path d="M151 288 C168 268 196 260 214 240" stroke-width="1.2" opacity="0.6"/>
+          <!-- leaf marks left -->
+          <path d="M58 290 C48 278 52 264 64 268 C52 272 50 284 58 290 Z" stroke-width="1.3" opacity="0.6"/>
+          <path d="M68 128 C55 118 54 104 66 106 C56 112 56 122 68 128 Z" stroke-width="1.3" opacity="0.55"/>
+          <!-- leaf marks right -->
+          <path d="M226 272 C236 260 248 262 244 274 C240 262 228 264 226 272 Z" stroke-width="1.3" opacity="0.6"/>
+          <path d="M202 100 C212 88 224 90 220 102 C216 90 204 92 202 100 Z" stroke-width="1.3" opacity="0.55"/>
+          <!-- tiny detail dots/buds -->
+          <circle cx="58" cy="290" r="2.5" fill="currentColor" opacity="0.18"/>
+          <circle cx="68" cy="128" r="2.5" fill="currentColor" opacity="0.15"/>
+          <circle cx="226" cy="272" r="2" fill="currentColor" opacity="0.16"/>
+          <circle cx="202" cy="100" r="2.5" fill="currentColor" opacity="0.14"/>
+          <!-- extra cross-hatching on main stems -->
+          <path d="M120 355 C126 348 130 352 124 358" stroke-width="1" opacity="0.35"/>
+          <path d="M170 340 C176 333 180 337 174 343" stroke-width="1" opacity="0.35"/>
+        </g>
       </svg>
       <svg class="botanical-right" viewBox="0 0 250 350" xmlns="http://www.w3.org/2000/svg">
-        <path d="M125 350 C125 260 70 240 40 190 C15 150 35 95 80 75 C55 110 60 145 80 165 C100 185 120 175 125 150" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M125 350 C125 240 180 220 210 170 C235 130 215 75 170 55 C195 90 185 125 165 145 C145 165 130 155 125 135" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M125 300 C110 270 80 260 55 235" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-        <path d="M125 270 C140 245 170 235 190 210" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+        <defs>
+          <filter id="sk-bot-r" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="4" seed="9" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+        <g filter="url(#sk-bot-r)" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- main stems -->
+          <path d="M125 350 C123 275 72 255 44 210 C18 172 34 118 76 98 C52 130 56 162 76 182 C96 202 118 192 122 168" stroke-width="2.2"/>
+          <path d="M125 350 C127 262 176 238 206 188 C230 150 216 96 174 76 C198 108 190 142 170 162 C146 184 128 172 124 148" stroke-width="2.2"/>
+          <!-- branches -->
+          <path d="M123 295 C106 276 78 270 56 250" stroke-width="1.4" opacity="0.7"/>
+          <path d="M124 260 C110 242 84 236 64 218" stroke-width="1.2" opacity="0.6"/>
+          <path d="M126 318 C142 298 166 290 184 268" stroke-width="1.4" opacity="0.7"/>
+          <path d="M126 282 C140 264 162 256 178 238" stroke-width="1.2" opacity="0.6"/>
+          <!-- leaf marks -->
+          <path d="M56 250 C46 240 50 228 60 230 C50 234 48 244 56 250 Z" stroke-width="1.3" opacity="0.6"/>
+          <path d="M76 98 C66 88 66 76 76 78 C68 84 68 92 76 98 Z" stroke-width="1.3" opacity="0.55"/>
+          <path d="M184 268 C194 258 204 260 200 270 C196 260 186 262 184 268 Z" stroke-width="1.3" opacity="0.6"/>
+          <path d="M174 76 C184 66 194 68 190 78 C186 68 176 70 174 76 Z" stroke-width="1.3" opacity="0.55"/>
+          <!-- buds -->
+          <circle cx="56" cy="250" r="2.2" fill="currentColor" opacity="0.17"/>
+          <circle cx="76" cy="98" r="2.2" fill="currentColor" opacity="0.15"/>
+          <circle cx="184" cy="268" r="2" fill="currentColor" opacity="0.16"/>
+        </g>
       </svg>
     </div>
 
