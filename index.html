@@ -978,7 +978,7 @@ footer {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Cartoon Wall Frame ── */
+/* ── Sketch Wall Frame ── */
 .cartoon-frame-wrap {
   position: absolute; right: 0; top: 22%;
   transform: translateY(-50%);
@@ -986,39 +986,88 @@ footer {
   cursor: pointer; user-select: none;
   opacity: 0; animation: fadeUp 1s 1s forwards;
 }
+
+/* pin head */
 .cartoon-nail {
-  width: 10px; height: 14px; background: var(--muted);
-  border-radius: 2px 2px 4px 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  position: relative; z-index: 2;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e8c97a, #b5942a);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35), inset 0 1px 2px rgba(255,255,255,0.3);
+  position: relative; z-index: 3;
 }
-.cartoon-nail::before {
+/* pin shaft */
+.cartoon-nail::after {
   content: ''; position: absolute;
-  top: -5px; left: 50%; transform: translateX(-50%);
-  width: 14px; height: 8px; border-radius: 50% 50% 0 0;
-  background: var(--muted);
+  top: 9px; left: 50%; transform: translateX(-50%);
+  width: 3px; height: 10px;
+  background: linear-gradient(to bottom, #c0a050, #8a7030);
+  border-radius: 0 0 2px 2px;
 }
-.cartoon-strings { position: relative; width: 110px; height: 20px; }
-.cartoon-strings::before, .cartoon-strings::after {
-  content: ''; position: absolute; top: 0;
-  height: 2px; width: 60px;
-  background: var(--muted); opacity: 0.45; border-radius: 1px;
-}
-.cartoon-strings::before { left: 50%; transform-origin: left; transform: rotate(28deg); }
-.cartoon-strings::after  { right: 50%; transform-origin: right; transform: rotate(-28deg); }
+
+.cartoon-strings { display: none; }
+
 .cartoon-frame {
-  width: 190px; background: var(--surface);
-  border: 4px solid var(--border); border-radius: 10px; padding: 10px;
-  box-shadow: var(--shadow-lg), inset 0 0 0 3px var(--bg-alt);
-  transform: rotate(-2.5deg);
-  transition: transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.3s;
+  width: 200px;
+  margin-top: 6px;
+  background: #fdf8ef;
+  border: none;
+  border-radius: 3px;
+  padding: 14px 14px 22px;
+  /* rough hand-torn border look */
+  box-shadow:
+    0 1px 0 #d4c9a8,
+    1px 0 0 #d4c9a8,
+    0 -1px 0 #c9bfa0,
+    -1px 0 0 #c9bfa0,
+    2px 3px 0 #c0b590,
+    3px 5px 0 rgba(160,140,100,0.15),
+    4px 8px 18px rgba(0,0,0,0.18),
+    6px 12px 30px rgba(0,0,0,0.10);
+  transform: rotate(-3deg);
+  transition: transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55), box-shadow 0.35s;
+  position: relative;
 }
-.cartoon-frame:hover  { transform: rotate(1.5deg) scale(1.05); box-shadow: var(--shadow-lg), 0 0 0 4px var(--coral-soft); }
-.cartoon-frame:active { transform: rotate(0deg) scale(0.96); }
-.cartoon-frame svg { display: block; width: 100%; height: auto; border-radius: 4px; }
+/* torn left edge texture */
+.cartoon-frame::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 3px;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(180,160,110,0.07) 28px,
+      rgba(180,160,110,0.07) 29px
+    );
+  pointer-events: none;
+}
+[data-theme="dark"] .cartoon-frame {
+  background: #1e1c17;
+  box-shadow:
+    0 1px 0 #3a3020,
+    1px 0 0 #3a3020,
+    0 -1px 0 #2e2818,
+    -1px 0 0 #2e2818,
+    2px 3px 0 #28220e,
+    4px 8px 18px rgba(0,0,0,0.5),
+    6px 12px 30px rgba(0,0,0,0.3);
+}
+.cartoon-frame:hover {
+  transform: rotate(1deg) scale(1.04) translateY(-3px);
+  box-shadow:
+    0 1px 0 #d4c9a8, 1px 0 0 #d4c9a8,
+    0 -1px 0 #c9bfa0, -1px 0 0 #c9bfa0,
+    2px 3px 0 #c0b590,
+    6px 14px 28px rgba(0,0,0,0.22),
+    8px 18px 40px rgba(0,0,0,0.12);
+}
+.cartoon-frame:active { transform: rotate(0deg) scale(0.97); }
+.cartoon-frame svg { display: block; width: 100%; height: auto; }
 .cartoon-hint {
-  margin-top: 0.65rem; font-size: 0.68rem; color: var(--muted);
-  font-weight: 500; letter-spacing: 0.05em; text-align: center;
+  margin-top: 0.7rem; font-size: 0.65rem; color: var(--muted);
+  font-weight: 500; letter-spacing: 0.07em; text-align: center;
+  font-style: italic;
   transition: color 0.3s;
 }
 .cartoon-frame-wrap:hover .cartoon-hint { color: var(--coral); }
@@ -1661,161 +1710,150 @@ footer {
 
 
 <script>
-  // ── Cartoon Wall Frame ──
+  // ── Sketch Wall Frame ──
+  // shared sketch filter + paper bg helper
+  const DEFS = `<defs>
+    <filter id="sk" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>`;
+  const S = 'stroke="#2a2018" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+  const BG = `<rect width="160" height="160" fill="none"/>`;
+
   const cartoons = [
-    // 1: Happy Sun
-    `<rect width="160" height="160" fill="#FFF9E6"/>
-     <circle cx="80" cy="80" r="38" fill="#FFD93D" stroke="#F4B400" stroke-width="3"/>
-     <circle cx="68" cy="73" r="5" fill="#333"/>
-     <circle cx="92" cy="73" r="5" fill="#333"/>
-     <circle cx="70" cy="72" r="2" fill="#fff"/>
-     <circle cx="94" cy="72" r="2" fill="#fff"/>
-     <path d="M62 93 Q80 108 98 93" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-     <circle cx="64" cy="92" r="4" fill="#FF8A80" opacity="0.6"/>
-     <circle cx="96" cy="92" r="4" fill="#FF8A80" opacity="0.6"/>
-     <line x1="80" y1="32" x2="80" y2="22" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="114" y1="46" x2="121" y2="39" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="128" y1="80" x2="138" y2="80" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="114" y1="114" x2="121" y2="121" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="80" y1="128" x2="80" y2="138" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="46" y1="114" x2="39" y2="121" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="32" y1="80" x2="22" y2="80" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>
-     <line x1="46" y1="46" x2="39" y2="39" stroke="#FFD93D" stroke-width="4" stroke-linecap="round"/>`,
+    // 1 — Mountains & moon
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <path d="M10 130 L55 58 L75 90 L95 45 L140 130 Z" ${S} stroke-width="2"/>
+       <path d="M10 130 Q75 118 140 130" ${S} stroke-width="1.5" opacity="0.4"/>
+       <circle cx="120" cy="28" r="14" ${S} stroke-width="2"/>
+       <path d="M126 20 Q138 28 126 36" ${S} stroke-width="2"/>
+       <line x1="30" y1="105" x2="50" y2="105" ${S} stroke-width="1.2" opacity="0.5"/>
+       <line x1="28" y1="112" x2="52" y2="112" ${S} stroke-width="1.2" opacity="0.5"/>
+       <path d="M58 80 Q62 74 68 80" ${S} stroke-width="1.2" opacity="0.55"/>
+       <path d="M70 72 Q76 66 82 72" ${S} stroke-width="1.2" opacity="0.55"/>
+     </g>`,
 
-    // 2: Smiling Cat
-    `<rect width="160" height="160" fill="#FFF0FB"/>
-     <ellipse cx="80" cy="92" rx="42" ry="38" fill="#FFB6C1" stroke="#FF80AB" stroke-width="2.5"/>
-     <polygon points="45,62 58,85 32,85" fill="#FFB6C1" stroke="#FF80AB" stroke-width="2"/>
-     <polygon points="115,62 128,85 102,85" fill="#FFB6C1" stroke="#FF80AB" stroke-width="2"/>
-     <circle cx="68" cy="88" r="6" fill="#333"/>
-     <circle cx="92" cy="88" r="6" fill="#333"/>
-     <circle cx="70" cy="86" r="2.5" fill="#fff"/>
-     <circle cx="94" cy="86" r="2.5" fill="#fff"/>
-     <ellipse cx="80" cy="98" rx="5" ry="4" fill="#FF80AB"/>
-     <path d="M65 104 Q80 116 95 104" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
-     <line x1="50" y1="97" x2="68" y2="100" stroke="#888" stroke-width="1.5"/>
-     <line x1="50" y1="103" x2="68" y2="103" stroke="#888" stroke-width="1.5"/>
-     <line x1="92" y1="100" x2="110" y2="97" stroke="#888" stroke-width="1.5"/>
-     <line x1="92" y1="103" x2="110" y2="103" stroke="#888" stroke-width="1.5"/>
-     <circle cx="66" cy="104" r="4" fill="#FF80AB" opacity="0.5"/>
-     <circle cx="94" cy="104" r="4" fill="#FF80AB" opacity="0.5"/>`,
+    // 2 — Sailboat at sea
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <path d="M80 120 L80 38" ${S} stroke-width="2"/>
+       <path d="M80 42 L115 105 L80 105 Z" ${S} stroke-width="1.8"/>
+       <path d="M80 52 L50 98 L80 98 Z" ${S} stroke-width="1.8" opacity="0.7"/>
+       <path d="M35 120 Q58 113 80 118 Q102 124 130 118" ${S} stroke-width="2.5"/>
+       <path d="M28 128 Q55 120 80 126 Q105 131 135 126" ${S} stroke-width="2.5"/>
+       <ellipse cx="26" cy="50" rx="14" ry="6" ${S} stroke-width="1.5"/>
+       <path d="M26 44 Q40 42 38 50" ${S} stroke-width="1.5"/>
+       <path d="M115 40 Q122 36 120 44 Q128 40 126 48" ${S} stroke-width="1.2" opacity="0.6"/>
+     </g>`,
 
-    // 3: Grinning Robot
-    `<rect width="160" height="160" fill="#E8F5FF"/>
-     <rect x="42" y="55" width="76" height="68" rx="12" fill="#90CAF9" stroke="#42A5F5" stroke-width="2.5"/>
-     <rect x="62" y="42" width="36" height="18" rx="6" fill="#90CAF9" stroke="#42A5F5" stroke-width="2"/>
-     <line x1="80" y1="42" x2="80" y2="35" stroke="#42A5F5" stroke-width="3"/>
-     <circle cx="80" cy="32" r="5" fill="#FFD93D" stroke="#F4B400" stroke-width="2"/>
-     <rect x="55" y="68" width="22" height="18" rx="5" fill="#fff" stroke="#42A5F5" stroke-width="1.5"/>
-     <rect x="83" y="68" width="22" height="18" rx="5" fill="#fff" stroke="#42A5F5" stroke-width="1.5"/>
-     <circle cx="66" cy="77" r="6" fill="#1565C0"/>
-     <circle cx="94" cy="77" r="6" fill="#1565C0"/>
-     <circle cx="68" cy="75" r="2.5" fill="#fff"/>
-     <circle cx="96" cy="75" r="2.5" fill="#fff"/>
-     <rect x="57" y="98" width="46" height="14" rx="5" fill="#fff" stroke="#42A5F5" stroke-width="1.5"/>
-     <rect x="61" y="102" width="7" height="6" rx="1" fill="#4CAF50"/>
-     <rect x="71" y="102" width="7" height="6" rx="1" fill="#FFD93D"/>
-     <rect x="81" y="102" width="7" height="6" rx="1" fill="#FF7043"/>
-     <rect x="91" y="102" width="7" height="6" rx="1" fill="#4CAF50"/>
-     <rect x="28" y="65" width="14" height="10" rx="4" fill="#90CAF9" stroke="#42A5F5" stroke-width="2"/>
-     <rect x="118" y="65" width="14" height="10" rx="4" fill="#90CAF9" stroke="#42A5F5" stroke-width="2"/>`,
+    // 3 — Lone tree with birds
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <line x1="80" y1="135" x2="80" y2="68" ${S} stroke-width="3"/>
+       <line x1="80" y1="100" x2="55" y2="80" ${S} stroke-width="2"/>
+       <line x1="80" y1="88" x2="105" y2="72" ${S} stroke-width="2"/>
+       <line x1="80" y1="78" x2="62" y2="60" ${S} stroke-width="1.5"/>
+       <line x1="80" y1="110" x2="105" y2="96" ${S} stroke-width="1.8"/>
+       <ellipse cx="80" cy="52" rx="28" ry="24" ${S} stroke-width="2"/>
+       <path d="M68 46 Q73 40 78 46" ${S} stroke-width="1.3"/>
+       <path d="M84 42 Q89 36 94 42" ${S} stroke-width="1.3"/>
+       <path d="M20 55 Q26 48 32 55" ${S} stroke-width="1.5"/>
+       <path d="M120 38 Q127 31 134 38" ${S} stroke-width="1.5"/>
+       <path d="M105 62 Q111 56 117 62" ${S} stroke-width="1.3"/>
+       <path d="M10 130 Q80 122 155 130" ${S} stroke-width="1.5" opacity="0.4"/>
+     </g>`,
 
-    // 4: Happy Frog
-    `<rect width="160" height="160" fill="#F0FFF4"/>
-     <ellipse cx="80" cy="95" rx="44" ry="36" fill="#69F0AE" stroke="#00C853" stroke-width="2.5"/>
-     <ellipse cx="57" cy="62" rx="18" ry="16" fill="#69F0AE" stroke="#00C853" stroke-width="2"/>
-     <ellipse cx="103" cy="62" rx="18" ry="16" fill="#69F0AE" stroke="#00C853" stroke-width="2"/>
-     <circle cx="57" cy="62" r="10" fill="#fff"/>
-     <circle cx="103" cy="62" r="10" fill="#fff"/>
-     <circle cx="57" cy="63" r="6" fill="#1B5E20"/>
-     <circle cx="103" cy="63" r="6" fill="#1B5E20"/>
-     <circle cx="59" cy="61" r="2.5" fill="#fff"/>
-     <circle cx="105" cy="61" r="2.5" fill="#fff"/>
-     <ellipse cx="80" cy="100" rx="28" ry="14" fill="#A5D6A7" opacity="0.6"/>
-     <path d="M58 100 Q80 118 102 100" fill="#fff" stroke="#00C853" stroke-width="2"/>
-     <circle cx="68" cy="99" r="5" fill="#FF8A80" opacity="0.55"/>
-     <circle cx="92" cy="99" r="5" fill="#FF8A80" opacity="0.55"/>
-     <ellipse cx="72" cy="106" rx="5" ry="3" fill="#FFD93D"/>
-     <ellipse cx="88" cy="106" rx="5" ry="3" fill="#FFD93D"/>`,
+    // 4 — Hot air balloon
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <path d="M80 20 C38 20 22 55 30 80 C36 98 55 108 80 108 C105 108 124 98 130 80 C138 55 122 20 80 20 Z" ${S} stroke-width="2"/>
+       <path d="M30 80 Q80 68 130 80" ${S} stroke-width="1.2" opacity="0.5"/>
+       <path d="M24 62 Q80 52 136 62" ${S} stroke-width="1.2" opacity="0.4"/>
+       <path d="M80 20 L80 108" ${S} stroke-width="1.2" opacity="0.4"/>
+       <line x1="62" y1="108" x2="55" y2="128" ${S} stroke-width="1.5"/>
+       <line x1="98" y1="108" x2="105" y2="128" ${S} stroke-width="1.5"/>
+       <rect x="55" y="127" width="50" height="20" rx="4" ${S} stroke-width="1.8"/>
+       <path d="M20 75 Q30 68 22 62" ${S} stroke-width="1.2" opacity="0.5"/>
+       <path d="M140 75 Q130 68 138 62" ${S} stroke-width="1.2" opacity="0.5"/>
+     </g>`,
 
-    // 5: Cheerful Bear
-    `<rect width="160" height="160" fill="#FFF8E7"/>
-     <ellipse cx="80" cy="92" rx="44" ry="40" fill="#FFCC80" stroke="#FFA726" stroke-width="2.5"/>
-     <circle cx="52" cy="58" r="18" fill="#FFCC80" stroke="#FFA726" stroke-width="2"/>
-     <circle cx="108" cy="58" r="18" fill="#FFCC80" stroke="#FFA726" stroke-width="2"/>
-     <circle cx="52" cy="60" r="10" fill="#FFB74D"/>
-     <circle cx="108" cy="60" r="10" fill="#FFB74D"/>
-     <ellipse cx="80" cy="103" rx="24" ry="14" fill="#FFB74D"/>
-     <circle cx="68" cy="88" r="6.5" fill="#4E342E"/>
-     <circle cx="92" cy="88" r="6.5" fill="#4E342E"/>
-     <circle cx="70" cy="86" r="2.5" fill="#fff"/>
-     <circle cx="94" cy="86" r="2.5" fill="#fff"/>
-     <ellipse cx="80" cy="100" rx="6" ry="5" fill="#4E342E"/>
-     <path d="M63 108 Q80 122 97 108" fill="none" stroke="#4E342E" stroke-width="3" stroke-linecap="round"/>
-     <circle cx="64" cy="107" r="5" fill="#FF8A80" opacity="0.55"/>
-     <circle cx="96" cy="107" r="5" fill="#FF8A80" opacity="0.55"/>`,
+    // 5 — Bicycle
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <circle cx="45" cy="105" r="28" ${S} stroke-width="2.2"/>
+       <circle cx="115" cy="105" r="28" ${S} stroke-width="2.2"/>
+       <circle cx="45" cy="105" r="4" ${S} stroke-width="1.5"/>
+       <circle cx="115" cy="105" r="4" ${S} stroke-width="1.5"/>
+       <path d="M45 105 L72 65 L115 105" ${S} stroke-width="2"/>
+       <path d="M72 65 L90 65" ${S} stroke-width="2"/>
+       <path d="M80 65 L90 52 M80 65 L70 52" ${S} stroke-width="1.8"/>
+       <path d="M72 65 L62 48" ${S} stroke-width="1.8"/>
+       <path d="M56 46 L68 46" ${S} stroke-width="2.2"/>
+       <path d="M115 105 L115 72 Q115 62 108 58" ${S} stroke-width="1.8"/>
+       <path d="M103 56 L116 56" ${S} stroke-width="2"/>
+     </g>`,
 
-    // 6: Laughing Star
-    `<rect width="160" height="160" fill="#FFFDE7"/>
-     <polygon points="80,22 91,58 130,58 99,78 110,114 80,94 50,114 61,78 30,58 69,58" fill="#FFD93D" stroke="#F4B400" stroke-width="2"/>
-     <circle cx="70" cy="72" r="5.5" fill="#333"/>
-     <circle cx="90" cy="72" r="5.5" fill="#333"/>
-     <circle cx="72" cy="70" r="2" fill="#fff"/>
-     <circle cx="92" cy="70" r="2" fill="#fff"/>
-     <path d="M63 86 Q80 100 97 86" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-     <path d="M63 86 Q80 100 97 86" fill="#fff" opacity="0.5"/>
-     <circle cx="65" cy="85" r="4" fill="#FF8A80" opacity="0.6"/>
-     <circle cx="95" cy="85" r="4" fill="#FF8A80" opacity="0.6"/>
-     <circle cx="80" cy="93" r="3" fill="#FFB6C1" opacity="0.7"/>`,
+    // 6 — Cup of tea / coffee
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <path d="M40 75 L50 135 L110 135 L120 75 Z" ${S} stroke-width="2.2"/>
+       <path d="M38 76 Q80 68 122 76" ${S} stroke-width="2"/>
+       <path d="M120 85 Q140 85 138 100 Q136 115 120 112" ${S} stroke-width="2"/>
+       <path d="M62 58 Q58 44 66 36 Q70 30 64 22" ${S} stroke-width="1.8"/>
+       <path d="M80 54 Q76 40 84 32 Q88 26 82 18" ${S} stroke-width="1.8"/>
+       <path d="M98 58 Q94 44 102 36 Q106 30 100 22" ${S} stroke-width="1.8"/>
+       <path d="M50 118 Q80 110 110 118" ${S} stroke-width="1.2" opacity="0.4"/>
+       <path d="M48 128 Q80 120 112 128" ${S} stroke-width="1.2" opacity="0.4"/>
+     </g>`,
 
-    // 7: Happy Cloud
-    `<rect width="160" height="160" fill="#E3F2FD"/>
-     <ellipse cx="80" cy="90" rx="50" ry="32" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
-     <circle cx="55" cy="80" r="22" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
-     <circle cx="80" cy="70" r="28" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
-     <circle cx="108" cy="80" r="20" fill="#fff" stroke="#90CAF9" stroke-width="2"/>
-     <circle cx="68" cy="88" r="6" fill="#333"/>
-     <circle cx="92" cy="88" r="6" fill="#333"/>
-     <circle cx="70" cy="86" r="2.5" fill="#fff"/>
-     <circle cx="94" cy="86" r="2.5" fill="#fff"/>
-     <path d="M64 100 Q80 114 96 100" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-     <circle cx="65" cy="100" r="4.5" fill="#FF8A80" opacity="0.55"/>
-     <circle cx="95" cy="100" r="4.5" fill="#FF8A80" opacity="0.55"/>
-     <circle cx="80" cy="52" r="5" fill="#FFD93D"/>
-     <line x1="64" y1="120" x2="60" y2="138" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
-     <line x1="80" y1="122" x2="80" y2="140" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>
-     <line x1="96" y1="120" x2="100" y2="138" stroke="#90CAF9" stroke-width="3" stroke-linecap="round"/>`,
+    // 7 — Lightbulb idea
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <path d="M80 18 C52 18 34 38 34 60 C34 78 46 90 55 100 L55 118 L105 118 L105 100 C114 90 126 78 126 60 C126 38 108 18 80 18 Z" ${S} stroke-width="2.2"/>
+       <line x1="55" y1="108" x2="105" y2="108" ${S} stroke-width="1.8"/>
+       <line x1="57" y1="118" x2="103" y2="118" ${S} stroke-width="1.8"/>
+       <path d="M65 128 L95 128" ${S} stroke-width="2.2"/>
+       <path d="M70 135 L90 135" ${S} stroke-width="2"/>
+       <path d="M80 35 L80 52" ${S} stroke-width="1.5" opacity="0.5"/>
+       <path d="M80 52 L65 72 L95 72 L80 52" ${S} stroke-width="1.5" opacity="0.5"/>
+       <line x1="22" y1="60" x2="10" y2="60" ${S} stroke-width="2"/>
+       <line x1="138" y1="60" x2="150" y2="60" ${S} stroke-width="2"/>
+       <line x1="36" y1="34" x2="26" y2="24" ${S} stroke-width="2"/>
+       <line x1="124" y1="34" x2="134" y2="24" ${S} stroke-width="2"/>
+       <line x1="80" y1="16" x2="80" y2="6" ${S} stroke-width="2"/>
+     </g>`,
 
-    // 8: Smiling Alien
-    `<rect width="160" height="160" fill="#F3E5F5"/>
-     <ellipse cx="80" cy="85" rx="44" ry="50" fill="#CE93D8" stroke="#AB47BC" stroke-width="2.5"/>
-     <ellipse cx="52" cy="55" rx="16" ry="22" fill="#CE93D8" stroke="#AB47BC" stroke-width="2"/>
-     <ellipse cx="108" cy="55" rx="16" ry="22" fill="#CE93D8" stroke="#AB47BC" stroke-width="2"/>
-     <ellipse cx="64" cy="82" rx="14" ry="16" fill="#fff" stroke="#AB47BC" stroke-width="1.5"/>
-     <ellipse cx="96" cy="82" rx="14" ry="16" fill="#fff" stroke="#AB47BC" stroke-width="1.5"/>
-     <circle cx="64" cy="83" r="8" fill="#4A148C"/>
-     <circle cx="96" cy="83" r="8" fill="#4A148C"/>
-     <circle cx="66" cy="80" r="3" fill="#fff"/>
-     <circle cx="98" cy="80" r="3" fill="#fff"/>
-     <path d="M60 108 Q80 122 100 108" fill="none" stroke="#4A148C" stroke-width="3" stroke-linecap="round"/>
-     <circle cx="61" cy="107" r="4" fill="#FF80AB" opacity="0.55"/>
-     <circle cx="99" cy="107" r="4" fill="#FF80AB" opacity="0.55"/>
-     <ellipse cx="80" cy="114" rx="7" ry="4" fill="#fff" opacity="0.6"/>`,
+    // 8 — Night window with stars
+    `${DEFS}${BG}
+     <g filter="url(#sk)">
+       <rect x="20" y="20" width="120" height="120" rx="4" ${S} stroke-width="2.2"/>
+       <line x1="80" y1="20" x2="80" y2="140" ${S} stroke-width="1.8"/>
+       <line x1="20" y1="80" x2="140" y2="80" ${S} stroke-width="1.8"/>
+       <path d="M35 42 L40 30 L45 42 L57 42 L48 49 L51 61 L40 54 L29 61 L32 49 L23 42 Z" ${S} stroke-width="1.5"/>
+       <path d="M98 35 L101 26 L104 35 L113 35 L106 40 L108 49 L101 44 L94 49 L96 40 L89 35 Z" ${S} stroke-width="1.3"/>
+       <circle cx="125" cy="55" r="4" ${S} stroke-width="1.3"/>
+       <path d="M42 98 C42 88 52 82 62 86 C66 76 78 74 84 82 C90 76 104 80 104 92 C108 92 112 96 108 100 L38 100 C34 96 38 92 42 98 Z" ${S} stroke-width="1.6"/>
+       <path d="M86 100 L86 130" ${S} stroke-width="1.4"/>
+       <path d="M114 100 L114 130" ${S} stroke-width="1.4"/>
+       <path d="M86 115 L114 115" ${S} stroke-width="1.4"/>
+     </g>`,
   ];
 
   let current = Math.floor(Math.random() * cartoons.length);
   const svg = document.getElementById('cartoonSvg');
+  svg.setAttribute('viewBox', '0 0 160 160');
 
   function showCartoon(index) {
     svg.innerHTML = cartoons[index];
-    // little bounce
     const frame = document.getElementById('cartoonFrame');
-    frame.style.transition = 'transform 0.1s';
-    frame.style.transform = 'rotate(0deg) scale(0.92)';
+    frame.style.transition = 'transform 0.08s ease-in';
+    frame.style.transform = 'rotate(0deg) scale(0.9)';
     setTimeout(() => {
-      frame.style.transition = 'transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55)';
-      frame.style.transform = 'rotate(-2.5deg) scale(1)';
-    }, 100);
+      frame.style.transition = 'transform 0.45s cubic-bezier(0.68,-0.55,0.27,1.55)';
+      frame.style.transform = 'rotate(-3deg) scale(1)';
+    }, 90);
   }
 
   showCartoon(current);
