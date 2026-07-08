@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Release Radar — Amlan</title>
+  <meta name="description" content="A Telegram AI agent that turns four clouds' worth of release-note noise into one migration-focused briefing.">
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 900px;
+      --radius: 14px;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdf8f3;
+      --bg-alt: #f5ede4;
+      --surface: #ffffff;
+      --border: #e8dfd4;
+      --text: #1a1615;
+      --text-secondary: #5c5450;
+      --muted: #9a918a;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #2a9d8f;
+      --teal-soft: #2a9d8f12;
+      --violet: #7b61ff;
+      --violet-soft: #7b61ff10;
+      --amber: #e4a030;
+      --amber-soft: #e4a03014;
+      --shadow-sm: 0 2px 8px rgba(26,22,21,0.04);
+      --shadow-md: 0 8px 30px rgba(26,22,21,0.07);
+      --shadow-lg: 0 16px 50px rgba(26,22,21,0.1);
+      --nav-bg: rgba(253, 248, 243, 0.92);
+      --dot-color: #e8dfd440;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121010;
+      --bg-alt: #1c1918;
+      --surface: #201d1c;
+      --border: #332e2c;
+      --text: #f0ebe5;
+      --text-secondary: #a89f98;
+      --muted: #6d6560;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #56c4b5;
+      --teal-soft: #56c4b515;
+      --violet: #a18aff;
+      --violet-soft: #a18aff14;
+      --amber: #f0bd5a;
+      --amber-soft: #f0bd5a18;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.35);
+      --nav-bg: rgba(18,16,16,0.92);
+      --dot-color: #332e2c80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%; height: 68px;
+      padding: 0 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em; text-decoration: none;
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .back-link {
+      font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+      text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .back-link:hover { background: var(--coral-soft); color: var(--coral); }
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative; transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%; background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68,-0.55,0.27,1.55), background var(--transition);
+    }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(20px); background: var(--violet); }
+    .toggle-label { position: absolute; top: 50%; transform: translateY(-50%); font-size: 0.72rem; pointer-events: none; }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Page header ── */
+    .page-header {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 7rem 2.5rem 2rem;
+    }
+    .page-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 1.25rem;
+      background: var(--teal-soft); color: var(--teal);
+    }
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 600; line-height: 1.05; letter-spacing: -0.035em;
+      margin-bottom: 1rem;
+    }
+    .page-title span { color: var(--teal); }
+    .page-desc {
+      font-size: 1.08rem; color: var(--text-secondary); font-weight: 300;
+      line-height: 1.75; max-width: 640px; margin-bottom: 1.5rem;
+    }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.3rem 0.75rem; border-radius: 20px;
+      background: var(--teal-soft); color: var(--teal);
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--teal);
+      animation: pulse 2.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+    .tag {
+      font-size: 0.72rem; font-weight: 500; padding: 0.28rem 0.65rem;
+      border-radius: 8px; letter-spacing: 0.03em;
+    }
+    .tag-teal  { background: var(--teal-soft);   color: var(--teal); }
+    .tag-coral { background: var(--coral-soft);  color: var(--coral); }
+    .tag-violet{ background: var(--violet-soft); color: var(--violet); }
+    .tag-amber { background: var(--amber-soft);  color: var(--amber); }
+
+    /* ── Clouds strip ── */
+    .clouds-strip {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem;
+    }
+    .clouds-strip-inner {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.1rem 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+      transition: all var(--transition);
+    }
+    .clouds-strip-label {
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+    }
+    .cloud-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .cloud-pill {
+      font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.75rem;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 20px; color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+
+    /* ── Content ── */
+    .content-wrap {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem 4rem;
+    }
+
+    .section {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 2rem 2.2rem;
+      margin-top: 1.25rem;
+      transition: all var(--transition);
+    }
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 600; color: var(--teal);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem;
+    }
+    .section-h {
+      font-family: var(--serif); font-size: 1.55rem; font-weight: 600;
+      letter-spacing: -0.02em; margin-bottom: 1rem; line-height: 1.2;
+    }
+    .section p { color: var(--text-secondary); font-weight: 300; margin-bottom: 0.9rem; line-height: 1.75; }
+    .section p:last-child { margin-bottom: 0; }
+    .section p strong { color: var(--text); font-weight: 600; }
+
+    /* pull quote */
+    .pull-quote {
+      border-left: 3px solid var(--teal); padding: 0.4rem 0 0.4rem 1.25rem;
+      font-family: var(--serif); font-size: 1.1rem; font-style: italic;
+      color: var(--text-secondary); margin: 1.25rem 0;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .pull-quote:hover { border-left-color: var(--coral); color: var(--text); }
+
+    /* pipeline */
+    .pipeline { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+    .pipe-step {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .pipe-step:hover { border-color: var(--teal); transform: translateX(4px); }
+    .pipe-num {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--teal); min-width: 36px; line-height: 1.1;
+    }
+    .pipe-body { flex: 1; }
+    .pipe-body strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .pipe-body span { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; }
+
+    /* commands */
+    .commands { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+    .command-card {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .command-card:hover { border-color: var(--violet); }
+    .command-code {
+      font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 700;
+      color: var(--violet); background: var(--violet-soft);
+      padding: 0.3rem 0.65rem; border-radius: 6px; white-space: nowrap;
+      align-self: flex-start; margin-top: 0.1rem;
+    }
+    .command-body strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .command-body span { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; }
+
+    /* principles */
+    .principles { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+    .principle {
+      padding: 1.25rem 1.4rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-left: 4px solid var(--teal);
+      transition: all 0.3s;
+    }
+    .principle:nth-child(2) { border-left-color: var(--coral); }
+    .principle:nth-child(3) { border-left-color: var(--violet); }
+    .principle h3 {
+      font-family: var(--serif); font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.4rem; color: var(--text);
+    }
+    .principle p { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin: 0; }
+
+    /* stack grid */
+    .stack-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem; margin-top: 1.25rem;
+    }
+    .stack-card {
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .stack-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .stack-card-label {
+      font-size: 0.68rem; font-weight: 600; color: var(--teal);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;
+    }
+    .stack-card-value { font-size: 0.9rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* stat row */
+    .stat-row {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem;
+    }
+    .stat-box {
+      flex: 1; min-width: 130px;
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--serif); font-size: 1.9rem; font-weight: 600;
+      color: var(--teal); line-height: 1.1;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* footer */
+    footer {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 2rem 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.78rem;
+    }
+    .footer-dots { display: flex; gap: 6px; }
+    .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
+    .footer-dots span:nth-child(1) { background: var(--coral); }
+    .footer-dots span:nth-child(2) { background: var(--teal); }
+    .footer-dots span:nth-child(3) { background: var(--violet); }
+    .footer-dots span:nth-child(4) { background: var(--amber); }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 1.25rem; }
+      .page-header { padding: 5.5rem 1.5rem 1.5rem; }
+      .clouds-strip { padding: 0 1.5rem; }
+      .content-wrap { padding: 0 1.5rem 3rem; }
+      .section { padding: 1.5rem 1.25rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <a href="index.html#projects" class="back-link">← Back to projects</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-chip">📡 Project · AI Agents · Multi-cloud</div>
+    <h1 class="page-title">Cloud Release <span>Radar</span></h1>
+    <p class="page-desc">A Telegram bot I send one command — and it fetches a week's worth of releases from AWS, Azure, GCP and OCI, hands them to Claude with one opinionated question, and returns a migration-focused briefing in under 250 words.</p>
+    <div class="meta-row">
+      <span class="live-badge"><span class="live-dot"></span>Live · On demand</span>
+      <span class="tag tag-violet">Anthropic API</span>
+      <span class="tag tag-teal">Telegram Bot API</span>
+      <span class="tag tag-coral">Python · feedparser</span>
+      <span class="tag tag-amber">~150 lines</span>
+    </div>
+  </div>
+
+  <div class="clouds-strip">
+    <div class="clouds-strip-inner">
+      <span class="clouds-strip-label">Monitoring releases from</span>
+      <div class="cloud-pills">
+        <span class="cloud-pill">AWS</span>
+        <span class="cloud-pill">Azure</span>
+        <span class="cloud-pill">GCP</span>
+        <span class="cloud-pill">OCI</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="section">
+      <div class="section-eyebrow">The problem</div>
+      <h2 class="section-h">Four clouds, hundreds of releases, one migration programme</h2>
+      <p>I run enterprise cloud migration programmes. That means I need to know what AWS, Azure, GCP and OCI shipped this week — not everything, just the handful of releases that genuinely change how a migration gets planned: a new database migration path, a pricing shift, a Kubernetes feature reaching GA.</p>
+      <p>The raw material exists. All four vendors publish open release feeds. The problem is volume: hundreds of announcements a week, most of them region rollouts and minor updates. Skimming four feeds is a job in itself, so like most practitioners, I mostly didn't.</p>
+      <div class="pull-quote">A generic summary is noise. A digest filtered through your own professional question is signal.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What I built</div>
+      <h2 class="section-h">Two commands, one briefing</h2>
+      <div class="commands">
+        <div class="command-card">
+          <div class="command-code">/radar</div>
+          <div class="command-body">
+            <strong>Migration briefing</strong>
+            <span>Fetches the last seven days of releases from all four public feeds, hands them to Claude with one opinionated question — "what does this mean for migration programmes?" — and returns a digest under 250 words: the most significant item, two or three notables tagged by cloud, and one emerging pattern to watch.</span>
+          </div>
+        </div>
+        <div class="command-card">
+          <div class="command-code">/draft</div>
+          <div class="command-body">
+            <strong>Newsletter draft</strong>
+            <span>Reshapes the same data into a newsletter draft with markers showing where to add a personal take. The agent drafts; the judgment stays mine.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-h">Deliberately boring architecture</h2>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-num">01</div>
+          <div class="pipe-body">
+            <strong>Command received</strong>
+            <span>A Python service long-polls the Telegram Bot API. One command from my phone starts the whole pipeline.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">02</div>
+          <div class="pipe-body">
+            <strong>Fetch four feeds</strong>
+            <span>A feed fetcher pulls this week's titles from the public RSS feeds of all four cloud vendors. Public data only — no credentials, no customer data, nothing to secure.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">03</div>
+          <div class="pipe-body">
+            <strong>Filter through the lens</strong>
+            <span>A prompt builder frames the raw titles through the migration-programme lens. The prompt doesn't ask for a summary — it asks one question and instructs the model to ignore minor region rollouts. The value is the filter, and the filter is domain expertise.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">04</div>
+          <div class="pipe-body">
+            <strong>Claude writes the digest</strong>
+            <span>The Anthropic API returns a structured briefing. The AI integration is about ten lines of code. The rest is plumbing.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">05</div>
+          <div class="pipe-body">
+            <strong>Delivered to Telegram</strong>
+            <span>The digest travels back up the same path and lands on my phone, usually within a few seconds of the command.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Design choices</div>
+      <h2 class="section-h">Three constraints I set before writing a line</h2>
+      <div class="principles">
+        <div class="principle">
+          <h3>Public data only</h3>
+          <p>No tenancy credentials, no customer data, no database — the bot makes outbound calls only. There is nothing to secure because there is nothing sensitive in the system. For anyone working with enterprise clients, this is the constraint to set first.</p>
+        </div>
+        <div class="principle">
+          <h3>One opinionated lens</h3>
+          <p>The prompt asks one question: "what does this mean for migration programmes?" The model is instructed to ignore minor region rollouts. The value of the tool is the filter, and the filter is domain expertise — not something the model supplies on its own.</p>
+        </div>
+        <div class="principle">
+          <h3>Small enough to finish</h3>
+          <p>~150 lines of Python, one evening, running on my laptop. The AI part is about ten lines; the rest is ordinary plumbing. Shipped beats planned.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Stats</div>
+      <h2 class="section-h">By the numbers</h2>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">~150</div>
+          <div class="stat-label">lines of Python</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4</div>
+          <div class="stat-label">cloud feeds monitored</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">&lt;250</div>
+          <div class="stat-label">words per briefing</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1</div>
+          <div class="stat-label">evening to build</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Stack</div>
+      <h2 class="section-h">Built with</h2>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div class="stack-card-label">Interface</div>
+          <div class="stack-card-value">Telegram Bot API via BotFather</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Service</div>
+          <div class="stack-card-value">Python · python-telegram-bot · feedparser</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Intelligence</div>
+          <div class="stack-card-value">Anthropic API — Claude Sonnet</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Data</div>
+          <div class="stack-card-value">AWS · Azure · GCP · OCI public release feeds</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Storage</div>
+          <div class="stack-card-value">None — stateless by design</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What I learned</div>
+      <h2 class="section-h">The lesson wasn't technical</h2>
+      <p>After nearly two decades in cloud transformation, the takeaway from this build wasn't about the code. The code is now the easy part. What makes an AI tool valuable is the professional question you point it at. Anyone can summarise a feed. Knowing <strong>which</strong> releases change a cutover plan, a licensing position, or a FinOps model — that's the part no model supplies on its own.</p>
+      <p>The other lesson: the friction is never where you expect. The AI integration took minutes. Bot tokens, environment variables and feed quirks took the evening. If you're building your first agent, budget your patience for the plumbing.</p>
+      <div class="pull-quote">Knowing which releases change a cutover plan is the part no model supplies on its own.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What's next</div>
+      <h2 class="section-h">Moving off the laptop</h2>
+      <p>Migrating the service from my laptop to an always-free cloud VM so digests can arrive on a schedule, tuning the prompt to balance coverage across the four clouds, and folding the <strong>/draft</strong> output into my writing pipeline. Same agent, bigger surface area.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2026 Amlan. Built with curiosity & zero budget ✌️</span>
+    <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
+
+</body>
+</html>
