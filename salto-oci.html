@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SALTO OCI Programme — Amlan</title>
-  <meta name="description" content="How I led the Proximus Siebel CRM estate from an on-premises data centre to Oracle Kubernetes Engine — 32 environments, zero incidents, 252,000 orders processed.">
+  <title>Siebel CRM Cloud Migration — Amlan</title>
+  <meta name="description" content="How I led a Siebel CRM estate from an on-premises data centre to Oracle Kubernetes Engine — 32 environments, zero incidents, 252,000 orders processed.">
   <script data-goatcounter="https://amlan123.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -376,13 +376,13 @@
 
   <div class="page-header">
     <div class="page-chip">🏗️ Programme Delivery · OCI · Kubernetes</div>
-    <h1 class="page-title">SALTO <span>OCI</span> Programme</h1>
-    <p class="page-desc">Moving the Proximus Siebel CRM estate — the system that handles every Belgian telecom order — out of an on-premises data centre, onto Oracle Cloud, and then onto Kubernetes. 32 environments. Zero incidents. Quarter million orders processed post go-live.</p>
+    <h1 class="page-title">Siebel CRM <span>Cloud Migration</span></h1>
+    <p class="page-desc">Moving a Siebel CRM estate — the system that handles every order for a major Belgian telecom — out of an on-premises data centre, onto Oracle Cloud, and then onto Kubernetes. 32 environments. Zero incidents. Quarter million orders processed post go-live.</p>
     <div class="meta-row">
       <span class="delivered-badge">✓ Delivered · Aug 2026</span>
       <span class="tag tag-violet">Programme Manager · TCS</span>
       <span class="tag tag-teal">Oracle Kubernetes Engine</span>
-      <span class="tag tag-amber">Proximus · Belgium</span>
+      <span class="tag tag-amber">Belgium · Telecom</span>
     </div>
   </div>
 
@@ -404,10 +404,10 @@
 
     <div class="section">
       <div class="section-eyebrow">Context</div>
-      <h2 class="section-h">What SALTO is — and why it couldn't go down</h2>
-      <p>Proximus is Belgium's largest telecom operator. The Sales Handling Engine is the system where every Proximus order gets taken. It runs Siebel CRM — enterprise software from a different era, stateful, persistent, and deeply woven into the business. There is no version of this system that can be down for a weekend while things get sorted out.</p>
-      <p>The SALTO programme moved that estate in two phases: first out of the on-premises data centre and onto OCI virtual machines, then from those VMs into Oracle Kubernetes Engine. Two technology shifts, one continuous business. I led the programme end-to-end from the TCS side, spanning delivery governance, architecture, client alignment, and the teams doing the work.</p>
-      <div class="pull-quote">The hard constraint wasn't technical. It was that 252,000 business orders had to keep flowing on the other side.</div>
+      <h2 class="section-h">The system that couldn't go down</h2>
+      <p>A major Belgian telecom operator runs its entire order management on Siebel CRM — enterprise software from a different era, stateful, persistent, and deeply woven into the business. Every order taken by the company flows through this system. There is no version of it that can be down for a weekend while things get sorted out.</p>
+      <p>The programme moved that estate in two phases: first out of the on-premises data centre and onto OCI virtual machines, then from those VMs into Oracle Kubernetes Engine. Two technology shifts, one continuous business. I led the programme end-to-end from the TCS side, spanning delivery governance, architecture, client alignment, and the teams doing the work.</p>
+      <div class="pull-quote">The hard constraint wasn't technical. It was that a quarter million business orders had to keep flowing on the other side.</div>
     </div>
 
     <div class="section">
@@ -507,7 +507,7 @@
           <div class="pipe-num">05</div>
           <div class="pipe-body">
             <strong>HAProxy failure analysis in production</strong>
-            <span>Under 0.1% of App X calls were failing before reaching the OCI LB. Analysis used socat stats-socket reads with no config change. Failures classified into Class A (never reached SALTO — safe to replay) and Class B (SALTO may have processed — blind retry risks duplicate Siebel records). Correlation-ID dead-lettering identified as the only safe Class B recovery path.</span>
+            <span>Under 0.1% of App X calls were failing before reaching the OCI LB. Analysis used socat stats-socket reads with no config change. Failures classified into Class A (never reached the CRM — safe to replay) and Class B (the CRM may have processed — blind retry risks duplicate Siebel records). Correlation-ID dead-lettering identified as the only safe Class B recovery path.</span>
           </div>
         </div>
       </div>
