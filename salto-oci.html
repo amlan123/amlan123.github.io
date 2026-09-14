@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siebel CRM Cloud Migration — Amlan</title>
+  <meta name="description" content="How I led a Siebel CRM estate from an on-premises data centre to Oracle Kubernetes Engine — 32 environments, zero incidents, 252,000 orders processed.">
+  <script data-goatcounter="https://amlan123.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=General+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'General Sans', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      --max-w: 900px;
+      --radius: 14px;
+    }
+
+    [data-theme="light"] {
+      --bg: #faf8ff;
+      --bg-alt: #f3f0fc;
+      --surface: #ffffff;
+      --border: #e0d9f5;
+      --text: #151120;
+      --text-secondary: #4e4768;
+      --muted: #8e84a8;
+      --coral: #e8634a;
+      --coral-soft: #e8634a14;
+      --teal: #1a9e84;
+      --teal-soft: #1a9e8412;
+      --violet: #6b47c0;
+      --violet-soft: #6b47c010;
+      --amber: #c47c28;
+      --amber-soft: #c47c2814;
+      --shadow-sm: 0 2px 8px rgba(21,17,32,0.04);
+      --shadow-md: 0 8px 30px rgba(21,17,32,0.07);
+      --shadow-lg: 0 16px 50px rgba(21,17,32,0.1);
+      --nav-bg: rgba(250, 248, 255, 0.92);
+      --dot-color: #e0d9f540;
+    }
+
+    [data-theme="dark"] {
+      --bg: #100f1a;
+      --bg-alt: #18162a;
+      --surface: #201d34;
+      --border: #302b50;
+      --text: #ece8ff;
+      --text-secondary: #9b94c4;
+      --muted: #6560a0;
+      --coral: #f08872;
+      --coral-soft: #f0887218;
+      --teal: #42c9a8;
+      --teal-soft: #42c9a815;
+      --violet: #a88aee;
+      --violet-soft: #a88aee14;
+      --amber: #e0b055;
+      --amber-soft: #e0b05518;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.3);
+      --shadow-lg: 0 16px 50px rgba(0,0,0,0.4);
+      --nav-bg: rgba(16,15,26,0.92);
+      --dot-color: #302b5080;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; width: 100%; height: 68px;
+      padding: 0 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      backdrop-filter: blur(18px) saturate(1.5);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .logo {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.03em; text-decoration: none;
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .logo-dot {
+      display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+      background: var(--coral);
+      transition: transform 0.4s, background var(--transition);
+    }
+    .logo:hover .logo-dot { transform: scale(1.4); background: var(--teal); }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .back-link {
+      font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+      text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .back-link:hover { background: var(--violet-soft); color: var(--violet); }
+    .theme-toggle {
+      width: 48px; height: 28px; border-radius: 14px;
+      background: var(--bg-alt); border: 1.5px solid var(--border);
+      cursor: pointer; position: relative; transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-toggle:hover { border-color: var(--amber); }
+    .theme-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%; background: var(--amber);
+      transition: transform 0.45s cubic-bezier(0.68,-0.55,0.27,1.55), background var(--transition);
+    }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(20px); background: var(--violet); }
+    .toggle-label { position: absolute; top: 50%; transform: translateY(-50%); font-size: 0.72rem; pointer-events: none; }
+    .sun-label { left: 6px; }
+    .moon-label { right: 6px; }
+
+    /* ── Page header ── */
+    .page-header {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 7rem 2.5rem 2rem;
+    }
+    .page-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 1.25rem;
+      background: var(--violet-soft); color: var(--violet);
+    }
+    .page-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 600; line-height: 1.05; letter-spacing: -0.035em;
+      margin-bottom: 1rem;
+    }
+    .page-title span { color: var(--violet); }
+    .page-desc {
+      font-size: 1.08rem; color: var(--text-secondary); font-weight: 300;
+      line-height: 1.75; max-width: 640px; margin-bottom: 1.5rem;
+    }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .delivered-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.3rem 0.75rem; border-radius: 20px;
+      background: var(--teal-soft); color: var(--teal);
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .tag {
+      font-size: 0.72rem; font-weight: 500; padding: 0.28rem 0.65rem;
+      border-radius: 8px; letter-spacing: 0.03em;
+    }
+    .tag-teal  { background: var(--teal-soft);   color: var(--teal); }
+    .tag-coral { background: var(--coral-soft);  color: var(--coral); }
+    .tag-violet{ background: var(--violet-soft); color: var(--violet); }
+    .tag-amber { background: var(--amber-soft);  color: var(--amber); }
+
+    /* ── Outcomes strip ── */
+    .outcomes-strip {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem;
+    }
+    .outcomes-strip-inner {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.1rem 1.5rem;
+      display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+      transition: all var(--transition);
+    }
+    .outcomes-strip-label {
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+    }
+    .outcome-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .outcome-pill {
+      font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.75rem;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 20px; color: var(--text-secondary);
+      transition: all var(--transition);
+    }
+    .outcome-pill.highlight { background: var(--teal-soft); color: var(--teal); border-color: var(--teal); font-weight: 600; }
+
+    /* ── Content ── */
+    .content-wrap {
+      max-width: var(--max-w); margin: 0 auto; padding: 0 2.5rem 4rem;
+    }
+    .section {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 2rem 2.2rem;
+      margin-top: 1.25rem;
+      transition: all var(--transition);
+    }
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 600; color: var(--violet);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem;
+    }
+    .section-eyebrow.teal { color: var(--teal); }
+    .section-eyebrow.amber { color: var(--amber); }
+    .section-eyebrow.coral { color: var(--coral); }
+    .section-h {
+      font-family: var(--serif); font-size: 1.55rem; font-weight: 600;
+      letter-spacing: -0.02em; margin-bottom: 1rem; line-height: 1.2;
+    }
+    .section p { color: var(--text-secondary); font-weight: 300; margin-bottom: 0.9rem; line-height: 1.75; }
+    .section p:last-child { margin-bottom: 0; }
+    .section p strong { color: var(--text); font-weight: 600; }
+
+    .pull-quote {
+      border-left: 3px solid var(--violet); padding: 0.4rem 0 0.4rem 1.25rem;
+      font-family: var(--serif); font-size: 1.1rem; font-style: italic;
+      color: var(--text-secondary); margin: 1.25rem 0;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .pull-quote:hover { border-left-color: var(--teal); color: var(--text); }
+
+    /* phase timeline */
+    .phase-row {
+      display: flex; gap: 0; margin-top: 1.25rem;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .phase-block {
+      flex: 1; padding: 1.25rem 1.4rem;
+      background: var(--bg-alt);
+      border-right: 1px solid var(--border);
+      transition: all var(--transition);
+    }
+    .phase-block:last-child { border-right: none; }
+    .phase-block:hover { background: var(--violet-soft); }
+    .phase-label {
+      font-size: 0.68rem; font-weight: 600; color: var(--violet);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;
+    }
+    .phase-title { font-weight: 600; color: var(--text); font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .phase-desc { font-size: 0.83rem; color: var(--text-secondary); font-weight: 300; line-height: 1.55; }
+
+    /* outcomes table */
+    .outcome-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; }
+    .outcome-table th {
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 0.6rem 0.9rem; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .outcome-table td {
+      padding: 0.75rem 0.9rem; font-size: 0.88rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary); font-weight: 300; line-height: 1.5;
+      vertical-align: top;
+    }
+    .outcome-table tr:last-child td { border-bottom: none; }
+    .outcome-table tr:hover td { background: var(--bg-alt); }
+    .outcome-val {
+      font-family: var(--serif); font-weight: 600; color: var(--teal); font-size: 0.95rem;
+    }
+
+    /* pipeline */
+    .pipeline { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+    .pipe-step {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .pipe-step:hover { border-color: var(--violet); transform: translateX(4px); }
+    .pipe-num {
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+      color: var(--violet); min-width: 36px; line-height: 1.1;
+    }
+    .pipe-body { flex: 1; }
+    .pipe-body strong { display: block; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+    .pipe-body span { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.6; }
+
+    /* principles */
+    .principles { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+    .principle {
+      padding: 1.25rem 1.4rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-left: 4px solid var(--violet);
+      transition: all 0.3s;
+    }
+    .principle:nth-child(2) { border-left-color: var(--teal); }
+    .principle:nth-child(3) { border-left-color: var(--amber); }
+    .principle:nth-child(4) { border-left-color: var(--coral); }
+    .principle h3 {
+      font-family: var(--serif); font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.4rem; color: var(--text);
+    }
+    .principle p { font-size: 0.88rem; color: var(--text-secondary); font-weight: 300; line-height: 1.65; margin: 0; }
+
+    /* stat row */
+    .stat-row {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem;
+    }
+    .stat-box {
+      flex: 1; min-width: 120px;
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      text-align: center; transition: all 0.3s;
+    }
+    .stat-box:hover { border-color: var(--violet); transform: translateY(-2px); }
+    .stat-num {
+      font-family: var(--serif); font-size: 1.9rem; font-weight: 600;
+      color: var(--violet); line-height: 1.1;
+    }
+    .stat-num.teal { color: var(--teal); }
+    .stat-num.amber { color: var(--amber); }
+    .stat-num.coral { color: var(--coral); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* stack grid */
+    .stack-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem; margin-top: 1.25rem;
+    }
+    .stack-card {
+      padding: 1.1rem 1.25rem; border-radius: 10px;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .stack-card:hover { border-color: var(--violet); transform: translateY(-2px); }
+    .stack-card-label {
+      font-size: 0.68rem; font-weight: 600; color: var(--violet);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;
+    }
+    .stack-card-value { font-size: 0.9rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+    /* footer */
+    footer {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 2rem 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.78rem;
+    }
+    .footer-dots { display: flex; gap: 6px; }
+    .footer-dots span { width: 6px; height: 6px; border-radius: 50%; }
+    .footer-dots span:nth-child(1) { background: var(--coral); }
+    .footer-dots span:nth-child(2) { background: var(--teal); }
+    .footer-dots span:nth-child(3) { background: var(--violet); }
+    .footer-dots span:nth-child(4) { background: var(--amber); }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 1.25rem; }
+      .page-header { padding: 5.5rem 1.5rem 1.5rem; }
+      .outcomes-strip { padding: 0 1.5rem; }
+      .content-wrap { padding: 0 1.5rem 3rem; }
+      .section { padding: 1.5rem 1.25rem; }
+      .phase-row { flex-direction: column; }
+      .phase-block { border-right: none; border-bottom: 1px solid var(--border); }
+      .phase-block:last-child { border-bottom: none; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">amlan<span class="logo-dot"></span></a>
+    <div class="nav-right">
+      <a href="index.html#work" class="back-link">← Back</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-label sun-label">☀</span>
+        <span class="toggle-label moon-label">☽</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-chip">🏗️ Programme Delivery · OCI · Kubernetes</div>
+    <h1 class="page-title">Siebel CRM <span>Cloud Migration</span></h1>
+    <p class="page-desc">Moving a Siebel CRM estate — the system that handles every order for a major Belgian telecom — out of an on-premises data centre, onto Oracle Cloud, and then onto Kubernetes. 32 environments. Zero incidents. Quarter million orders processed post go-live.</p>
+    <div class="meta-row">
+      <span class="delivered-badge">✓ Delivered · Aug 2026</span>
+      <span class="tag tag-violet">Programme Manager · TCS</span>
+      <span class="tag tag-teal">Oracle Kubernetes Engine</span>
+      <span class="tag tag-amber">Belgium · Telecom</span>
+    </div>
+  </div>
+
+  <div class="outcomes-strip">
+    <div class="outcomes-strip-inner">
+      <span class="outcomes-strip-label">Key numbers</span>
+      <div class="outcome-pills">
+        <span class="outcome-pill highlight">32 / 32 environments</span>
+        <span class="outcome-pill highlight">Zero incidents</span>
+        <span class="outcome-pill highlight">~252,000 orders processed</span>
+        <span class="outcome-pill">35 databases upgraded</span>
+        <span class="outcome-pill">−33% memory</span>
+        <span class="outcome-pill">−35% deployment effort</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="section">
+      <div class="section-eyebrow">Context</div>
+      <h2 class="section-h">The system that couldn't go down</h2>
+      <p>A major Belgian telecom operator runs its entire order management on Siebel CRM — enterprise software from a different era, stateful, persistent, and deeply woven into the business. Every order taken by the company flows through this system. There is no version of it that can be down for a weekend while things get sorted out.</p>
+      <p>The programme moved that estate in two phases: first out of the on-premises data centre and onto OCI virtual machines, then from those VMs into Oracle Kubernetes Engine. Two technology shifts, one continuous business. I led the programme end-to-end from the TCS side, spanning delivery governance, architecture, client alignment, and the teams doing the work.</p>
+      <div class="pull-quote">The hard constraint wasn't technical. It was that a quarter million business orders had to keep flowing on the other side.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Two phases</div>
+      <h2 class="section-h">Lift, then transform</h2>
+      <div class="phase-row">
+        <div class="phase-block">
+          <div class="phase-label">Phase 1</div>
+          <div class="phase-title">Data centre → OCI</div>
+          <div class="phase-desc">The Sales Handling Engine migrated VM-based onto OCI with business continuity held throughout. Cloud foundations laid: FastConnect, north-south firewall, landing zone, golden image and data masking. Security alignment gates passed — which later carried forward as precedent in Phase 2.</div>
+        </div>
+        <div class="phase-block">
+          <div class="phase-label">Phase 2</div>
+          <div class="phase-title">OCI VMs → Oracle Kubernetes Engine</div>
+          <div class="phase-desc">The actual transformation. Both Siebel workloads — MIB (14 environments) and SHE (18 environments) — migrated to OKE. Databases upgraded 19c → 26AI on Exadata X11M. CI/CD pipelines extended through to production. All 32 environments complete.</div>
+        </div>
+      </div>
+      <p style="margin-top:1rem;">What Phase 1 deliberately did not change: the application still ran the same way, on virtual machines that now happened to be Oracle's. Scaling was still by request. That gap is what Phase 2 was built to close.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow teal">Outcomes</div>
+      <h2 class="section-h">What landed</h2>
+      <table class="outcome-table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OKE environments migrated</td>
+            <td><span class="outcome-val">32 / 32 (100%)</span> — MIB 14, SHE 18</td>
+          </tr>
+          <tr>
+            <td>Production go-live</td>
+            <td><span class="outcome-val">22–23 Aug 2026</span> — SHE PROD and SHE PROD DR live; hypercare closed with zero major incidents, zero customer impact</td>
+          </tr>
+          <tr>
+            <td>Business volume post go-live</td>
+            <td><span class="outcome-val">~252,000 business orders</span> processed, all health metrics within limits</td>
+          </tr>
+          <tr>
+            <td>Database estate</td>
+            <td><span class="outcome-val">35 databases upgraded</span> from 19c → 26AI on Exadata X11M</td>
+          </tr>
+          <tr>
+            <td>CI/CD</td>
+            <td><span class="outcome-val">~35% reduction</span> in deployment effort; environment drift eliminated</td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td><span class="outcome-val">HTTPS enforced</span> across all application integration calls</td>
+          </tr>
+          <tr>
+            <td>Resource efficiency</td>
+            <td><span class="outcome-val">482 → 454 OCPU (−6%); 17,328 → 12,879 GB memory (−33%)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow amber">The hard parts</div>
+      <h2 class="section-h">What made this difficult</h2>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-num">01</div>
+          <div class="pipe-body">
+            <strong>Siebel is stateful</strong>
+            <span>Siebel uses persistent storage, shared file systems, and a scaling ceiling set by Object Manager licence counts — not CPU. HPA max replicas are bounded by Siebel licence counts, and this has to be enforced at the platform layer, not operationally. No cloud-native autoscaling playbook covers this.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">02</div>
+          <div class="pipe-body">
+            <strong>The OCI load balancer timeout is non-tunable</strong>
+            <span>The OCI LB has a 9,000ms m2 timeout that cannot be configured away. The solution was HAProxy in an Active/Passive Pacemaker cluster — introduced specifically because of that constraint. Not in any Siebel-on-OKE reference architecture, because that reference architecture doesn't exist at scale yet.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">03</div>
+          <div class="pipe-body">
+            <strong>A legacy security posture inherited from migration</strong>
+            <span>Siebel↔CX integration was running over unsecured HTTP — inherited from the on-premises estate. The approach was proactive disclosure with a firm remediation date rather than silence. The principle established: proactive disclosure with a date beats silence.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">04</div>
+          <div class="pipe-body">
+            <strong>Identity migration mid-programme</strong>
+            <span>Authentication moved from WebSEAL + PerID to Azure Entra ID SAML 2.0 via IDCS, with WebSEAL retained only as a legacy bookmark redirect. Each of the 32 environments required a separate Enterprise Application registration. No bulk path.</span>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-num">05</div>
+          <div class="pipe-body">
+            <strong>HAProxy failure analysis in production</strong>
+            <span>Under 0.1% of App X calls were failing before reaching the OCI LB. Analysis used socat stats-socket reads with no config change. Failures classified into Class A (never reached the CRM — safe to replay) and Class B (the CRM may have processed — blind retry risks duplicate Siebel records). Correlation-ID dead-lettering identified as the only safe Class B recovery path.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What I owned</div>
+      <h2 class="section-h">Programme management and architecture, in parallel</h2>
+      <div class="principles">
+        <div class="principle">
+          <h3>Delivery governance</h3>
+          <p>Weekly governance deck maintained against the migration plan as single source of truth. Status tracked from 11/32 through to 32/32 (100%). SteerCo framing: outcome first, business impact second, technical detail only when pulled for. CAB positioned as a trust test, not a knowledge test.</p>
+        </div>
+        <div class="principle">
+          <h3>Architecture and documentation</h3>
+          <p>Eight-zone target architecture blueprint, end-to-end user flow diagram, Siebel-on-OKE deployment diagram, isometric target-state diagram, Kubernetes traffic flow diagram, VM→OKE transformation infographic. Each diagram went through multiple iterations to resolve label and arrow clutter — the diagram is the argument, not a decoration.</p>
+        </div>
+        <div class="principle">
+          <h3>Forward planning</h3>
+          <p>Phase 3 modernisation outline — three pillars: Resilience, Security & Identity, Efficiency. GitOps (ArgoCD/Flux), service mesh for mTLS, KEDA event-driven scaling above licence-bounded HPA, WebSEAL retirement across all 32 environments, OpenTelemetry observability. Sequenced to run alongside BAU.</p>
+        </div>
+        <div class="principle">
+          <h3>AI tooling embedded in the programme</h3>
+          <p>SteerCo Slide Generator and Risk Analyser Agent built with Claude Code and deployed inside the live programme. Governance decks that previously took hours to update now sync from a spreadsheet. Same pattern: identify the friction, build the agent, ship it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow teal">Stats</div>
+      <h2 class="section-h">By the numbers</h2>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">32</div>
+          <div class="stat-label">OKE environments migrated</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num teal">0</div>
+          <div class="stat-label">major incidents at go-live</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num amber">252k</div>
+          <div class="stat-label">orders processed post go-live</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num coral">35</div>
+          <div class="stat-label">databases upgraded to 26AI</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">−33%</div>
+          <div class="stat-label">memory footprint reduction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Stack and toolchain</div>
+      <h2 class="section-h">Platform and tools</h2>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div class="stack-card-label">Platform</div>
+          <div class="stack-card-value">Oracle Kubernetes Engine · OCI</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Database</div>
+          <div class="stack-card-value">Oracle 26AI on Exadata X11M</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">GitOps</div>
+          <div class="stack-card-value">Flux · Helm · Jenkins · SCM</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Load balancing</div>
+          <div class="stack-card-value">HAProxy Active/Passive · Pacemaker · OCI LB</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Identity</div>
+          <div class="stack-card-value">Azure Entra ID · IDCS · App Gateway</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Connectivity</div>
+          <div class="stack-card-value">FastConnect · Oracle Network Firewall · Hub-and-Spoke VCN</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">AI tooling</div>
+          <div class="stack-card-value">Claude Code · Anthropic API · python-pptx · LibreOffice headless</div>
+        </div>
+        <div class="stack-card">
+          <div class="stack-card-label">Application</div>
+          <div class="stack-card-value">Siebel CRM — CGW / SES / SAI StatefulSets</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What I learned</div>
+      <h2 class="section-h">The things that weren't in the playbook</h2>
+      <p>Siebel on Kubernetes is not a well-documented path. Oracle runs it; a small number of large enterprises are beginning to. There is no published global count, no analyst track, and no reference architecture that accounts for the OCI LB timeout. Every decision above the generic Kubernetes layer required first-principles reasoning.</p>
+      <p>The identity migration ran in parallel with the platform migration. Two major shifts in the same programme window is a governance problem as much as a technical one — the SteerCo needed to understand what was locked and what was still moving at each week's review.</p>
+      <p>The HAProxy failure analysis was the moment that crystallised something: <strong>the failure mode matters more than the failure rate.</strong> Under 0.1% sounds small until you realise a blind retry on a Siebel order creates a duplicate record. The classification — safe to replay versus cannot safely replay — is the analysis. The number is context.</p>
+      <div class="pull-quote">CAB is a trust test, not a knowledge test. You pass it by having already done the work, not by performing confidence on the day.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2026 Amlan. Built with curiosity & zero budget ✌️</span>
+    <div class="footer-dots"><span></span><span></span><span></span><span></span></div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if (saved) html.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  </script>
+
+</body>
+</html>

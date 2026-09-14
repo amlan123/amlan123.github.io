@@ -368,6 +368,51 @@ section { padding: 6rem 2.5rem; max-width: var(--max-w); margin: 0 auto; }
 
 .section-desc { color: var(--text-secondary); font-weight: 300; margin-top: 0.75rem; max-width: 480px; transition: color var(--transition); }
 
+/* ── Work ── */
+.work-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 2rem 2.2rem;
+  display: flex; gap: 2rem; align-items: flex-start;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none; color: inherit; position: relative; overflow: hidden;
+}
+.work-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: linear-gradient(90deg, var(--violet), var(--teal));
+  opacity: 0; transition: opacity 0.4s;
+}
+.work-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.work-card:hover::before { opacity: 1; }
+.work-card-left { flex-shrink: 0; }
+.work-emoji { font-size: 2.4rem; display: block; }
+.work-card-body { flex: 1; min-width: 0; }
+.work-card-eyebrow {
+  font-size: 0.7rem; font-weight: 600; color: var(--violet);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.45rem;
+}
+.work-card-title {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 600;
+  letter-spacing: -0.025em; margin-bottom: 0.6rem; line-height: 1.15;
+}
+.work-card-desc { font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; line-height: 1.7; margin-bottom: 1rem; }
+.work-stat-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.work-stat {
+  padding: 0.28rem 0.7rem; border-radius: 8px;
+  font-size: 0.73rem; font-weight: 600;
+  background: var(--violet-soft); color: var(--violet);
+}
+.work-stat.teal { background: var(--teal-soft); color: var(--teal); }
+.work-stat.amber { background: var(--amber-soft); color: var(--amber); }
+.work-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.work-tag {
+  font-size: 0.72rem; font-weight: 500; padding: 0.25rem 0.6rem;
+  border-radius: 6px; background: var(--bg-alt); color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+@media (max-width: 560px) {
+  .work-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+}
+
 /* ── Projects ── */
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
 
@@ -1181,6 +1226,7 @@ footer {
     <div class="logo">amlan<span class="logo-dot"></span></div>
     <div class="nav-right">
       <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#writing">Field Notes</a></li>
         <li><a href="#sentiment">World Today</a></li>
@@ -1201,6 +1247,7 @@ footer {
 
   <!-- Mobile nav drawer -->
   <div class="mobile-nav" id="mobileNav">
+    <a href="#work">Work</a>
     <a href="#projects">Projects</a>
     <a href="#writing">Field Notes</a>
     <a href="#sentiment">World Today</a>
@@ -1338,6 +1385,42 @@ footer {
       <circle cx="100" cy="12" r="3" fill="currentColor" stroke="none" opacity="0.3"/>
     </svg>
   </div>
+
+  <section id="work">
+    <div class="section-header reveal">
+      <div class="section-chip chip-violet">🏗️ Work</div>
+      <h2 class="section-title">Delivery highlights</h2>
+      <p class="section-desc">Large-scale enterprise programmes I've led — cloud migrations, platform engineering, and the hard problems in between.</p>
+    </div>
+    <a href="salto-oci.html" class="work-card reveal">
+      <div class="work-card-left">
+        <span class="work-emoji">☁️</span>
+      </div>
+      <div class="work-card-body">
+        <div class="work-card-eyebrow">Programme Manager · TCS · Belgium · Telecom</div>
+        <div class="work-card-title">Siebel CRM Cloud Migration</div>
+        <div class="work-card-desc">Moved a Siebel CRM estate — the order management system for a major Belgian telecom — out of an on-premises data centre, onto Oracle Cloud, and then onto Kubernetes. Two phases, 32 environments, zero incidents at go-live, ~252,000 business orders processed on the new platform in the weeks after cutover.</div>
+        <div class="work-stat-row">
+          <span class="work-stat">32 / 32 environments ✓</span>
+          <span class="work-stat teal">0 major incidents</span>
+          <span class="work-stat amber">~252k orders processed</span>
+          <span class="work-stat">35 databases upgraded</span>
+          <span class="work-stat teal">−33% memory footprint</span>
+        </div>
+        <div class="work-tags">
+          <span class="work-tag">Oracle Kubernetes Engine</span>
+          <span class="work-tag">Siebel CRM</span>
+          <span class="work-tag">OCI</span>
+          <span class="work-tag">Exadata X11M</span>
+          <span class="work-tag">HAProxy</span>
+          <span class="work-tag">Azure Entra ID</span>
+          <span class="work-tag">Flux · Helm</span>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <div class="section-divider"><svg viewBox="0 0 200 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 12 C40 6, 60 18, 100 12 S160 6, 200 12" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="100" cy="12" r="2.5" fill="currentColor" stroke="none" opacity="0.25"/></svg></div>
 
   <section id="projects">
     <div class="section-header reveal">
